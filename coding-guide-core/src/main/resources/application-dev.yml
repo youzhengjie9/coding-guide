@@ -1,0 +1,15 @@
+server:
+  port: 8188
+
+spring:
+  servlet:
+    #文件上传配置
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 6MB
+  mvc:
+    pathmatch:
+      #swagger所需要的配置
+      matching-strategy: ant_path_matcher
+  application:
+    name: coding-guide

@@ -16,6 +16,12 @@
     <url>https://blog.csdn.net/weixin_50071998</url>
     <description>coding-guide是一个集面试刷题、博客、在线考试为一体的网站</description>
 
+    <developers>
+        <developer>
+            <name>youzhengjie</name>
+            <email>1550324080@qq.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <!--        springboot版本-->
