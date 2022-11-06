@@ -30,15 +30,31 @@ const router = new VueRouter({
         children:[
           {
             path:'/index',
-            component: () => import('../views/index/index.vue')
+            component: () => import('../views/index/index.vue'),
+            meta: {
+              index: 0
+            }
+          },
+          {
+            path:'/message',
+            component: () => import('../views/message/index.vue'),
+            meta: {
+              index: 1
+            }
           },
           {
             path:'/about',
-            component: () => import('../views/about/index.vue')
+            component: () => import('../views/about/index.vue'),
+            meta: {
+              index: 2
+            }
           },
           {
             path:'/my',
-            component: () => import('../views/my/index.vue')
+            component: () => import('../views/my/index.vue'),
+            meta: {
+              index: 3
+            }
           }
         ]
       },

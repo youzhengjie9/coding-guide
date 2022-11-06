@@ -2,7 +2,12 @@
   
   <div class="container">
 
-    <router-view/>
+    <!-- <transition :name="move"> -->
+      <!-- <keep-alive> -->
+          <router-view/>
+      <!-- </keep-alive> -->
+    <!-- </transition> -->
+    
     
     <!-- 底部TabBar -->
     <div class="footer">
@@ -19,6 +24,11 @@ export default {
     name:'Layout',
     components:{
       FooterTabBar
+    },
+    computed:{
+      move(){
+        return this.$store.state.TabBar.move
+      }
     }
 }
 
@@ -35,6 +45,8 @@ export default {
 .footer {
   background: #f2f2f2;
 }
+
+
 // 路由切换动画
 .slide-left-enter-active,
 .slide-left-leave-active,
@@ -66,6 +78,4 @@ export default {
 .slide-left-leave-to {
   transform: translate(-100%);
 }
-
-
 </style>

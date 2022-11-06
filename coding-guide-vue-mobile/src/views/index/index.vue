@@ -1,18 +1,30 @@
 <template>
   
+   <div class="box">
 
+    <nav-head></nav-head>
+    
+    <nav-scoller></nav-scoller>
+
+   </div>
   
-
-
 
 </template>
 
 <script>
-export default {
 
+import NavHead from '../../components/nav-head/index.vue'
+import NavScoller from '../../components/nav-scoller/index.vue'
+
+export default {
+  components:{
+    NavScoller,
+    NavHead
+  }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+
 
 </style>

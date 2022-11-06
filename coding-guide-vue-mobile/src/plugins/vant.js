@@ -13,7 +13,15 @@ import {
   Notify,
   Divider,
   NoticeBar,
-  Row
+  Row,
+  Col,
+  Search,
+  Tab,
+  Tabs,
+  List,
+  PullRefresh,
+  Cell,
+  Icon
 } from 'vant'
 //按需使用vant组件
 Vue.use(Button);
@@ -25,5 +33,11 @@ Vue.use(Notify);
 Vue.use(Divider);
 Vue.use(NoticeBar);
 Vue.use(Row);
-
-
+Vue.use(Col);
+Vue.use(Search);
+Vue.use(Tab);
+Vue.use(Tabs);
+Vue.use(List);
+Vue.use(PullRefresh);
+Vue.use(Cell);
+Vue.use(Icon);
