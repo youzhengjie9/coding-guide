@@ -21,7 +21,8 @@ import {
   List,
   PullRefresh,
   Cell,
-  Icon
+  Icon,
+  Tag
 } from 'vant'
 //按需使用vant组件
 Vue.use(Button);
@@ -41,3 +42,4 @@ Vue.use(List);
 Vue.use(PullRefresh);
 Vue.use(Cell);
 Vue.use(Icon);
+Vue.use(Tag);

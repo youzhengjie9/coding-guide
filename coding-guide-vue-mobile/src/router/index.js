@@ -63,6 +63,10 @@ const router = new VueRouter({
         component: () => import('../views/login/index.vue')
       },
       {
+        path:'/question/detail',
+        component: () => import('../views/question/index.vue')
+      },
+      {
         //配置404未找到页面路由
         path:'*',
         component: () => import('../views/error-page/404.vue')

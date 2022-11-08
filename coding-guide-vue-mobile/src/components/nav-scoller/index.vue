@@ -6,10 +6,9 @@
         <van-tab v-for="item in scollerTabList" :name="item.id" :title="item.title" :key="item.id">
             
             <!-- 面试题目列表内容 -->
-            <interview-question-list>
+            <question-list>
                 
-            </interview-question-list>
-
+            </question-list>
 
 
         </van-tab>
@@ -21,11 +20,11 @@
 
 <script>
 
-import InterviewQuestionList from '../interview-question/List.vue'
+import questionList from '../question/List.vue'
 
 export default {
     components:{
-        InterviewQuestionList
+        questionList
     },
     methods:{
         tabClick(name,title){

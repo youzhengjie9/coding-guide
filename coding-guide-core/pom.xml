@@ -18,6 +18,7 @@
     <developers>
         <developer>
             <name>youzhengjie</name>
+            <url>https://blog.csdn.net/weixin_50071998</url>
             <email>1550324080@qq.com</email>
         </developer>
     </developers>
@@ -33,6 +34,14 @@
     </properties>
 
     <dependencies>
+
+        <!--    guava，内置实令牌桶限流算法实现-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+
         <!--        hutool-->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -167,6 +176,32 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
+        </dependency>
+
+        <!-- 阿里巴巴的druid数据源 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+
+        <!--        mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!--        mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+
+        <!--       spring-data-redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <!--        spring-data-redis配置连接池所必须要的依赖。-->
