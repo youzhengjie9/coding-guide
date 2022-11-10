@@ -18,6 +18,7 @@ import {
   Search,
   Tab,
   Tabs,
+  Toast,
   List,
   PullRefresh,
   Cell,
@@ -43,3 +44,6 @@ Vue.use(PullRefresh);
 Vue.use(Cell);
 Vue.use(Icon);
 Vue.use(Tag);
+Vue.use(Toast);
+
+

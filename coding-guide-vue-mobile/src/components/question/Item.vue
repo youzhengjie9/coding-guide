@@ -1,72 +1,79 @@
 <template>
   
   <div>
-    <!-- 面试题 -->
-    <div class="iq">
+    <!-- 遍历面试题 -->
+    <div class="iq" 
+    v-for="(item,index) in list" 
+    :key="index">
       <div class="title">
        
-        <router-link class="titleHref" :to = "{ path: '/question/detail', query: { id: '5612333123' } }">
-            【JAVA基础-集合】Java中的HashMap的底层原理实现、工作原理?
+        <router-link class="titleHref" :to = "{ path: '/question/detail', query: { id: item.id } }">
+            {{item.title}}
         </router-link>
 
       </div>
 
       <!-- 标签栏 -->
       <div>
-        <van-tag type="success" class="tagItem" size="medium">推荐</van-tag>
-        <van-tag plain type="primary" class="tagItem" size="medium"
-          >Java</van-tag
-        >
-        <van-tag plain type="primary" class="tagItem" size="medium"
-          >后端</van-tag
-        >
-        <van-tag plain type="primary" class="tagItem" size="medium"
-          >SpringBoot</van-tag
-        >
+        <!-- 是否推荐 -->
+        <van-tag v-if="item.recommend == 1" type="success" class="tagItem" size="medium">
+          推荐
+        </van-tag>
+
+        <!-- 标签列表 -->
+        <van-tag 
+            plain type="primary"
+            v-for="(tagName) in item.tagList" 
+            :key="tagName"
+            class="tagItem"
+            size="medium">
+            {{tagName}}
+        </van-tag>
+         
       </div>
 
       <div>
-        <!-- 简单难度 -->
-        <!-- <van-tag type="primary" class="tagItem" size="medium" style="margin-right: 15px;" >
-          简单
-        </van-tag> -->
+        
+          <span style="font-size: 15px;margin-left: 15px;">发布日期: {{item.publishTime | dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
+          <!-- 简单难度 -->
+          <van-tag v-if="item.difficulty == 1" type="primary" class="tagItem" size="medium" style="margin-right: 15px;" >
+            简单
+          </van-tag>
 
-        <!-- 中等难度 -->
-        <!-- <van-tag type="success" class="tagItem" size="medium" style="margin-right: 15px;" >
-          中等
-        </van-tag> -->
+          <!-- 中等难度 -->
+          <van-tag v-if="item.difficulty == 2" type="success" class="tagItem" size="medium" style="margin-right: 15px;" >
+            中等
+          </van-tag>
 
-        <!-- 较难难度 -->
-        <!-- <van-tag type="warning" class="tagItem" size="medium" style="margin-right: 15px;" >
-          较难
-        </van-tag> -->
+          <!-- 较难难度 -->
+          <van-tag v-if="item.difficulty == 3" type="warning" class="tagItem" size="medium" style="margin-right: 15px;" >
+            较难
+          </van-tag>
 
-        <!-- 困难难度 -->
-        <van-tag type="danger" class="tagItem" size="medium" style="margin-right: 15px;" >
-          困难
-        </van-tag>
-
-        <span style="font-size: 15px;">发布日期: 2022-10-20 23:15:22</span>
+          <!-- 困难难度 -->
+          <van-tag v-if="item.difficulty == 4" type="danger" class="tagItem" size="medium" style="margin-right: 15px;" >
+            困难
+          </van-tag>
       </div>
 
       <div>
         <van-row gutter="5">
           <van-col span="6" class="foot">
             <van-icon name="eye-o" size="20" />
-            <span style="font-size: 15px;">20000000</span>
+            <span style="font-size: 15px;">{{item.readCount}}</span>
           </van-col>
           <van-col span="5">
             <van-icon name="like-o" size="20" />
-            <span style="font-size: 15px">302312</span>
+            <span style="font-size: 15px">{{item.likeCount}}</span>
           </van-col>
           <van-col span="5">
             <van-icon name="star-o" size="20" />
-            <span style="font-size: 15px">351000</span>
+            <span style="font-size: 15px">{{item.collectCount}}</span>
           </van-col>
 
           <van-col span="5">
             <van-icon name="bulb-o" size="20" />
-            <span style="font-size: 15px">999990</span>
+            <span style="font-size: 15px">{{item.meetCount}}</span>
           </van-col>
           
         </van-row>
@@ -85,7 +92,10 @@
 
 <script>
 export default {
-  name: "quesionItem"
+  name: "quesionItem",
+  props:{
+    list:Array
+  }
 };
 </script>
 

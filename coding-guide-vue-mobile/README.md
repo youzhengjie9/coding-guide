@@ -79,7 +79,11 @@ npm install echarts --save
 ```
 
 
+### 安装vue2的Markdown编辑器（v-md-editor）
 
+```
+npm i @kangc/v-md-editor -S
+```
 
 
 ## Project setup

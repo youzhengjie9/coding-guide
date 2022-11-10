@@ -8,6 +8,10 @@ import moment from 'moment'
 import 'lib-flexible/flexible.js'
 //引入vant插件
 import "./plugins/vant.js";
+//引入v-md-editor插件
+import './plugins/v-md-editor'
+
+
 //使用vue-router插件
 Vue.use(router)
 

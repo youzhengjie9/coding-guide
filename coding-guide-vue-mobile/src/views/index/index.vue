@@ -14,6 +14,7 @@
 <script>
 
 import NavHead from '../../components/nav-head/index.vue'
+
 import NavScoller from '../../components/nav-scoller/index.vue'
 
 export default {

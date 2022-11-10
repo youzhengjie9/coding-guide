@@ -20,6 +20,7 @@
 
 <script>
 import FooterTabBar from '../components/tabbar/FooterTabBar.vue'
+
 export default {
     name:'Layout',
     components:{
@@ -37,10 +38,11 @@ export default {
 
 <style lang="scss" scoped>
 
-.container {
-  flex: 1;
-  overflow: scroll;
-}
+// 加了这个就导致vant的滚动分页一直触发onload方法------------
+// .container {
+//   flex: 1;
+//   overflow: scroll;
+// }
 
 .footer {
   background: #f2f2f2;

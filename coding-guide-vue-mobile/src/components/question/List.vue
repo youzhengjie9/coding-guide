@@ -2,31 +2,26 @@
   
   <div>
 
-    <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
 
         <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            :error.sync="error"
-            error-text="请求失败，点击重新加载"
-            @load="onLoad">
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了..."
+          @load="onLoad"
+          :error.sync="error"
+          error-text="请求失败，点击重新加载"
+          >
 
+            <!-- 题目 -->
+            <quesion-item :list="list">
 
-            <!-- 题目 -->
-            <quesion-item/>
-            <!-- 题目 -->
-            <quesion-item/>
-            <!-- 题目 -->
-            <quesion-item/>
-            <!-- 题目 -->
-            <quesion-item/>
-            <!-- 题目 -->
-            <quesion-item/>
+            </quesion-item>
+             
 
         </van-list>
 
-    <!-- </van-pull-refresh> -->
+    </van-pull-refresh>
 
   </div>
 
@@ -34,6 +29,13 @@
 
 <script>
 import quesionItem from '../question/Item.vue'
+import {
+  selectHottestQuestionByLimit
+} from '../../api/question'
+import{
+  Toast
+}from 'vant'
+
 export default {
   name:'questionList',
   components:{
@@ -42,11 +44,12 @@ export default {
   data() {
     return {
       list: [],
-      error: false,
       loading: false,
       finished: false,
-      pageNum: 1, //默认是第一页
-      pageSize: 10, //一次10条
+      refreshing: false,
+      error: false,
+      page: 1, //默认是第一页
+      size: 7, //一次7条
       total: 0 //总记录数
     };
   },
@@ -54,41 +57,50 @@ export default {
 
     //滚动分页
     onLoad() {
-      // //
-      // const param = {
-      //   pageNum: this.pageNum,
-      //   pageSize: this.pageSize
-      // }
-      // getList(param).then(res => {
-      //   if (res.data.code === 200) {
-      //     //页数+1
-      //     this.pageNum++
-      //     //更新列表
-      //     this.list = this.list.concat(res.data.data.list)
-      //     //更新总记录数
-      //     this.total = res.data.data.total
-      //     // 加载状态结束
-      //     this.loading = false
-      //     // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
-      //     if (this.list.length >= this.total) {
-      //       this.finished = true
-      //     }
-      //   }
-      // }).catch(() => {
-      //   this.error = true
-      // })
+
+      setTimeout(() => {
+          if (this.refreshing) {
+            this.list = [];
+            this.refreshing = false;
+          }
+        selectHottestQuestionByLimit(this.page,this.size).then(res => {
+          if (res.data.code === 200) {
+            //页数+1
+            this.page++
+            //更新列表
+            this.list = this.list.concat(res.data.data.questionVOList)
+            //更新总记录数
+            this.total = res.data.data.totalCount
+            // 加载状态结束
+            this.loading = false
+            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
+            if (this.list.length >= this.total) {
+              this.finished = true
+              Toast('没有更多了...');
+            }
+          }
+        }).catch(() => {
+          this.error = true
+        })
+      }, 1000);
+      
 
     },
     //下拉刷新
     onRefresh() {
-      // 清空列表数据
+      // 清空/初始化数据
       this.finished = false;
+      this.error=false,
+      this.page=1, //默认是第一页
+      this.size=7, //一次7条
+      this.total=0 //总记录数
 
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
       this.loading = true;
       this.onLoad();
-    },
+    }
+
   },
 };
 </script>
