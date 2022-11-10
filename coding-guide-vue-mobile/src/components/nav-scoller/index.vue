@@ -3,6 +3,7 @@
   <div>
 
     <van-tabs v-model="active" swipeable @click="tabClick">
+        
         <van-tab v-for="item in scollerTabList" :name="item.id" :title="item.title" :key="item.id">
             
             <!-- 面试题目列表内容 -->

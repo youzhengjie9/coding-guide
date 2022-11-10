@@ -7,7 +7,7 @@
             </span>
             </van-col>
             <van-col span="12">
-            <van-search @click="pushSearchPage" disabled placeholder="搜索" background="cornflowerblue" />
+            <van-search shape="round" @click="pushSearchPage" disabled placeholder="搜索面试题" background="cornflowerblue" />
             </van-col>
         </van-row>
     </div>
@@ -19,7 +19,9 @@ export default {
   methods:{
     //跳转搜索页
     pushSearchPage(){
-      
+      this.$router.push({
+          path:'/search'
+      })
     }
   }
 }
@@ -35,5 +37,6 @@ export default {
   font-size: 26px;
   line-height: 50px;
   margin-left: 10px;
+  color:white
 }
 </style>

@@ -42,7 +42,7 @@
     </div>
   </template>
 <script>
-import { Notify } from 'vant';
+import { Toast } from 'vant';
   export default {
     name:'Login',
     data() {
@@ -65,17 +65,13 @@ import { Notify } from 'vant';
 
         //校验帐号密码格式
         if(!username || username.length<3 || username.length>15){
-          Notify({
-            type: 'danger',
-            message: '帐号格式不正确,请重试',
-            duration: 2000,
-          })
+          
+          Toast.fail('帐号格式不正确,请重试');
+
         }else if(!password || password.length<5 || password.length>20){
-          Notify({
-            type: 'danger',
-            message: '密码格式不正确,请重试',
-            duration: 2000,
-          })
+      
+          Toast.fail('密码格式不正确,请重试');
+          
         }else{
           //帐号密码验证通过
           //调用后端登录接口
@@ -84,7 +80,6 @@ import { Notify } from 'vant';
             username:username,
             password:password
           }
-          console.log(userObj)
           
           this.showLoading = true;
           this.message = "正在登录...";

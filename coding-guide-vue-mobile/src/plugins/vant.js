@@ -10,8 +10,9 @@ import {
   TabbarItem,
   Field,
   CellGroup,
-  Notify,
+  // Notify,
   Divider,
+  Dialog,
   NoticeBar,
   Row,
   Col,
@@ -31,8 +32,9 @@ Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Field);
 Vue.use(CellGroup);
-Vue.use(Notify);
+// Vue.use(Notify);
 Vue.use(Divider);
+Vue.use(Dialog);
 Vue.use(NoticeBar);
 Vue.use(Row);
 Vue.use(Col);

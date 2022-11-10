@@ -2,19 +2,13 @@
 
     <div class="box">
 
-        <!-- <van-cell-group inset> -->
-
-            <div class="md">
-            <v-md-preview-html
-            :html="question.content" 
-            preview-class="vuepress-markdown-body"
-            >
-            </v-md-preview-html>
+        <div class="md">
+                <v-md-preview 
+                :text="question.content">
+                </v-md-preview>
         </div>
 
-        <!-- </van-cell-group> -->
-        
-        
+  
 
     </div>
 
