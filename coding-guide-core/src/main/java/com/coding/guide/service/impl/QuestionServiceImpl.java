@@ -28,4 +28,34 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public List<Question> selectHottestQuestionByLimit(int page, int size) {
         return questionMapper.selectHottestQuestionByLimit(page,size);
     }
+
+    @Override
+    public List<Question> searchHottestQuestionByKeyWordAndLimit(int page, int size, String keyword) {
+
+
+        return questionMapper.searchHottestQuestionByKeyWordAndLimit(page, size, keyword);
+    }
+
+    @Override
+    public long selectQuestionCountByKeyWord(String keyword) {
+
+        return questionMapper.selectQuestionCountByKeyWord(keyword);
+    }
+
+    @Override
+    public List<Question> searchLatestQuestionByKeyWordAndLimit(int page, int size, String keyword) {
+
+        return questionMapper.searchLatestQuestionByKeyWordAndLimit(page, size, keyword);
+    }
+
+    @Override
+    public List<Question> searchRecommendQuestionByKeyWordAndLimit(int page, int size, String keyword) {
+        return questionMapper.searchRecommendQuestionByKeyWordAndLimit(page, size, keyword);
+    }
+
+    @Override
+    public long selectRecommendQuestionCountByKeyWord(String keyword) {
+        return questionMapper.selectRecommendQuestionCountByKeyWord(keyword);
+    }
+
 }

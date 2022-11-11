@@ -25,7 +25,51 @@
         LIMIT #{page},#{size}
 
     </select>
-
+    <select id="searchHottestQuestionByKeyWordAndLimit" resultType="com.coding.guide.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND title like CONCAT('%',#{keyword},'%')
+        ORDER BY read_count DESC, like_count DESC, collect_count DESC, comment_count DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectQuestionCountByKeyWord" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND title like CONCAT('%',#{keyword},'%')
+    </select>
+    <select id="searchLatestQuestionByKeyWordAndLimit" resultType="com.coding.guide.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND title like CONCAT('%',#{keyword},'%')
+        ORDER BY id DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="searchRecommendQuestionByKeyWordAndLimit" resultType="com.coding.guide.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND recommend = 1
+        ORDER BY read_count DESC, like_count DESC, collect_count DESC, comment_count DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectRecommendQuestionCountByKeyWord" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND recommend = 1
+        AND title like CONCAT('%',#{keyword},'%')
+    </select>
 
 
 </mapper>

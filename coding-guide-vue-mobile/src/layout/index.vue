@@ -1,43 +1,35 @@
 <template>
-  
   <div class="container">
-
     <!-- <transition :name="move"> -->
-      <!-- <keep-alive> -->
-          <router-view/>
-      <!-- </keep-alive> -->
+    <!-- <keep-alive> -->
+    <router-view />
+    <!-- </keep-alive> -->
     <!-- </transition> -->
-    
-    
+
     <!-- 底部TabBar -->
     <div class="footer">
-        <footer-tab-bar></footer-tab-bar>
+      <footer-tab-bar></footer-tab-bar>
     </div>
-
   </div>
-
 </template>
 
 <script>
-import FooterTabBar from '../components/tabbar/FooterTabBar.vue'
+import FooterTabBar from "../components/tabbar/FooterTabBar.vue";
 
 export default {
-    name:'Layout',
-    components:{
-      FooterTabBar
+  name: "Layout",
+  components: {
+    FooterTabBar,
+  },
+  computed: {
+    move() {
+      return this.$store.state.TabBar.move;
     },
-    computed:{
-      move(){
-        return this.$store.state.TabBar.move
-      }
-    }
-}
-
-
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 // 加了这个就导致vant的滚动分页一直触发onload方法------------
 // .container {
 //   flex: 1;
@@ -47,7 +39,6 @@ export default {
 .footer {
   background: #f2f2f2;
 }
-
 
 // 路由切换动画
 .slide-left-enter-active,

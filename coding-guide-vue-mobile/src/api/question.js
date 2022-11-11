@@ -13,3 +13,39 @@ export function selectQuestionDetail(id){
         method:'get'
     })
 }
+
+export function searchHottestQuestionByKeyWordAndLimit(page,size,keyword){
+    return request({
+        url:'/question/searchHottestQuestionByKeyWordAndLimit',
+        method:'get',
+        params:{
+            page:page,
+            size:size,
+            keyword:keyword
+        }
+    })
+}
+
+export function searchLatestQuestionByKeyWordAndLimit(page,size,keyword){
+    return request({
+        url:'/question/searchLatestQuestionByKeyWordAndLimit',
+        method:'get',
+        params:{
+            page:page,
+            size:size,
+            keyword:keyword
+        }
+    })
+}
+
+export function searchRecommendQuestionByKeyWordAndLimit(page,size,keyword){
+    return request({
+        url:'/question/searchRecommendQuestionByKeyWordAndLimit',
+        method:'get',
+        params:{
+            page:page,
+            size:size,
+            keyword:keyword
+        }
+    })
+}
