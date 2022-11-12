@@ -1,7 +1,9 @@
 package com.coding.guide.data;
 
+import com.coding.guide.enums.ResponseType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -43,5 +45,22 @@ public class ResponseResult<T> {
         this.data = data;
     }
 
+    //泛型方法。快速封装成功的响应对象
+    public static<D> ResponseResult<D> ok (D data){
+
+        return new ResponseResult<D>()
+                .setCode(ResponseType.SUCCESS.getCode())
+                .setMsg(ResponseType.SUCCESS.getMessage())
+                .setData(data);
+    }
+
+    //泛型方法。快速封装失败的响应对象
+    public static<D> ResponseResult<D> fail (D data){
+
+        return new ResponseResult<D>()
+                .setCode(ResponseType.ERROR.getCode())
+                .setMsg(ResponseType.ERROR.getMessage())
+                .setData(data);
+    }
 
 }

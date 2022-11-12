@@ -17,8 +17,8 @@ public interface QuestionService extends IService<Question> {
     /**
      * 查询最热门的公开的文章并分页（按访问量排序，如果访问量相同则分别按点赞数、收藏数、评论数排序）
      *
-     * @param page
-     * @param size
+     * @param page 页面
+     * @param size 大小
      * @return {@link List}<{@link Question}>
      */
     List<Question> selectHottestQuestionByLimit(int page, int size);
@@ -72,4 +72,22 @@ public interface QuestionService extends IService<Question> {
      */
     long selectRecommendQuestionCountByKeyWord(String keyword);
 
+    /**
+     * 根据tagid查询公开的文章并分页（按t_question的sort字段排序）
+     *
+     * @param page  页面
+     * @param size  大小
+     * @param tagid tagid
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectQuestionByTagIdAndLimit(int page, int size, long tagid);
+
+
+    /**
+     * 根据tagid查询面试题数量
+     *
+     * @param tagid tagid
+     * @return long
+     */
+    long selectQuestionCountByTagId(long tagid);
 }

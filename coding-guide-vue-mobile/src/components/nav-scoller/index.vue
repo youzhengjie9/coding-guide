@@ -1,95 +1,73 @@
 <template>
   <div>
+
     <van-tabs v-model="active" swipeable @click="tabClick">
       <van-tab
         v-for="item in scollerTabList"
         :name="item.id"
-        :title="item.title"
+        :title="item.tagName"
         :key="item.id"
       >
         <!-- 面试题目列表内容 -->
-        <question-list> </question-list>
+        <question-list
+        :currentTabId="active"
+        >
+
+        </question-list>
       </van-tab>
     </van-tabs>
+
+
+    <!-- 回到顶部组件 -->
+    <back-to-top></back-to-top>
+
+
   </div>
 </template>
 
 <script>
 import questionList from "../question/List.vue";
+import BackToTop from "../common/BackToTop.vue";
+import{
+  selectAllExistTag
+}from '../../api/tag'
+import { Toast } from "vant";
 
 export default {
   components: {
     questionList,
+    BackToTop
   },
   methods: {
-    tabClick(name, title) {
-      console.log(name);
-      console.log(title);
+    tabClick(tabId, tabName) {
+
     },
+    //初始化scollerTabList
+    initScollerTabList(){
+      selectAllExistTag().then(res=>{
+        if(res.data.code == 200){
+          let list=res.data.data;
+          for(let i=0;i<list.length;i++){
+            list[i].id=Number(list[i].id)
+          }
+          this.scollerTabList=res.data.data;
+        }else{
+          Toast.fail("加载滚动标签列表失败");
+        }
+      }).catch(err=>{
+        Toast.fail("服务器异常,接口请求失败");
+      })
+    }
   },
   data() {
     return {
-      active: 0, //当前激活的标签栏index
-      scollerTabList: [
-        {
-          title: "推荐",
-          id: 1,
-        },
-        {
-          title: "Java",
-          id: 1002,
-        },
-        {
-          title: "Python",
-          id: 1003,
-        },
-        {
-          title: "c++",
-          id: 1004,
-        },
-        {
-          title: "人工智能",
-          id: 1005,
-        },
-        {
-          title: "大数据",
-          id: 1006,
-        },
-        {
-          title: "分布式",
-          id: 1007,
-        },
-        {
-          title: "微服务",
-          id: 1008,
-        },
-        {
-          title: "云原生",
-          id: 1009,
-        },
-        {
-          title: "SpringBoot",
-          id: 1010,
-        },
-        {
-          title: "SpringCloud",
-          id: 1011,
-        },
-        {
-          title: "vue",
-          id: 1012,
-        },
-        {
-          title: "后端",
-          id: 1013,
-        },
-        {
-          title: "前端",
-          id: 1014,
-        },
-      ],
+      active: 0, //当前激活的标签栏id
+      scollerTabList: [],
     };
   },
+  created(){
+    this.initScollerTabList();
+  }
 };
 </script>
 

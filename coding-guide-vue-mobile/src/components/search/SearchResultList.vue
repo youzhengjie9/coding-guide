@@ -21,7 +21,7 @@ import quesionItem from "../question/Item.vue";
 import {
   searchHottestQuestionByKeyWordAndLimit,
   searchLatestQuestionByKeyWordAndLimit,
-  searchRecommendQuestionByKeyWordAndLimit,
+  searchRecommendQuestionByKeyWordAndLimit
 } from "../../api/question";
 import { Toast } from "vant";
 

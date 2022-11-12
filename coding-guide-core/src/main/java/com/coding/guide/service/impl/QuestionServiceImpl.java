@@ -58,4 +58,14 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         return questionMapper.selectRecommendQuestionCountByKeyWord(keyword);
     }
 
+    @Override
+    public List<Question> selectQuestionByTagIdAndLimit(int page, int size, long tagid) {
+        return questionMapper.selectQuestionByTagIdAndLimit(page, size, tagid);
+    }
+
+    @Override
+    public long selectQuestionCountByTagId(long tagid) {
+        return questionMapper.selectQuestionCountByTagId(tagid);
+    }
+
 }

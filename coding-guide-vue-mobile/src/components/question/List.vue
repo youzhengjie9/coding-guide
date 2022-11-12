@@ -1,45 +1,38 @@
 <template>
-  
   <div>
-
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-
-        <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了..."
-          @load="onLoad"
-          :error.sync="error"
-          error-text="请求失败，点击重新加载"
-          >
-
-            <!-- 题目 -->
-            <quesion-item :list="list">
-
-            </quesion-item>
-             
-
-        </van-list>
-
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了..."
+        @load="onLoad"
+        :error.sync="error"
+        error-text="请求失败，点击重新加载"
+      >
+        <!-- 题目 -->
+        <quesion-item :list="list"> </quesion-item>
+      </van-list>
     </van-pull-refresh>
-
   </div>
-
 </template>
 
 <script>
-import quesionItem from '../question/Item.vue'
+import quesionItem from "../question/Item.vue";
 import {
-  selectHottestQuestionByLimit
-} from '../../api/question'
-import{
-  Toast
-}from 'vant'
+  selectHottestQuestionByLimit,
+  searchLatestQuestionByKeyWordAndLimit,
+  searchRecommendQuestionByKeyWordAndLimit,
+  selectQuestionByTagIdAndLimit,
+} from "../../api/question";
+import { Toast } from "vant";
 
 export default {
-  name:'questionList',
-  components:{
-    quesionItem
+  name: "questionList",
+  components: {
+    quesionItem,
+  },
+  props: {
+    currentTabId: Number,
   },
   data() {
     return {
@@ -50,62 +43,155 @@ export default {
       error: false,
       page: 1, //默认是第一页
       size: 7, //一次7条
-      total: 0 //总记录数
+      total: 0, //总记录数
     };
   },
   methods: {
-
     //滚动分页
     onLoad() {
-
+      let tabid = this.currentTabId;
       setTimeout(() => {
-          if (this.refreshing) {
-            this.list = [];
-            this.refreshing = false;
-          }
-        selectHottestQuestionByLimit(this.page,this.size).then(res => {
-          if (res.data.code === 200) {
-            //页数+1
-            this.page++
-            //更新列表
-            this.list = this.list.concat(res.data.data.questionVOList)
-            //更新总记录数
-            this.total = res.data.data.totalCount
-            // 加载状态结束
-            this.loading = false
-            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
-            if (this.list.length >= this.total) {
-              this.finished = true
-              Toast.fail('没有更多了...');
-            }
-          }
-        }).catch(() => {
-          this.error = true;
-          Toast.fail('服务器异常,接口请求失败');
-        })
-      }, 1000);
-      
+        if (this.refreshing) {
+          this.list = [];
+          this.refreshing = false;
+        }
 
+        switch (tabid) {
+          //如果选择的是最热
+          case 1:
+            this.loadHottestList();
+            break;
+          //如果选择的是最新
+          case 2:
+            this.loadLatestList();
+            break;
+          //如果选择的是推荐
+          case 3:
+            this.loadRecommendList();
+            break;
+          //如果选择的是其他普通标签，比如Java、SpringBoot等
+          default:
+            this.loadListByTabId(tabid);
+            break;
+        }
+      }, 1000);
     },
     //下拉刷新
     onRefresh() {
       // 清空/初始化数据
       this.finished = false;
-      this.error=false,
-      this.page=1, //默认是第一页
-      this.size=7, //一次7条
-      this.total=0 //总记录数
+      (this.error = false),
+        (this.page = 1), //默认是第一页
+        (this.size = 7), //一次7条
+        (this.total = 0); //总记录数
 
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
       this.loading = true;
       this.onLoad();
-    }
-
+    },
+    //加载最热列表
+    loadHottestList() {
+      selectHottestQuestionByLimit(this.page, this.size)
+        .then((res) => {
+          if (res.data.code === 200) {
+            //页数+1
+            this.page++;
+            //更新列表
+            this.list = this.list.concat(res.data.data.questionVOList);
+            //更新总记录数
+            this.total = res.data.data.totalCount;
+            // 加载状态结束
+            this.loading = false;
+            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
+            if (this.list.length >= this.total) {
+              this.finished = true;
+              Toast.fail("没有更多了...");
+            }
+          }
+        })
+        .catch(() => {
+          this.error = true;
+          Toast.fail("服务器异常,接口请求失败");
+        });
+    },
+    //加载最新列表
+    loadLatestList() {
+      searchLatestQuestionByKeyWordAndLimit(this.page, this.size, "")
+        .then((res) => {
+          if (res.data.code === 200) {
+            //页数+1
+            this.page++;
+            //更新列表
+            this.list = this.list.concat(res.data.data.questionVOList);
+            //更新总记录数
+            this.total = res.data.data.totalCount;
+            // 加载状态结束
+            this.loading = false;
+            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
+            if (this.list.length >= this.total) {
+              this.finished = true;
+              Toast.fail("没有更多了...");
+            }
+          }
+        })
+        .catch(() => {
+          this.error = true;
+          Toast.fail("服务器异常,接口请求失败");
+        });
+    },
+    //加载推荐列表
+    loadRecommendList() {
+      searchRecommendQuestionByKeyWordAndLimit(this.page, this.size, "")
+        .then((res) => {
+          if (res.data.code === 200) {
+            //页数+1
+            this.page++;
+            //更新列表
+            this.list = this.list.concat(res.data.data.questionVOList);
+            //更新总记录数
+            this.total = res.data.data.totalCount;
+            // 加载状态结束
+            this.loading = false;
+            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
+            if (this.list.length >= this.total) {
+              this.finished = true;
+              Toast.fail("没有更多了...");
+            }
+          }
+        })
+        .catch(() => {
+          this.error = true;
+          Toast.fail("服务器异常,接口请求失败");
+        });
+    },
+    loadListByTabId(tabid) {
+      selectQuestionByTagIdAndLimit(tabid, this.page, this.size)
+        .then((res) => {
+          if (res.data.code === 200) {
+            //页数+1
+            this.page++;
+            //更新列表
+            this.list = this.list.concat(res.data.data.questionVOList);
+            //更新总记录数
+            this.total = res.data.data.totalCount;
+            // 加载状态结束
+            this.loading = false;
+            // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
+            if (this.list.length >= this.total) {
+              this.finished = true;
+              Toast.fail("没有更多了...");
+            }
+          }
+        })
+        .catch(() => {
+          this.error = true;
+          Toast.fail("服务器异常,接口请求失败");
+        });
+    },
   },
 };
 </script>
 
 <style>
-
 </style>

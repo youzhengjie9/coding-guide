@@ -49,3 +49,10 @@ export function searchRecommendQuestionByKeyWordAndLimit(page,size,keyword){
         }
     })
 }
+
+export function selectQuestionByTagIdAndLimit(tagid,page,size){
+    return request({
+        url:'/question/selectQuestionByTagIdAndLimit/'+tagid+'/'+page+'/'+size,
+        method:'get'
+    })
+}

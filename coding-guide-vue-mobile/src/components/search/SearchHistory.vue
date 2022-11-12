@@ -56,11 +56,11 @@
     >
     </van-divider>
 
-    <!-- 推荐 -->
+    <!-- 猜你想搜 -->
     <!-- <div id="recommend">
           <van-cell-group>
-            <van-cell title="系统推荐">
-              <van-icon name="replay" @click="replay">换一个</van-icon>
+            <van-cell title="猜你想搜">
+              <van-icon name="replay" @click="replay">换一换</van-icon>
             </van-cell>
             <van-cell
               :title="item"

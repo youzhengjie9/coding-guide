@@ -2,6 +2,7 @@ package com.coding.guide.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -28,7 +29,6 @@ public class Tag implements Serializable {
     /**
      * 主键
      */
-
     @JsonSerialize(using = ToStringSerializer.class)
     @TableId("id")
     @ApiModelProperty(name = "id",value = "主键")
@@ -48,6 +48,21 @@ public class Tag implements Serializable {
     @ApiModelProperty(name = "createTime",value = "创建时间")
     private LocalDateTime createTime;
 
+    /**
+     * 排序,值越大优先级越高，越排在上面
+     */
+    @TableField("sort")
+    @ApiModelProperty(name = "sort",value = "排序,值越大优先级越高，越排在上面")
+    private int sort;
+
+    /**
+     * 删除标志（0代表未删除，1代表已删除）
+     */
+    @TableLogic //逻辑删除（0代表未删除，1代表已删除）
+    @TableField("del_flag")
+    @ApiModelProperty(name = "delFlag",value = "删除标志（0代表未删除，1代表已删除）")
+    private int delFlag;
+
     public static Tag.Builder builder(){
         return new Tag.Builder();
     }
@@ -60,6 +75,10 @@ public class Tag implements Serializable {
         private String tagName;
 
         private LocalDateTime createTime;
+
+        private int sort;
+
+        private int delFlag;
 
         public Builder id(Long id){
             this.id=id;
@@ -74,12 +93,24 @@ public class Tag implements Serializable {
             return this;
         }
 
+        public Builder sort(int sort){
+            this.sort=sort;
+            return this;
+        }
+
+        public Builder delFlag(int delFlag){
+            this.delFlag=delFlag;
+            return this;
+        }
+
         public Tag build(){
 
             return new Tag()
                     .setId(id)
                     .setTagName(tagName)
-                    .setCreateTime(createTime);
+                    .setCreateTime(createTime)
+                    .setSort(sort)
+                    .setDelFlag(delFlag);
         }
 
     }

@@ -82,4 +82,26 @@ public interface QuestionMapper extends BaseMapper<Question> {
      */
     long selectRecommendQuestionCountByKeyWord(@Param("keyword") String keyword);
 
+
+    /**
+     * 根据tagid查询公开的文章并分页（按t_question的sort字段排序）
+     *
+     * @param page  页面
+     * @param size  大小
+     * @param tagid tagid
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectQuestionByTagIdAndLimit(@Param("page") int page,
+                                                 @Param("size") int size,
+                                                 @Param("tagid") long tagid);
+
+    /**
+     * 根据tagid查询面试题数量
+     *
+     * @param tagid tagid
+     * @return long
+     */
+    long selectQuestionCountByTagId(@Param("tagid") long tagid);
+
+
 }

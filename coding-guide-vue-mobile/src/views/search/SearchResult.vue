@@ -1,11 +1,30 @@
 <template>
-  <div>
+
+  <div class="box">
+
+        <div class="header">
+              <van-row>
+                  <van-col span="24">
+                      <form action="/">
+                          <van-search
+                              v-model="keyword"
+                              show-action
+                              placeholder="请输入搜索内容"
+                              @search="onSearch"
+                              @cancel="onCancel"
+                              shape="round"
+                              background="cornflowerblue"/>
+                      </form>
+                  </van-col>
+                  
+              </van-row>
+        </div>
     
     <van-tabs v-model="active" swipeable @click="tabClick">
         
         <van-tab v-for="item in scollerTabList" :name="item.id" :title="item.title" :key="item.id">
             
-            <!-- 搜索内容列表 -->
+            <!-- 展示搜索结果 -->
             <search-result-list
             :currentTabId="active"
             :keyword="keyword"
@@ -15,17 +34,22 @@
 
         </van-tab>
     </van-tabs>
+
+    <!-- 回到顶部组件 -->
+    <back-to-top></back-to-top>
      
   </div>
 </template>
 
 <script>
 import SearchResultList from "@/components/search/SearchResultList.vue";
+import BackToTop from "@/components/common/BackToTop.vue";
 export default {
   data() {
     return {
       list: [],
       keyword: this.$route.query.keyword || '',
+      searchHistories: this.getSearchHistoriesArray() || [] ,// 搜索历史记录
       active:0, //当前激活的标签栏index
             scollerTabList:[
                 {
@@ -46,16 +70,61 @@ export default {
   },
   components: {
     SearchResultList,
+    BackToTop
   },
   
   methods: {
     
     tabClick(name,title){
         
-    }
+    },
+    //点击搜索
+    onSearch(keyword) {
+       
+       const searchHistories = this.searchHistories
+       const index = searchHistories.indexOf(this.keyword)
+       if (index !== -1) {
+         searchHistories.splice(index, 1)
+       }
+       searchHistories.unshift(this.keyword)
+ 
+       localStorage.setItem('search-histories',searchHistories)
+ 
+       //跳转搜索页面
+       this.$router.push({
+             path:'/search/result',
+             query:{
+               keyword:this.keyword
+             }
+       })
+       //刷新页面
+       this.$router.go(0) 
+ 
+     },
+     //点击取消
+     onCancel() {
+        this.$router.push({
+           path:'/index'
+        })
+     },
+     //从localstorage中获取历史搜索
+     getSearchHistoriesArray(){
+       let sh=localStorage.getItem('search-histories');
+       if(sh != null){
+         let arr=sh.split(',');
+         return arr;
+       }
+       return [];
+     }
   },
 };
 </script>
 
-<style>
+<style scope>
+.header{
+    background-color:cornflowerblue;
+}
+
+
+
 </style>

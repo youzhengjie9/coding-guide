@@ -43,7 +43,7 @@ public class QuestionController {
      * @return {@link ResponseResult}<{@link List}<{@link Question}>>
      */
     @GetMapping(path = "/selectHottestQuestionByLimit/{page}/{size}")
-    @ApiOperation("查询最热门的公开的文章并分页（按访问量排序，如果访问量相同则分别按点赞数、收藏数、评论数排序）")
+    @ApiOperation("查询最热门的公开的文章并分页")
     public ResponseResult<Map<Object,Object>> selectHottestQuestionByLimit(@PathVariable("page") int page,
                                                             @PathVariable("size") int size){
         ResponseResult<Map<Object,Object>> responseResult = new ResponseResult<>();
@@ -233,6 +233,48 @@ public class QuestionController {
 
         // TODO: 2022/11/11  根据keyword去匹配面试题的title
         long totalCount = questionService.selectRecommendQuestionCountByKeyWord(keyword);
+
+        Map<Object, Object> map = MapUtil.builder()
+                .put("questionVOList", questionVOList)
+                .put("totalCount", totalCount)
+                .build();
+
+        responseResult.setCode(ResponseType.SUCCESS.getCode())
+                .setMsg(ResponseType.SUCCESS.getMessage())
+                .setData(map);
+        return responseResult;
+
+    }
+
+    /**
+     * 根据tagid查询公开的文章并分页（按t_question的sort字段排序）
+     *
+     * @param page  页数
+     * @param size  大小
+     * @param tagid tagid（标签id）
+     * @return {@link ResponseResult}<{@link Map}<{@link Object},{@link Object}>>
+     */
+    @GetMapping(path = "/selectQuestionByTagIdAndLimit/{tagid}/{page}/{size}")
+    @ApiOperation("根据tagid查询公开的文章并分页")
+    public ResponseResult<Map<Object,Object>> selectQuestionByTagIdAndLimit(@PathVariable("page") int page,
+                                                                           @PathVariable("size") int size,
+                                                                            @PathVariable("tagid") long tagid){
+        ResponseResult<Map<Object,Object>> responseResult = new ResponseResult<>();
+
+        page=(page-1)*size;
+        List<Question> questionList=questionService.selectQuestionByTagIdAndLimit(page,size,tagid);
+        //stream+bean拷贝
+        List<QuestionVO> questionVOList = questionList.stream().map(question -> {
+            QuestionVO questionVO = new QuestionVO();
+            BeanUtil.copyProperties(question, questionVO);
+            //将标签字符串tags转成List<String>集合
+            String[] tagArray = question.getTags().split(",");
+            List<String> tagList = Arrays.asList(tagArray);
+            questionVO.setTagList(tagList);
+            return questionVO;
+        }).collect(Collectors.toList());
+
+        long totalCount = questionService.selectQuestionCountByTagId(tagid);
 
         Map<Object, Object> map = MapUtil.builder()
                 .put("questionVOList", questionVOList)

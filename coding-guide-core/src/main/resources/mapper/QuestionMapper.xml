@@ -70,6 +70,23 @@
         AND recommend = 1
         AND title like CONCAT('%',#{keyword},'%')
     </select>
+    <select id="selectQuestionByTagIdAndLimit" resultType="com.coding.guide.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM t_question
+        WHERE id IN (SELECT question_id FROM t_question_tag WHERE tag_id = #{tagid})
+        AND del_flag = 0
+        AND is_public = 1
+        ORDER BY sort DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectQuestionCountByTagId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM t_question
+        WHERE id IN (SELECT question_id FROM t_question_tag WHERE tag_id = #{tagid})
+        AND del_flag = 0
+        AND is_public = 1
+    </select>
 
 
 </mapper>

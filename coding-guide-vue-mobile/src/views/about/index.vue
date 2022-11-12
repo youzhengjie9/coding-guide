@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding-top: 58px;
+  padding-top: 20px;
   .about-box {
     padding: 14px 14px;
     background: #fff;

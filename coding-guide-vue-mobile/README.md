@@ -86,6 +86,17 @@ npm i @kangc/v-md-editor -S
 ```
 
 
+## 遇到的部分问题
+
+### this.$router.push跳转当前页面不刷新问题
+
+可以加入下面这段代码：（缺点就是会有一瞬间白屏）
+```js
+this.$router.go(0) 
+```
+
+
+
 ## Project setup
 ```
 npm install
