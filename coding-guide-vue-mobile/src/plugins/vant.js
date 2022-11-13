@@ -14,9 +14,12 @@ import {
   Divider,
   Dialog,
   NoticeBar,
+  NavBar,
   Row,
   Col,
   Search,
+  Swipe,
+  SwipeItem,
   Tab,
   Tabs,
   Toast,
@@ -24,7 +27,9 @@ import {
   PullRefresh,
   Cell,
   Icon,
-  Tag
+  Image as VanImage,
+  Tag,
+  Lazyload 
 } from 'vant'
 //按需使用vant组件
 Vue.use(Button);
@@ -47,5 +52,8 @@ Vue.use(Cell);
 Vue.use(Icon);
 Vue.use(Tag);
 Vue.use(Toast);
-
-
+Vue.use(NavBar);
+Vue.use(Swipe);
+Vue.use(SwipeItem); 
+Vue.use(Lazyload);
+Vue.use(VanImage);

@@ -1,78 +1,130 @@
+<!--返回顶部组件-->
 <template>
-    <div id="goTop">
-      <div class="goTop" v-show="goTopShow" @click="goTop">
-
-        <!-- 回到顶部组件图标 -->
-        <i class="goTopIcon"></i>
-
-      </div>
+  <transition :name="transitionName">
+    <div
+      v-show="visible"
+      :style="customStyle"
+      class="back-to-ceiling"
+      @click="backToTop"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 17 17"
+        xmlns="http://www.w3.org/2000/svg"
+        class="Icon Icon--backToTopArrow"
+        aria-hidden="true"
+        style="height: 16px; width: 16px"
+      >
+        <path
+          d="M12.036 15.59a1 1 0 0 1-.997.995H5.032a.996.996 0 0 1-.997-.996V8.584H1.03c-1.1 0-1.36-.633-.578-1.416L7.33.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.004z"
+        />
+      </svg>
     </div>
+  </transition>
 </template>
- 
+
 <script>
-    export default {
-      name: "BackToTop",
-      data(){
-          return{
-            scrollTop: '',
-            goTopShow:false, //控制回到顶部图标的显示
-          }
-        },
-      methods:{
-        handleScroll () {
-          this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-          if(this.scrollTop>500){
-            this.goTopShow=true
-          }else{ //解决滚动到最上面但是BackToTop组件不会消失问题。
-            this.goTopShow=false
-          }
-        },
-        //回到顶部
-        goTop(){
-          console.log('goTop')
-          let timer=null,_that=this;
-          cancelAnimationFrame(timer)
-          timer=requestAnimationFrame(function fn(){
-            if(_that.scrollTop>0){
-              _that.scrollTop-=50;
-              document.body.scrollTop = document.documentElement.scrollTop = _that.scrollTop;
-              timer=requestAnimationFrame(fn)
-            }else {
-              cancelAnimationFrame(timer);
-              _that.goTopShow=false;
-            }
-          })
-
-        }
+export default {
+  name: "BackTop",
+  props: {
+    visibilityHeight: {
+      type: Number,
+      default: 400,
+    },
+    backPosition: {
+      type: Number,
+      default: 0,
+    },
+    customStyle: {
+      type: Object,
+      default: function () {
+        return {
+          right: "20px",
+          bottom: "70px",
+          width: "40px",
+          height: "40px",
+          "border-radius": "4px",
+          "line-height": "45px",
+          background: "#e7eaf1",
+        };
       },
-      mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-      },
-      destroyed(){
-        window.removeEventListener('scroll', this.handleScroll)
-      }
+    },
+    transitionName: {
+      type: String,
+      default: "fade",
+    },
+  },
+  data() {
+    return {
+      visible: false,
+      interval: null,
+      isMoving: false,
+    };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+    if (this.interval) {
+      clearInterval(this.interval);
     }
+  },
+  methods: {
+    handleScroll() {
+      this.visible = window.pageYOffset > this.visibilityHeight;
+    },
+    backToTop() {
+      if (this.isMoving) return;
+      const start = window.pageYOffset;
+      let i = 0;
+      this.isMoving = true;
+      this.interval = setInterval(() => {
+        const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500));
+        if (next <= this.backPosition) {
+          window.scrollTo(0, this.backPosition);
+          clearInterval(this.interval);
+          this.isMoving = false;
+        } else {
+          window.scrollTo(0, next);
+        }
+        i++;
+      }, 16.7);
+    },
+    easeInOutQuad(t, b, c, d) {
+      if ((t /= d / 2) < 1) return (c / 2) * t * t + b;
+      return (-c / 2) * (--t * (t - 2) - 1) + b;
+    },
+  },
+};
 </script>
- 
-<style scoped>
-  .goTop{
-    position: fixed;
-    right: 20px;
-    bottom: 50px;
-    width: 50px;
-    height: 50px;
-    background:rgba(0,0,0,.65);
-  }
-  .goTop:hover{
-    background:rgba(0,0,0,.85);
-  }
-  .goTopIcon{
-    display: block;
-    width: 50px;
-    height: 50px;
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABaUlEQVRYR+2W7U3DQBBE31QAJaQDUkJSAXQA6QAqACqADggVBCoAKoAOCBWEDgatZEcHyeX8AYqQvD/P59t3s7tjiz2H9pyfAWBQ4H8rYPtQ0mefSeqlgO0HYCVp1hWiM4DtOXACHADzrhCdAGxfAZdAffM74ELSbVslWgPYPgMi4UxSqMC2taYgrQCSRNeSQoV1VCU5BaaSnn8dwPYYeAIeJYUKG1FBHFcQb00gGimQJH+RFI2XDdtx+6OmEEWAmHXgHfgAJqW5r/YHhCuInT6xE6A6LGSPfcXktSzVe1GCVQmiBBCHjICxpGWTmiYQ0TOhxKukae7dLEBiNHHzRg31M0nVOwGxyBnVVoCuI5WZjGjaRc4tNwBsnwM3qdG0kT4DsWFe9b5vAH0crQSZu9gawHYt1X3OaEpJSs+3lTYFiGZZ/lXyZDri+zGSNIm1FKD3z0VJgdQnakMrOmHTQ7vuGwAGBQYFvgCufKAhUkYyWwAAAABJRU5ErkJggg==");
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
 
+<style scoped>
+.back-to-ceiling {
+  position: fixed;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+
+.back-to-ceiling:hover {
+  background: #d5dbe7;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.back-to-ceiling .Icon {
+  fill: #245CDC;
+  background: none;
+}
 </style>
+
