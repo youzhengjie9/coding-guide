@@ -4,12 +4,17 @@
 
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
             <van-swipe-item>
-                <img src="https://img01.yzcdn.cn/vant/apple-1.jpg" style="height:150px;" />
+                <img src="../../assets/swipe/01.png" style="width: 390px;height:169px;object-fit: cover;" />
             </van-swipe-item>
-            
-            <van-swipe-item>2</van-swipe-item>
-            <van-swipe-item>3</van-swipe-item>
-            <van-swipe-item>4</van-swipe-item>
+            <van-swipe-item>
+                <img src="../../assets/swipe/02.png" style="width: 390px;height:169px;object-fit: cover;" />
+            </van-swipe-item>
+            <van-swipe-item>
+                <img src="../../assets/swipe/03.png" style="width: 390px;height:169px;object-fit: cover;" />
+            </van-swipe-item>
+            <van-swipe-item>
+                <img src="../../assets/swipe/04.png" style="width: 390px;height:169px;object-fit: cover;" />
+            </van-swipe-item>
         </van-swipe>
 
     </div>
@@ -38,5 +43,7 @@ export default {
     line-height: 150px;
     text-align: center;
     background-color: #39a9ed;
+    width: 390px;
+    height:160px;
   }
 </style>

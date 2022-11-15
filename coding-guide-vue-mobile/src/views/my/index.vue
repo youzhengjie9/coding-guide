@@ -1,13 +1,30 @@
 <template>
-  <h3>我的</h3>
+  
+  <div class="my">
+
+    <!-- 头部 -->
+    <my-header></my-header>
+
+
+
+
+  </div>
+
+
 </template>
 
 <script>
+import MyHeader from '@/components/my/Header.vue';
 export default {
-    name:'my'
+    name:'my',
+    components:{
+      MyHeader
+    }
 }
 </script>
 
-<style>
+<style scope>
+
+
 
 </style>

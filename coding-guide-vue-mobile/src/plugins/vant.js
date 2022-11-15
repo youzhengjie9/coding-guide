@@ -25,6 +25,7 @@ import {
   Toast,
   List,
   PullRefresh,
+  Popup ,
   Cell,
   Icon,
   Image as VanImage,
@@ -57,3 +58,4 @@ Vue.use(Swipe);
 Vue.use(SwipeItem); 
 Vue.use(Lazyload);
 Vue.use(VanImage);
+Vue.use(Popup);
