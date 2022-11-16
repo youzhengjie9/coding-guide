@@ -40,7 +40,7 @@ export default {
       type: Object,
       default: function () {
         return {
-          right: "20px",
+          right: "40px",
           bottom: "70px",
           width: "40px",
           height: "40px",

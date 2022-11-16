@@ -75,10 +75,10 @@ public class Question implements Serializable {
     private int recommend;
 
     /**
-     * 文章是否公开（0代表私有，1代表公开）
+     * 文章是否公开（0代表私密，1代表公开）
      */
     @TableField("is_public")
-    @ApiModelProperty(name = "isPublic",value = "文章是否公开（0代表私有，1代表公开）")
+    @ApiModelProperty(name = "isPublic",value = "文章是否公开（0代表私密，1代表公开）")
     private int isPublic;
 
     /**

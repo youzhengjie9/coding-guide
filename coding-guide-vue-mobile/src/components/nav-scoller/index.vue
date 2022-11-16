@@ -10,8 +10,7 @@
       >
         <!-- 面试题目列表内容 -->
         <question-list
-        :currentTabId="active"
-        >
+        :currentTabId="active">
 
         </question-list>
       </van-tab>
@@ -71,5 +70,6 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
+
 </style>
