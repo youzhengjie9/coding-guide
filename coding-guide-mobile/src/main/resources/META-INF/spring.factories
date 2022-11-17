@@ -1,0 +1,3 @@
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.coding.guide.common.autoconfigure.CodingGuideCommonAutoConfigure

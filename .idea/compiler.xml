@@ -7,8 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="coding-guide-core" />
+        <module name="coding-guide-common" />
+        <module name="coding-guide-admin" />
+        <module name="coding-guide-mobile" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="coding-guide-core" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

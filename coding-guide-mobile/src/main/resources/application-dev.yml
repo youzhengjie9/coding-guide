@@ -1,0 +1,119 @@
+server:
+  #配置端口
+  port: 16666
+
+spring:
+  servlet:
+    #文件上传配置
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 6MB
+  mvc:
+    pathmatch:
+      #swagger所需要的配置
+      matching-strategy: ant_path_matcher
+  application:
+    name: coding-guide-mobile
+    #这里我们使用的是mysql8.0的配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.184.123:3308/coding-guide-mobile-db?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+    #druid数据库连接池配置
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      minIdle: 5
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间(单位：毫秒)
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 用来测试连接是否可用的SQL语句,默认值每种数据库都不相同,这是mysql
+      validationQuery: SELECT 1
+      # 应用向连接池申请连接，并且testOnBorrow为false时，连接池将会判断连接是否处于空闲状态，如果是，则验证这条连接是否可用
+      testWhileIdle: true
+      # 如果为true，默认是false，应用向连接池申请连接时，连接池会判断这条连接是否是可用的
+      testOnBorrow: false
+      # 如果为true（默认false），当应用使用完连接，连接池回收连接的时候会判断该连接是否还可用
+      testOnReturn: false
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle
+      poolPreparedStatements: true
+      # 要启用PSCache，必须配置大于0，当大于0时， poolPreparedStatements自动触发修改为true，
+      # 在Druid中，不会存在Oracle下PSCache占用内存过多的问题，
+      # 可以把这个数值配置大一些，比如说100
+      maxOpenPreparedStatements: 20
+      # 连接池中的minIdle数量以内的连接，空闲时间超过minEvictableIdleTimeMillis，则会执行keepAlive操作
+      keepAlive: true
+      # 启用内置过滤器（第一个 stat必须，否则监控不到SQL）
+      filters: stat,wall
+      # 自己配置监控统计拦截的filter
+      filter:
+        # 开启druid-datasource的状态监控
+        stat:
+          enabled: true
+          db-type: mysql
+          # 开启慢sql监控，超过1s 就认为是慢sql，记录到日志中
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        # wall配置
+        wall:
+          config:
+            multi-statement-allow: true
+      #配置WebStatFilter，用于采集web关联监控的数据
+      web-stat-filter:
+        enabled: true                   # 启动 StatFilter
+      #配置StatViewServlet（监控页面），用于展示Druid的统计信息
+      stat-view-servlet:
+        enabled: true                   # 启用StatViewServlet
+        url-pattern: /druid/*           # 访问内置监控页面的路径，内置监控页面的首页是/druid/index.html
+        reset-enable: false              # 不允许清空统计数据,重新计算
+        login-username: root            # 配置监控页面访问帐号
+        login-password: 123456          # 配置监控页面访问密码
+        allow:                         # 设置IP白名单，不填则允许所有访问
+        deny:                           # IP 黑名单，若白名单也存在，则优先使用
+  # spring-data-redis配置
+  redis:
+    database: 1
+    host: 192.168.184.123
+    port: 6379
+    #配置lettuce连接池，大幅提高性能（如果不进行配置，则默认是不使用连接池,只有进行了下面的配置，连接池才会生效）
+    lettuce:
+      pool:
+        #min-idle建议配置：0
+        min-idle: 0
+        #max-idle建议配置：cpu核心数*2，由于我们cpu是i5-9300H，是4核cpu，所以建议设置8
+        max-idle: 8
+        #max-active建议配置：大于等于cpu核心数*2，也是推荐设置8
+        max-active: 8
+        #使用redis默认值即可：-1
+        max-wait: -1
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+# 自定义jwt配置
+jwt:
+  config:
+    # accessToken的名称（和前端存储在localstorage的token名称一致）
+    access-token-name: accessToken
+    # accessToken密钥
+    access-token-key: accessToken-key
+    # 10800000毫秒（=3小时）过期
+    access-token-expired: 10800000
+    # refreshToken的名称（和前端存储在localstorage的token名称一致）
+    refresh-token-name: refreshToken
+    # refreshToken密钥
+    refresh-token-key: refreshToken-key
+    # 21600000毫秒（=6小时）过期
+    refresh-token-expired: 21600000

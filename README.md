@@ -16,7 +16,9 @@
 
     - 子模块名：（主模块：coding-guide）
 
-        - coding-guide-core（后端核心模块）
+        - coding-guide-admin（移动端的后端模块）
+        - coding-guide-mobile（后台管理系统的后端模块）
+        - coding-guide-common（公共模块）
         - coding-guide-vue-admin（后台管理系统模块）
         - coding-guide-vue-mobile（前台移动端模块）
         - coding-guide-doc（文档资料模块）

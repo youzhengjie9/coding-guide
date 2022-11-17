@@ -4,7 +4,7 @@ import store from '@/store'
 
 const service = axios.create({
   //我们springboot后端服务器的ip+端口号
-  baseURL: "http://localhost:9999",
+  baseURL: "http://localhost:16666",
   //6s没有响应就算超时
   timeout: 6000
 })

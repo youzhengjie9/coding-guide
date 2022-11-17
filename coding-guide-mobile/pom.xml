@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>coding-guide</artifactId>
+        <groupId>org.example</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>coding-guide-mobile</artifactId>
+
+    <name>coding-guide</name>
+    <url>https://blog.csdn.net/weixin_50071998</url>
+    <description>coding-guide是一个集面试刷题、博客、在线考试为一体的网站</description>
+
+    <developers>
+        <developer>
+            <name>youzhengjie</name>
+            <url>https://blog.csdn.net/weixin_50071998</url>
+            <email>1550324080@qq.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <elastic-search.version>7.8.0</elastic-search.version>
+        <easyexcel.version>3.1.1</easyexcel.version>
+        <swagger.version>3.0.0</swagger.version>
+        <!--        springboot版本-->
+        <spring-boot.version>2.7.5</spring-boot.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- 引入公共模块-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>coding-guide-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--        swagger3-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>
