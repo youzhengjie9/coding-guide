@@ -9,6 +9,7 @@ import {
   Tabbar,
   TabbarItem,
   Field,
+  Form,
   CellGroup,
   // Notify,
   Divider,
@@ -59,3 +60,4 @@ Vue.use(SwipeItem);
 Vue.use(Lazyload);
 Vue.use(VanImage);
 Vue.use(Popup);
+Vue.use(Form);

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProperties jwtProperties;
 
-    @Resource
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
@@ -45,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = request.getHeader(jwtProperties.getAccessTokenName());
 
         //由于所有请求都要经过这个过滤器，所以分为两种情况
-        //1：无accessToken的情况下，直接放行即可。（因为没有token的情况下可能是/user/login接口的请求此时直接放行即可,然后这个请求会经过UsernamePasswordAuthenticationToken之类过滤器）
+        //1：无accessToken的情况下，直接放行即可。（因为没有token的情况下可能是/login接口的请求此时直接放行即可,然后这个请求会经过UsernamePasswordAuthenticationToken之类过滤器）
         if(!StringUtils.hasText(accessToken)){
 
             filterChain.doFilter(request,response);

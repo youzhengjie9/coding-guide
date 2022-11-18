@@ -1,5 +1,6 @@
 package com.coding.guide.common.config;
 
+import com.coding.guide.mobile.config.FastJson2RedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -32,7 +33,7 @@ public class RedisTemplateConfiguration {
         template.setConnectionFactory(connectionFactory);
 
         // fastjson2序列化工具
-        FastJson2RedisSerializer serializer = new FastJson2RedisSerializer(Object.class);
+        com.coding.guide.mobile.config.FastJson2RedisSerializer serializer = new FastJson2RedisSerializer(Object.class);
 
         // 序列化String数据类型的key和value
         template.setKeySerializer(new StringRedisSerializer());

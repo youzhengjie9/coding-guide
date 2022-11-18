@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -31,7 +32,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private UserService userService;
 
-    @Resource
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
@@ -41,13 +42,10 @@ public class RegisterServiceImpl implements RegisterService {
     private static final long PHONE_CODE_EXPIRED= 5L;
 
     //默认昵称前缀
-    private static final String DEFAULT_NICK_NAME_PREFIX="用户昵称-";
+    private static final String DEFAULT_NICK_NAME_PREFIX="昵称-";
 
     //默认头像
     private static final String DEFAULT_AVATAR="https://img2.baidu.com/it/u=361550957,796293689&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500";
-
-    //默认分配的角色id
-    private static final Long DEFAULT_ASSIGN_ROLE_ID=2002L;
 
     /**
      * 注册用户
@@ -152,17 +150,14 @@ public class RegisterServiceImpl implements RegisterService {
 
     /**
      * 生成手机6位数字验证码
-     *
      */
     private String generateCode(){
-
-        Random random = new Random();
         StringBuffer stringBuffer = new StringBuffer();
-
         for (int i = 0; i < 6; i++) {
-            stringBuffer.append(random.nextInt(10));
+            //在高并发下ThreadLocalRandom的性能远远大于Random的性能
+            int number = ThreadLocalRandom.current().nextInt(10);
+            stringBuffer.append(number);
         }
-
         return stringBuffer.toString();
     }
 

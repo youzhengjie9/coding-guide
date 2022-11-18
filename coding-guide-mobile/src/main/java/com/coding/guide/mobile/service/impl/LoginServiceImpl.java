@@ -1,7 +1,13 @@
 package com.coding.guide.mobile.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.coding.guide.common.config.JwtProperties;
 import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.common.enums.ResponseType;
+import com.coding.guide.common.utils.BrowserUtils;
+import com.coding.guide.common.utils.IpToAddressUtil;
+import com.coding.guide.common.utils.IpUtils;
+import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.dto.UserLoginDTO;
 import com.coding.guide.mobile.security.LoginUser;
 import com.coding.guide.mobile.service.LoginService;
@@ -14,10 +20,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -31,15 +37,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 
-    /**
-     * redis key前缀。记录每一个登录用户的信息
-     */
-    private static final String LOGIN_KEY_PREFIX="login:user:";
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Resource
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
@@ -70,9 +71,9 @@ public class LoginServiceImpl implements LoginService {
 
         //1：authenticationManager.authenticate底层就是调用了UserDetailsService的loadUserByUserName方法，获取到UserDetails对象（也就是LoginUser对象）
         //2：将usernamePasswordAuthenticationToken（前端传入的帐号密码）和loadUserByUsername中的userMapper.selectOne(lambdaQueryWrapper)方法查询的帐号密码进行比对，判断帐号密码输入是否正确。
-        //如果验证失败的话，就会在loadUserByUsername方法中抛出异常并且被AuthenticationEntryPointImpl方法捕获
+        //2.1：如果是帐号不存在的话，就会在loadUserByUsername方法中抛出异常并且被AuthenticationEntryPointImpl方法捕获，返回（code：601）
+        //2.2：如果是帐号存在，但是密码不正确的话，就会在AuthenticationEntryPointImpl方法返回null给前端
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
 
         //------走到这一步，证明帐号密码都是正确的，可以给前端返回jwt token了
         // 本质上authenticate.getPrincipal()拿到的就是LoginUser对象
@@ -88,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
 
 
         //将LoginUser对象存入Redis，证明已经登录了
-        redisTemplate.opsForValue().set(LOGIN_KEY_PREFIX+userid,loginUser,loginUserExpired, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(RedisConstant.LOGIN_KEY_PREFIX +userid,loginUser,loginUserExpired, TimeUnit.MILLISECONDS);
 
         //将accessToken和refreshToken封装成TokenVO返回给前端
         TokenVO tokenVO = new TokenVO()
@@ -98,7 +99,7 @@ public class LoginServiceImpl implements LoginService {
                 .setAvatar(loginUser.getUser().getAvatar())
                 .setUserName(loginUser.getUser().getUserName());
 
-//        //登录成功后添加登录日志，不需要设置id，因为mybatis-plus会自动为我们生成
+        //登录成功后添加登录日志，不需要设置id，因为mybatis-plus会自动为我们生成
 //        String userIp = IpUtils.getIpAddr(request);
 //        LoginLog loginLog = LoginLog.builder()
 //                .username(userLoginDto.getUsername())
@@ -110,7 +111,8 @@ public class LoginServiceImpl implements LoginService {
 //                .build();
 //        loginLogService.save(loginLog);
 
-        return ResponseResult.ok(tokenVO);
+
+        return new ResponseResult(ResponseType.LOGIN_SUCCESS.getCode(),ResponseType.LOGIN_SUCCESS.getMessage(),tokenVO);
     }
 
 }

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class})
-@Import({UtilsConfiguration.class})
+@Import({UtilsConfiguration.class,RedisTemplateConfiguration.class})
 @Slf4j(topic = "coding-guide-common-autoconfigure")
 public class CodingGuideCommonAutoConfigure {
 
@@ -29,12 +29,6 @@ public class CodingGuideCommonAutoConfigure {
     public MybatisPlusConfiguration mybatisPlusConfiguration(){
         log.info("load mybatisPlusConfiguration bean success");
         return new MybatisPlusConfiguration();
-    }
-
-    @Bean
-    public RedisTemplateConfiguration redisTemplateConfiguration(){
-        log.info("load redisTemplateConfiguration bean success");
-        return new RedisTemplateConfiguration();
     }
 
     @Bean

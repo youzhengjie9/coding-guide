@@ -40,7 +40,38 @@ export function 自定义的方法名(){
 
 */
 
+//添加axios请求拦截器（在发送axios请求前自动执行）
+service.interceptors.request.use(function (config) {
+    //如果有accessToken，则每一次发送请求之前都要在localStorage中拿到accessToken并放到请求头中
+    if (store.state.User.accessToken && config.url !== '/refreshToken') {
+      
+    	config.headers['accessToken'] = store.state.User.accessToken
+  	}
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
 
+//添加axios响应拦截器（axios请求发送后，后台返回数据给前端，当接收响应数据后自动执行）
+service.interceptors.response.use(function (response) {
+    // 响应数据
+     const res = response.data;
+
+     //如果返回来的code是301，说明accessToken过期了，这时候就可以请求refreshToken接口
+     if(res.code === 301){
+        // console.log('============')
+        // console.log(localStorage.getItem('refreshToken'))
+        //调用vuex中的toRefreshToken方法，刷新token
+        store.dispatch('toRefreshToken');
+     }
+
+     return response; //记得要返回response。
+     
+  }, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
 
 //对外暴露
 export default service

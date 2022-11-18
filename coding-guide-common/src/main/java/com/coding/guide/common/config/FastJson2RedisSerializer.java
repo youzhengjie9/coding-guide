@@ -1,4 +1,4 @@
-package com.coding.guide.common.config;
+package com.coding.guide.mobile.config;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;

@@ -29,6 +29,7 @@ export default {
 background-color: #2f97ec;
 }
 
+
 .header /deep/ .van-nav-bar__title {
 color: white;
 font-size: 0.45rem;
