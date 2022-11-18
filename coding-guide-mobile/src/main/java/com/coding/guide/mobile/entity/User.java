@@ -12,20 +12,21 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 /**
- * 用户表(User)实体类
+ * 移动端用户表(User)实体类
  *
+ * @author youzhengjie
+ * @date 2022/11/17 18:35:17
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_user")
+@TableName("t_user")
 @EqualsAndHashCode
 @Builder
 @Accessors(chain = true)

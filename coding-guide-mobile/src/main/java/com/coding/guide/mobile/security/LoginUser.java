@@ -22,19 +22,12 @@ import java.util.stream.Collectors;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 public class LoginUser implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private User user;
-
-    /**
-     * 框架所需要的权限集合
-     */
-    @JSONField(serialize = false) //禁止序列化该属性
-    private Set<SimpleGrantedAuthority> grantedAuthoritySet;
 
     public LoginUser(User user){
         this.user=user;

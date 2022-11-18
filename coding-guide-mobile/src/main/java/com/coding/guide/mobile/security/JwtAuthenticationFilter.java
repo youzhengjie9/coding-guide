@@ -9,6 +9,7 @@ import com.coding.guide.common.exception.NotLoginException;
 import com.coding.guide.common.exception.ParseTokenException;
 import com.coding.guide.common.exception.TokenExpiredException;
 import com.coding.guide.common.utils.JwtUtil;
+import com.coding.guide.mobile.constant.RedisConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +32,6 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-    /**
-     * redis key前缀。记录每一个登录用户的信息
-     */
-    private static final String LOGIN_KEY_PREFIX="loginUser:";
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -88,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             //通过userid去redis中查询（拿到的就是loginUser对象），如果没有记录则直接报错（说明未登录）
             //只有redis中存在该用户的loginUser对象才能证明用户已经登录，否则说明用户未登录
-            String key=LOGIN_KEY_PREFIX+userid;
+            String key= RedisConstant.LOGIN_KEY_PREFIX +userid;
             LoginUser loginUser = (LoginUser) redisTemplate.opsForValue().get(key);
             if(Objects.isNull(loginUser)){
                 responseResult = new ResponseResult<>();

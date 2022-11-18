@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api("面试题控制器")
-@RequestMapping(path = "/question")
+@RequestMapping(path = "/mobile/question")
 public class QuestionController {
 
     @Autowired

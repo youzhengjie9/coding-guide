@@ -1,7 +1,7 @@
 package com.coding.guide.common.autoconfigure;
 
 import com.coding.guide.common.config.*;
-import com.coding.guide.common.utils.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,26 +15,31 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class})
-@Import({JwtUtil.class})
+@Import({UtilsConfiguration.class})
+@Slf4j(topic = "coding-guide-common-autoconfigure")
 public class CodingGuideCommonAutoConfigure {
 
     @Bean
     public CorsConfiguration corsConfiguration(){
+        log.info("load corsConfiguration bean success");
         return new CorsConfiguration();
     }
 
     @Bean
     public MybatisPlusConfiguration mybatisPlusConfiguration(){
+        log.info("load mybatisPlusConfiguration bean success");
         return new MybatisPlusConfiguration();
     }
 
     @Bean
     public RedisTemplateConfiguration redisTemplateConfiguration(){
+        log.info("load redisTemplateConfiguration bean success");
         return new RedisTemplateConfiguration();
     }
 
     @Bean
     public RemoveDruidAdConfiguration removeDruidAdConfiguration(){
+        log.info("load removeDruidAdConfiguration bean success");
         return new RemoveDruidAdConfiguration();
     }
 

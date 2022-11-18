@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * 用户详细信息（写一些用户的扩展字段）
+ * 移动端用户详细信息（写一些用户的扩展字段）
  *
  * @author youzhengjie
  * @date 2022/11/16 21:20:14
@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_user_detail")
+@TableName("t_user_detail")
 @EqualsAndHashCode
 @Builder
 @Accessors(chain = true)

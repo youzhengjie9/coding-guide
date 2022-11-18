@@ -10,62 +10,37 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
- * 登录控制器
+ * 移动端登录控制器
  *
  * @author youzhengjie
  * @date 2022/11/16 23:23:59
  */
 @RestController
-@Api("登录接口")
+@RequestMapping(path = "/mobile/login")
+@Api("移动端登录控制器")
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
     /**
-     * 登录
+     * 移动端登录接口
      *
      * @param userLoginDto 用户登录dto
      * @return {@link ResponseResult}<{@link TokenVO}>
      * @throws Throwable throwable
      */
-    @ApiOperation("登录接口")
-    @PostMapping("/user/login")
+    @ApiOperation("移动端登录接口")
+    @PostMapping("/")
     public ResponseResult<TokenVO> login(@RequestBody @Valid UserLoginDTO userLoginDto, HttpServletRequest request) throws Throwable {
 
-
         return loginService.login(userLoginDto,request);
-    }
-
-    /**
-     * 获取当前用户信息
-     * 记住：要携带accessToken
-     * @return {@link ResponseResult}
-     */
-    @GetMapping("/user/getCurrentUserInfo")
-    @ApiOperation("获取当前用户信息")
-    public ResponseResult<TokenVO> getCurrentUserInfo(){
-
-        try {
-            LoginUser loginUser=(LoginUser) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            TokenVO tokenVO = BeanUtil.copyProperties(loginUser.getUser(), TokenVO.class);
-
-            return ResponseResult.ok(tokenVO);
-        }catch (Exception e){
-            return ResponseResult.fail(null);
-        }
     }
 
 }

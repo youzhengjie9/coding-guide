@@ -23,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @RestController
 @Api("标签控制器")
-@RequestMapping(path = "/tag")
+@RequestMapping(path = "/mobile/tag")
 public class TagController {
 
     @Autowired
