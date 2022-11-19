@@ -36,8 +36,8 @@ public enum ResponseType {
     /**
      * 用户退出状态
      */
-    LOGOUT_SUCCESS(800,"用户退出成功"),
-    LOGOUT_ERROR(801,"用户退出失败"),
+    LOGOUT_SUCCESS(800,"退出登录成功"),
+    LOGOUT_ERROR(801,"退出登录失败"),
     /**
      * 文件操作状态
      */

@@ -46,6 +46,19 @@ const actions = {
         context.commit('SET_ACCESSTOKEN', data.data.accessToken);
         context.commit('SET_REFRESHTOKEN', data.data.refreshToken);
     },
+    //退出成功
+    logoutSuccess(context){
+        //此时，后端已经成功将用户退出，前端只需要把token和用户信息清空即可（localstorage内容也要清空）
+        //清空VUEX内容
+        context.commit('SET_USERNAME','')
+        context.commit('SET_NICKNAME','');
+        context.commit('SET_AVATAR','');
+        context.commit('SET_ACCESSTOKEN','');
+        context.commit('SET_REFRESHTOKEN','');
+        //清空localstorage的accessToken和refreshToken
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+    },
     getCurrentUserInfo(context) {
         return new Promise((resolve, reject) => {
             getCurrentUserInfo().then((res) => {
@@ -113,8 +126,6 @@ const actions = {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
         })
-
-
     }
 }
 

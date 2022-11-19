@@ -22,7 +22,7 @@ public class UserRegisterDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Length(min = 5,max = 15,message = "帐号长度要在5-15位之间")
-    @ApiModelProperty(name = "userName",value = "用户名",example = "root")
+    @ApiModelProperty(name = "userName",value = "用户名",example = "root123")
     private String userName;
 
     @Length(min = 5,max = 20,message = "密码长度要在5-20位之间")

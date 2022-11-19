@@ -9,9 +9,9 @@ package com.coding.guide.mobile.constant;
 public final class RedisConstant {
 
     /**
-     * redis key前缀。记录每一个登录用户的信息
+     * redis key前缀。记录每一个SecurityUser对象
      */
-    public static final String LOGIN_KEY_PREFIX="mobile:login:user:";
+    public static final String SECURITY_USER_KEY_PREFIX="mobile:security:user:";
 
     /**
      * 手机验证码的key，后面加上手机号即可

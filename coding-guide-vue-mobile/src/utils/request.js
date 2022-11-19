@@ -58,13 +58,16 @@ service.interceptors.response.use(function (response) {
     // 响应数据
      const res = response.data;
 
-     //如果返回来的code是301，说明accessToken过期了，这时候就可以请求refreshToken接口
-     if(res.code === 301){
-        // console.log('============')
-        // console.log(localStorage.getItem('refreshToken'))
-        //调用vuex中的toRefreshToken方法，刷新token
-        store.dispatch('toRefreshToken');
+     if(res){ //前提是res不为空，否则如果res为空后面res.code会空调用异常。
+        //如果返回来的code是301，说明accessToken过期了，这时候就可以请求refreshToken接口
+        if(res.code === 301){
+          // console.log('============')
+          // console.log(localStorage.getItem('refreshToken'))
+          //调用vuex中的toRefreshToken方法，刷新token
+          store.dispatch('toRefreshToken');
+        }
      }
+     
 
      return response; //记得要返回response。
      

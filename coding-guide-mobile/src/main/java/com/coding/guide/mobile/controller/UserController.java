@@ -2,7 +2,7 @@ package com.coding.guide.mobile.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.coding.guide.common.data.ResponseResult;
-import com.coding.guide.mobile.security.LoginUser;
+import com.coding.guide.mobile.security.SecurityUser;
 import com.coding.guide.mobile.vo.TokenVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class UserController {
     public ResponseResult<TokenVO> getCurrentUserInfo(){
 
         try {
-            LoginUser loginUser=(LoginUser) SecurityContextHolder
+            SecurityUser loginUser=(SecurityUser) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();

@@ -27,8 +27,8 @@ public class UserLoginDTO implements Serializable {
      * 用户名
      */
     @Length(min = 5,max = 15,message = "帐号长度要在5-15位之间")
-    @ApiModelProperty(name = "username",value = "用户名",example = "root")
-    private String username;
+    @ApiModelProperty(name = "userName",value = "用户名",example = "root123")
+    private String userName;
     /**
      * 密码
      */

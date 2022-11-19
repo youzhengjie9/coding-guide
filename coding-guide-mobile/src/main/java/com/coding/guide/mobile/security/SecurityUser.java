@@ -1,35 +1,34 @@
 package com.coding.guide.mobile.security;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import com.coding.guide.mobile.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * spring security登录用户类
+ * spring security所需要的用户类
  *
  * @author youzhengjie
- * @date 2022/11/16 23:55:19
+ * @date 2022/11/19 17:46:25
  */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
-public class LoginUser implements UserDetails, Serializable {
+public class SecurityUser implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 数据库的User对象
+     */
     private User user;
 
-    public LoginUser(User user){
+    public SecurityUser(User user){
         this.user=user;
     }
 

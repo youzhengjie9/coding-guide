@@ -7,7 +7,7 @@
       <van-cell-group>
         <!-- 帐号 -->
         <van-field
-          v-model="username"
+          v-model="userName"
           label="账号"
           clearable
           required
@@ -89,7 +89,7 @@ import { register, sendCode } from "@/api/register";
 export default {
   data() {
     return {
-      username: "", //用户名
+      userName: "", //用户名
       phone: "", //手机号
       code: "", //短信验证码
       password: "", //密码
@@ -102,8 +102,8 @@ export default {
   },
   methods: {
     //自定义校验用户名
-    validateUserName(username) {
-      if (username.length >= 5 && username.length <= 15) {
+    validateUserName(userName) {
+      if (userName.length >= 5 && userName.length <= 15) {
         return true;
       }
       return false;
@@ -139,14 +139,14 @@ export default {
     },
     //点击注册（只有前端校验通过才能调用handleRegister方法，所以下面只需要给后端发注册请求即可）
     handleRegister() {
-      let username = this.username;
+      let userName = this.userName;
       let phone = this.phone;
       let code = this.code;
       let password = this.password;
       let confirmPassword = this.confirmPassword;
 
       let registerObject = {
-        username: username, //用户名
+        userName: userName, //用户名
         phone: phone, //手机号
         code: code, //短信验证码
         password: password, //密码
@@ -177,9 +177,9 @@ export default {
         })
         .catch((err) => {
           Toast.fail({
-              message: "注册失败,请检查是否输入正确",
-              duration: 1500,
-            });
+            message: "注册失败,请检查是否输入正确",
+            duration: 1500,
+          });
         });
     },
     //发送验证码

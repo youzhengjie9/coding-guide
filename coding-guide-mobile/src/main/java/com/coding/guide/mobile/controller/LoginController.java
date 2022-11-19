@@ -1,7 +1,5 @@
 package com.coding.guide.mobile.controller;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.coding.guide.mobile.security.LoginUser;
 import com.coding.guide.mobile.service.LoginService;
 import com.coding.guide.common.data.ResponseResult;
 import com.coding.guide.mobile.dto.UserLoginDTO;
@@ -9,7 +7,6 @@ import com.coding.guide.mobile.vo.TokenVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

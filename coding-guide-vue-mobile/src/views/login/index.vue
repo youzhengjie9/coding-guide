@@ -5,7 +5,7 @@
     <van-form @submit="handleLogin">
       <van-cell-group class="login_form">
         <van-field
-          v-model="username"
+          v-model="userName"
           :label-width="50"
           left-icon="manager"
           label="账号"
@@ -49,14 +49,14 @@ export default {
   data() {
     return {
       message: "", // 按钮上的加载
-      username: "", // 账号
+      userName: "", // 账号(用户名)
       password: "", // 密码
     };
   },
   methods: {
     //自定义校验用户名
-    validateUserName(username) {
-      if (username.length >= 5 && username.length <= 15) {
+    validateUserName(userName) {
+      if (userName.length >= 5 && userName.length <= 15) {
         return true;
       }
       return false;
@@ -70,11 +70,11 @@ export default {
     },
     //登录
     handleLogin() {
-      let username = this.username;
+      let userName = this.userName;
       let password = this.password;
 
       let loginObject = {
-        username: username,
+        userName: userName,
         password: password,
       };
 
@@ -82,7 +82,6 @@ export default {
       login(loginObject)
         .then((res) => {
           let data = res.data;
-
           //前端拿到响应结果，如果下面的data为null则说明是帐号正确、密码错误。
           if (data == null) {
             Toast.fail({
@@ -103,6 +102,7 @@ export default {
                 duration: 1500,
               });
             }
+
           }
         })
         .catch((err) => {

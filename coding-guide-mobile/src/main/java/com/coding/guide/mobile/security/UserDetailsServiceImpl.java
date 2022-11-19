@@ -52,6 +52,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //封装返回loginUser对象
-        return new LoginUser(user);
+        return new SecurityUser(user);
     }
 }

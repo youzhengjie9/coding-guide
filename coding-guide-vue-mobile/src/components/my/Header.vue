@@ -32,6 +32,7 @@
         <van-cell title="浏览记录" />
         <van-cell title="钱包" />
         <van-cell title="会员" />
+        <van-cell title="退出登录" @click="logout" />
       </van-cell-group>
     </van-popup>
     <!-- 头部的中间部分 -->
@@ -137,6 +138,9 @@
 
 <script>
 import { Toast } from "vant";
+import{
+  logout
+} from '@/api/logout'
 export default {
   data() {
     return {
@@ -152,6 +156,32 @@ export default {
     toShare() {
       Toast("分享个人资料功能暂未实现！");
     },
+    //退出
+    logout(){
+        let accessToken=localStorage.getItem('accessToken');
+        logout(accessToken).then(res=>{
+            if(res.data.code == 800){
+              this.$store.dispatch("logoutSuccess");
+              Toast.success({
+                message: res.data.msg,
+                duration: 1500,
+              });
+              this.$router.push({
+                path: "/login",
+              });
+            }else{
+              Toast.fail({
+                message: '退出登录失败',
+                duration: 1500,
+              });
+            }
+        }).catch(err=>{
+              Toast.fail({
+                message: '系统异常',
+                duration: 1500,
+              });
+        })
+    }
   },
 };
 </script>

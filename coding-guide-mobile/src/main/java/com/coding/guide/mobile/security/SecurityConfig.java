@@ -35,7 +35,8 @@ public class SecurityConfig {
      * 下面这些请求会被spring security拦截，需要认证才能放行（除了这些请求，其余的所有请求不用被拦截）
      */
     private final String[] AUTHENTICATED_PATH={
-            "/mobile/user/getCurrentUserInfo"
+            "/mobile/user/getCurrentUserInfo",
+            "/mobile/logout/"
     };
 
     @Autowired
