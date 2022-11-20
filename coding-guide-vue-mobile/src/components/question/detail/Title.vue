@@ -15,10 +15,10 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 
 .title{
-    padding: 0.22667rem 0.45333rem 0.05333rem;
+    padding: 1.6667rem 0.4333rem 0.05333rem;
     font-size: 0.6rem;
 }
 

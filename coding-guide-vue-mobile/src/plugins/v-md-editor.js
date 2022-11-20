@@ -10,8 +10,8 @@ import hljs from 'highlight.js';
 //插件1：代码行号展示插件
 // import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
 //插件2：快捷复制代码插件
-import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
-import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+// import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+// import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 
 //插件3：Emoji 表情插件
 // import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
@@ -34,7 +34,7 @@ VMdPreview.use(githubTheme, {
 // VMdPreview.use(createLineNumbertPlugin())
 
 //配置插件2：快捷复制代码插件
-VMdPreview.use(createCopyCodePlugin())
+// VMdPreview.use(createCopyCodePlugin())
 
 //配置插件3：Emoji 表情插件
 // VMdPreview.use(createEmojiPlugin())

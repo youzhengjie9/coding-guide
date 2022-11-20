@@ -28,10 +28,15 @@
           ]"
         />
       </van-cell-group>
-      <p class="forgetPasswordBox">
+      <!-- <p class="forgetPasswordBox">
         <router-link to="/forgetPassword" class="forgetPassword"
           >忘记密码</router-link
         >
+      </p> -->
+      <p class="forgetPasswordBox">
+        <span class="forgetPassword" @click="forgetPassword">
+          忘记密码
+        </span>
       </p>
       <p class="registerBox">
         还没有账号,去
@@ -67,6 +72,16 @@ export default {
         return true;
       }
       return false;
+    },
+    //点击忘记密码
+    forgetPassword(){
+        Toast.fail({
+              message: '忘记密码功能暂未实现',
+              duration: 1500,
+          });
+      // this.$router.push({
+      //   path:'/forgetPassword'
+      // })
     },
     //登录
     handleLogin() {

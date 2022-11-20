@@ -13,9 +13,9 @@
 
             <!-- 面试题内容组件 -->
             <question-detail-content :question="question" />
-
-          
-        
+            
+            <!-- 底部标签栏（点赞、收藏、评论） -->
+            <question-footer-tab-bar></question-footer-tab-bar>
 
     </div>
 
@@ -26,6 +26,7 @@ import QuestionDetailHeader from '../../components/question/detail/Header.vue'
 import QuestionDetailTitle from '../../components/question/detail/Title.vue'
 import QuestionDetailContent from '../../components/question/detail/Content.vue'
 import QuestionDetailUserInfo from '../../components/question/detail/UserInfo.vue'
+import QuestionFooterTabBar from '../../components/question/detail/FooterTabBar.vue'
 import { selectQuestionDetail } from "../../api/question";
 export default {
     data(){
@@ -38,7 +39,8 @@ export default {
         QuestionDetailHeader,
         QuestionDetailTitle,
         QuestionDetailContent,
-        QuestionDetailUserInfo
+        QuestionDetailUserInfo,
+        QuestionFooterTabBar
     },
     methods:{
         getQuestion() {
@@ -60,12 +62,11 @@ export default {
     },
     mounted() {
     this.getQuestion();
+    
   },
 }
 </script>
 
-<style lang="scss" scope>
-
-
+<style lang="scss" scoped>
 
 </style>

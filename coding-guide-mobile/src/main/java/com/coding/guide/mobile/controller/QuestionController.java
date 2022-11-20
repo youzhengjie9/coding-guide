@@ -73,13 +73,13 @@ public class QuestionController {
     }
 
     /**
-     * 根据id查询公开的面试题数据
+     * 根据id查询公开的面试题详情
      *
      * @param id id
      * @return {@link ResponseResult}<{@link Question}>
      */
     @GetMapping(path = "/selectQuestionDetail/{id}")
-    @ApiOperation("根据id查询公开的面试题数据")
+    @ApiOperation("根据id查询公开的面试题详情")
     public ResponseResult<Question> selectQuestionDetail(@PathVariable("id") long id){
 
         ResponseResult<Question> responseResult = new ResponseResult<>();
@@ -102,6 +102,15 @@ public class QuestionController {
                 .eq(Question::getIsPublic, 1)
                 .eq(Question::getId,id)
                 .one();
+
+//        QuestionVO questionVO = new QuestionVO();
+//        BeanUtil.copyProperties(question, questionVO);
+//        //将标签字符串tags转成List<String>集合
+//        String[] tagArray = question.getTags().split(",");
+//        List<String> tagList = Arrays.asList(tagArray);
+//        questionVO.setTagList(tagList);
+
+
 
         responseResult.setCode(ResponseType.SUCCESS.getCode())
                 .setMsg(ResponseType.SUCCESS.getMessage())

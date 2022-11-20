@@ -1,6 +1,5 @@
 <template>
   
-
   <div class="userinfo">
     <van-row>
         <van-col span="18">
@@ -47,7 +46,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 
 .userinfo{
     padding: 0.22667rem 0.45333rem 0.05333rem;
@@ -62,6 +61,19 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     -o-text-overflow:ellipsis;
+}
+
+/*
+修改.van-image、van-icon、van-button的position，解决面试题详情中的用户头像、图标、关注按钮遮挡头部组件
+*/
+.van-image{
+    position: inherit;
+}
+.van-icon{
+    position: inherit;
+}
+.van-button{
+    position: inherit;
 }
 
 

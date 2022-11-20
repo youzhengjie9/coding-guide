@@ -2,13 +2,11 @@
   <div>
     <!-- 遍历面试题 -->
     <div class="iq" v-for="(item, index) in list" :key="index">
+      <!-- 标题 -->
       <div class="title">
-        <router-link
-          class="titleHref"
-          :to="{ path: '/question/detail', query: { id: item.id } }"
-        >
+        <span class="titleHref" @click="toQuestionDetail(item.id)">
           {{ item.title }}
-        </router-link>
+        </span>
       </div>
 
       <!-- 标签栏 -->
@@ -123,10 +121,23 @@ export default {
   props: {
     list: Array,
   },
+  methods: {
+    //跳转到指定面试题详情
+    toQuestionDetail(questionId) {
+      //跳转路由
+      this.$router.push({
+        path: "/question/detail",
+        query: {
+          id: questionId,
+        },
+      });
+      
+    },
+  },
 };
 </script>
 
-<style scope>
+<style scoped>
 .titleHref {
   font-size: 15px;
   font-weight: bold;

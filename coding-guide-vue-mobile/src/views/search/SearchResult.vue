@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .header{
     background-color:cornflowerblue;
 }
