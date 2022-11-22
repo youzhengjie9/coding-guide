@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.coding.guide.common.data.ResponseResult;
 import com.coding.guide.mobile.entity.Question;
 import com.coding.guide.common.enums.ResponseType;
+import com.coding.guide.mobile.security.SecurityUser;
 import com.coding.guide.mobile.vo.QuestionVO;
 import com.coding.guide.mobile.service.QuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -74,6 +76,11 @@ public class QuestionController {
 
     /**
      * 根据id查询公开的面试题详情
+     * jmeter(500线程、循环10次)
+     * 1：直接查询数据库------->（qps：723.7）
+     * 2：先查redis(没有事先将缓存加进redis，说白了就是没有缓存预热)、再查数据库-------->（qps：780）
+     * 3：先查redis(先将缓存加进redis，进行缓存预热)、再查数据库-------->（qps：1826）
+     * 4：先查caffeine本地缓存，然后查redis(先将缓存加进redis，进行缓存预热)、再查数据库-------->（qps：4251）
      *
      * @param id id
      * @return {@link ResponseResult}<{@link Question}>
@@ -84,39 +91,13 @@ public class QuestionController {
 
         ResponseResult<Question> responseResult = new ResponseResult<>();
 
-        Question question = questionService.lambdaQuery()
-                .select(Question::getId,
-                        Question::getUserid,
-                        Question::getTitle,
-                        Question::getContent,
-                        Question::getAllowComment,
-                        Question::getRecommend,
-                        Question::getReadCount,
-                        Question::getLikeCount,
-                        Question::getCollectCount,
-                        Question::getCommentCount,
-                        Question::getMeetCount,
-                        Question::getDifficulty,
-                        Question::getTags,
-                        Question::getPublishTime)
-                .eq(Question::getIsPublic, 1)
-                .eq(Question::getId,id)
-                .one();
-
-//        QuestionVO questionVO = new QuestionVO();
-//        BeanUtil.copyProperties(question, questionVO);
-//        //将标签字符串tags转成List<String>集合
-//        String[] tagArray = question.getTags().split(",");
-//        List<String> tagList = Arrays.asList(tagArray);
-//        questionVO.setTagList(tagList);
-
-
+        Question question = questionService.selectQuestionDetail(id);
 
         responseResult.setCode(ResponseType.SUCCESS.getCode())
                 .setMsg(ResponseType.SUCCESS.getMessage())
                 .setData(question);
-        return responseResult;
 
+        return responseResult;
     }
 
 
@@ -293,5 +274,45 @@ public class QuestionController {
         return responseResult;
 
     }
+
+    /**
+     * 点赞面试题
+     * ---------------
+     * 调用此接口，如果面试题没有被该用户点赞过，则点赞，如果面试题已经被该用户点赞过，则取消点赞
+     * @param questionId 点赞的面试题id
+     * @return {@link ResponseResult}<{@link Object}>
+     */
+    @GetMapping(path = "/likeQuestion/{questionId}")
+    @ApiOperation("点赞面试题")
+    public ResponseResult<Object> likeQuestion(@PathVariable("questionId") Long questionId){
+        SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        Long currentUserId = securityUser.getUser().getId();
+        System.out.println(questionId+"<====>"+currentUserId);
+
+        return ResponseResult.ok(null);
+    }
+
+    /**
+     * 收藏面试题
+     * 调用此接口，如果面试题没有被该用户收藏过，则收藏，如果面试题已经被该用户收藏过，则取消收藏
+     * @param questionId 收藏的面试题id
+     * @return {@link ResponseResult}<{@link Object}>
+     */
+    @GetMapping(path = "/collectQuestion/{questionId}")
+    @ApiOperation("收藏面试题")
+    public ResponseResult<Object> collectQuestion(@PathVariable("questionId") Long questionId){
+        SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        Long currentUserId = securityUser.getUser().getId();
+        System.out.println(questionId+"<====>"+currentUserId);
+
+        return ResponseResult.ok(null);
+    }
+
 
 }

@@ -97,15 +97,8 @@ export default {
       login(loginObject)
         .then((res) => {
           let data = res.data;
-          //前端拿到响应结果，如果下面的data为null则说明是帐号正确、密码错误。
-          if (data == null) {
-            Toast.fail({
-              message: '用户名或者密码不正确',
-              duration: 1500,
-            });
-          } else {
-            //用户登录成功
-            if (data.code === 600) {
+          //用户登录成功
+          if (data.code === 600) {
               this.$store.dispatch("loginSuccess", data);
               //登录成功后跳转到首页
               this.$router.push({
@@ -117,8 +110,6 @@ export default {
                 duration: 1500,
               });
             }
-
-          }
         })
         .catch((err) => {
           Toast.fail({

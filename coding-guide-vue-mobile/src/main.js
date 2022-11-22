@@ -12,8 +12,6 @@ import "./plugins/vant.js";
 import './plugins/v-md-editor'
 //全局引入已经下载到本地的asset目录下的alibaba-iconfont的confont.css
 import './assets/alibaba-iconfont/iconfont.css'
-//全局引入已经下载到本地的asset目录下的alibaba-iconfont的iconfont.js（不然有颜色的图标会显示不了）
-import './assets/alibaba-iconfont/iconfont.js'
 
 //使用vue-router插件
 Vue.use(router)

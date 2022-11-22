@@ -45,8 +45,8 @@ public class Question implements Serializable {
      */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField("user_id")
-    @ApiModelProperty(name = "userid",value = "发布面试题的用户id")
-    private Long userid;
+    @ApiModelProperty(name = "userId",value = "发布面试题的用户id")
+    private Long userId;
 
     /**
      * 面试题标题

@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
 
         //1：authenticationManager.authenticate底层就是调用了UserDetailsService的loadUserByUserName方法，获取到UserDetails对象（也就是SecurityUser对象）
         //2：将usernamePasswordAuthenticationToken（前端传入的帐号密码）和loadUserByUsername中的userMapper.selectOne(lambdaQueryWrapper)方法查询的帐号密码进行比对，判断帐号密码输入是否正确。
-        //2.1：如果是帐号不存在的话，就会在loadUserByUsername方法中抛出异常并且被AuthenticationEntryPointImpl方法捕获，返回（code：601）
+        //2.1：如果是帐号不存在的话，就会在loadUserByUsername方法中抛出异常并且被AuthenticationEntryPointImpl方法捕获，返回（code：603）
         //2.2：如果是帐号存在，但是密码不正确的话，authenticationManager.authenticate方法就会在AuthenticationEntryPointImpl方法返回null给前端
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 

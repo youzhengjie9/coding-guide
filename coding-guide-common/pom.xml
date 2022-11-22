@@ -35,6 +35,13 @@
 
     <dependencies>
 
+        <!-- 高性能JVM本地缓存caffeine -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
         <!--    guava，内置实令牌桶限流算法实现-->
         <dependency>
             <groupId>com.google.guava</groupId>

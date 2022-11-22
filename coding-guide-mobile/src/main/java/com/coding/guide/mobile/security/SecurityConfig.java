@@ -36,7 +36,10 @@ public class SecurityConfig {
      */
     private final String[] AUTHENTICATED_PATH={
             "/mobile/user/getCurrentUserInfo",
-            "/mobile/logout/"
+            "/mobile/logout/",
+            "/mobile/question/starQuestion/**",
+            "/mobile/question/collectQuestion/**",
+            "/doc.html"
     };
 
     @Autowired
@@ -80,7 +83,7 @@ public class SecurityConfig {
                 .and()
                 //添加jwt认证过滤器，并放在UsernamePasswordAuthenticationFilter之前
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                //配置失败处理器
+                //配置异常处理器（只有抛出异常才会到这里的处理器）
                 .exceptionHandling()
                 //配置失败处理器（权限不足调用）
                 .accessDeniedHandler(accessDeniedHandler)

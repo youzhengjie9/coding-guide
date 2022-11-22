@@ -29,6 +29,14 @@ public interface QuestionMapper extends BaseMapper<Question> {
     List<Question> selectHottestQuestionByLimit(@Param("page") int page, @Param("size") int size);
 
     /**
+     * 根据id查询公开的面试题详情
+     *
+     * @param id id
+     * @return {@link Question}
+     */
+    Question selectQuestionDetail(@Param("id")long id);
+
+    /**
      * 根据关键字搜索与之匹配的最热门的公开的文章并分页（按访问量排序，如果访问量相同则分别按点赞数、收藏数、评论数排序）
      *
      * @param page    页面

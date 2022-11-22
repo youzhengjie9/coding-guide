@@ -87,6 +87,26 @@
         AND del_flag = 0
         AND is_public = 1
     </select>
+    <select id="selectQuestionDetail" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT id,
+               user_id,
+               title,
+               content,
+               allow_comment,
+               recommend,
+               read_count,
+               like_count,
+               collect_count,
+               comment_count,
+               meet_count,
+               difficulty,
+               tags,
+               publish_time
+        FROM t_question
+        WHERE is_public = 1
+        AND del_flag = 0
+        AND id=#{id}
+    </select>
 
 
 </mapper>

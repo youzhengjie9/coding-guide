@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 自定义失败处理器（权限不足调用）
+ * 自定义权限不足处理器（权限不足时调用）
+ *
+ * @author youzhengjie
  */
 @Component
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {

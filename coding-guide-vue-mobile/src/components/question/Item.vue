@@ -86,23 +86,43 @@
 
       <div>
         <van-row gutter="5">
+          <!-- 浏览量 -->
           <van-col span="6" class="foot">
-            <van-icon name="eye-o" size="20" />
-            <span style="font-size: 15px">{{ item.readCount }}</span>
-          </van-col>
-          <van-col span="5">
-            <van-icon name="like-o" size="20" />
-            <span style="font-size: 15px">{{ item.likeCount }}</span>
-          </van-col>
-          <van-col span="5">
-            <van-icon name="star-o" size="20" />
-            <span style="font-size: 15px">{{ item.collectCount }}</span>
+            <van-icon name="eye-o" size="22" />
+            <span class="number">
+              {{ item.readCount }}
+            </span>
           </van-col>
 
+          <!-- 点赞 -->
+
           <van-col span="5">
-            <van-icon name="bulb-o" size="20" />
-            <span style="font-size: 15px">{{ item.meetCount }}</span>
+            <!-- <i class="iconfont icon-dianzan" style="font:15px;color:red;"></i> -->
+            <van-icon name="like" size="20" color="red" @click="likeQuestion(item.id)"/>
+            <span class="number">
+              {{ item.likeCount }}
+            </span>
           </van-col>
+
+          <!-- 收藏 -->
+
+          <van-col span="5">
+            <!-- <i class="iconfont icon-shoucang" style="font:15px;color:red;"></i> -->
+            <van-icon name="star" size="20" color="red" @click="collectQuestion(item.id)"/>
+            <span class="number">
+              {{ item.collectCount }}
+            </span>
+          </van-col>
+
+          <!-- 遇见 -->
+
+          <van-col span="5">
+            <van-icon name="bulb-o" size="20" color="red"/>
+            <span class="number">
+              {{ item.meetCount }}
+            </span>
+          </van-col>
+
         </van-row>
       </div>
 
@@ -116,6 +136,10 @@
 </template>
 
 <script>
+import {
+  likeQuestion,
+  collectQuestion
+} from '@/api/question'
 export default {
   name: "quesionItem",
   props: {
@@ -130,9 +154,19 @@ export default {
         query: {
           id: questionId,
         },
-      });
-      
+      }); 
     },
+    //点赞
+    likeQuestion(questionId){
+      likeQuestion(questionId).then(res=>{
+        
+      })
+    },
+    collectQuestion(questionId){
+      collectQuestion(questionId).then(res=>{
+        
+      })
+    }
   },
 };
 </script>
@@ -165,4 +199,9 @@ export default {
 .foot {
   margin-left: 15px;
 }
+
+.number{
+  font-size: 17px;
+}
+
 </style>

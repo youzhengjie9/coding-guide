@@ -9,14 +9,22 @@ package com.coding.guide.mobile.constant;
 public final class RedisConstant {
 
     /**
-     * redis key前缀。记录每一个SecurityUser对象
+     * SecurityUser对象的redis的key前缀
+     * 后面加上userid
      */
     public static final String SECURITY_USER_KEY_PREFIX="mobile:security:user:";
 
     /**
-     * 手机验证码的key，后面加上手机号即可
+     * 手机验证码的redis的key前缀
+     * 后面加上手机号即可
      */
     public static final String PHONE_CODE_KEY_PREFIX="mobile:phone:code:";
+
+    /**
+     * 面试题内容的redis的key前缀
+     * 后面加上面试题id
+     */
+    public static final String QUESTION_DETAIL_KEY_PREFIX="mobile:question:detail:";
 
 
 

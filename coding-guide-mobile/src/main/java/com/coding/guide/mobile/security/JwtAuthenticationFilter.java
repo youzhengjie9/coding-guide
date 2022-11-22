@@ -1,20 +1,11 @@
 package com.coding.guide.mobile.security;
 
-
-import com.alibaba.fastjson2.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.coding.guide.common.config.JwtProperties;
-import com.coding.guide.common.data.ResponseResult;
-import com.coding.guide.common.enums.ResponseType;
-import com.coding.guide.common.exception.NotLoginException;
-import com.coding.guide.common.exception.ParseTokenException;
-import com.coding.guide.common.exception.TokenExpiredException;
 import com.coding.guide.common.utils.JwtUtil;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.service.UserService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,17 +14,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
 /**
- * jwt身份验证过滤器
+ * JWT认证过滤器
  *
  * @author youzhengjie
  * @date 2022/11/19 18:26:12
@@ -51,6 +39,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+    /**
+     * >>>>>特别注意: 所有请求都要经过这个过滤器（不管该请求路径是否在SecurityConfig类的authorizeRequests()中配置了permitAll还是authenticated都会进来这里）<<<<<<<<
+     * >>>>>虽然所有请求路径（不管是permitAll还是authenticated都会进来这里），但是还是有很大不同的>>>>>>>>>.
+     *
+     * > 1:如果该请求路径配置在authorizeRequests方法的authenticated中，则说明需要认证才能访问。
+     * > 1.1: 如果此时没有携带token的话，则进入了我们自定义的JWT过滤器就会直接放行（因为token为空我们就直接放行），
+     * 此时SpringSecurity底层自带的拦截器就会判断这个请求是否配置在authenticated中，
+     * 如果发现这个请求配置在authenticated中（说明需要登录才能访问），它就会在SecurityContextHolder.getContext()判断用户是否登录了，
+     * 判断结果显然是用户没有登录，因为我们要想让SpringSecurity知道用户是否登录需要通过我们自定义的JWT认证过滤器中的
+     * SecurityContextHolder.getContext().setAuthentication(UsernamePasswordAuthenticationToken的3个参数的构造方法)来设置，
+     * (注意，一定要用UsernamePasswordAuthenticationToken的3个参数构造方法，只有这个方法的底层调用了super.setAuthenticated(true)，才算登录。)
+     * ,但是问题就是由于这个请求没有携带token直接被放行了，
+     * 导致没有执行到SecurityContextHolder.getContext().setAuthentication这行代码（因为在自定义jwt过滤器中的逻辑是：首先要有token,其次token要合法,最后才可以执行到这行代码，进行登录）
+     * 所以spring security就判断用户没有登录，从而拦截该请求，并自动调用自定义未登录处理器（AuthenticationEntryPointImpl）。
+     *
+     * > 2: 如果该请求路径配置在authorizeRequests方法的permitAll中，则说明不需要登录也可以访问。
+     * > 2.1: 此时如果没有携带token,请求也会进入JWT认证过滤器，但是进入JWT认证过滤器后会被直接放行，后面会被SpringSecurity底层拦截器拦截
+     * ，当SpringSecurity发现该请求路径在permitAll中（说明不用登录也可以访问），则直接放行，允许访问该请求。
+     *
+     * @param request     请求
+     * @param response    响应
+     * @param filterChain 过滤器链
+     * @throws ServletException servlet异常
+     * @throws IOException      ioexception
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

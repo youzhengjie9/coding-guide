@@ -56,3 +56,18 @@ export function selectQuestionByTagIdAndLimit(tagid,page,size){
         method:'get'
     })
 }
+
+export function likeQuestion(questionId){
+    return request({
+        url:'/question/likeQuestion/'+questionId,
+        method:'get'
+    })
+}
+
+export function collectQuestion(questionId){
+    return request({
+        url:'/question/collectQuestion/'+questionId,
+        method:'get'
+    })
+}
+
