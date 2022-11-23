@@ -285,14 +285,61 @@ public class QuestionController {
     @GetMapping(path = "/likeQuestion/{questionId}")
     @ApiOperation("点赞面试题")
     public ResponseResult<Object> likeQuestion(@PathVariable("questionId") Long questionId){
-        SecurityUser securityUser = (SecurityUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        Long currentUserId = securityUser.getUser().getId();
-        System.out.println(questionId+"<====>"+currentUserId);
+        try {
+            SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            //当前的用户id
+            Long userid = securityUser.getUser().getId();
+            boolean res=questionService.likeQuestion(userid,questionId);
+            return ResponseResult.ok(res);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
 
-        return ResponseResult.ok(null);
+    }
+
+    /**
+     * 获取当前用户点赞的所有文章id
+     */
+    @GetMapping(path = "/selectCurUserAllLikeQuestionId")
+    @ApiOperation("获取当前用户点赞的所有文章id")
+    public ResponseResult<List<Long>> selectCurUserAllLikeQuestionId(){
+        try {
+            SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            //当前的用户id
+            Long userid = securityUser.getUser().getId();
+            //获取用户点赞的所有文章id集合
+            List<Long> likeQuestionIds=questionService.selectAllLikeQuestionIdByUserId(userid);
+            return ResponseResult.ok(likeQuestionIds);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+    }
+
+    /**
+     * 获取当前用户收藏的所有文章id
+     */
+    @GetMapping(path = "/selectCurUserAllCollectQuestionId")
+    @ApiOperation("获取当前用户收藏的所有文章id")
+    public ResponseResult<List<Long>> selectCurUserAllCollectQuestionId(){
+        try {
+            SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            //当前的用户id
+            Long userid = securityUser.getUser().getId();
+            //获取用户收藏的所有文章id集合
+            List<Long> collectQuestionIds=questionService.selectAllCollectQuestionIdByUserId(userid);
+            return ResponseResult.ok(collectQuestionIds);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
     }
 
     /**
@@ -304,14 +351,18 @@ public class QuestionController {
     @GetMapping(path = "/collectQuestion/{questionId}")
     @ApiOperation("收藏面试题")
     public ResponseResult<Object> collectQuestion(@PathVariable("questionId") Long questionId){
-        SecurityUser securityUser = (SecurityUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        Long currentUserId = securityUser.getUser().getId();
-        System.out.println(questionId+"<====>"+currentUserId);
-
-        return ResponseResult.ok(null);
+        try {
+            SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            //当前的用户id
+            Long userid = securityUser.getUser().getId();
+            boolean res=questionService.collectQuestion(userid,questionId);
+            return ResponseResult.ok(res);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
     }
 
 

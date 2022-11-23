@@ -108,5 +108,30 @@
         AND id=#{id}
     </select>
 
+    <update id="incrLikeCount">
+        UPDATE t_question
+        SET like_count = like_count + 1
+        WHERE id =#{questionId}
+        AND del_flag = 0
+    </update>
+
+    <update id="decrLikeCount">
+        UPDATE t_question
+        SET like_count = like_count - 1
+        WHERE id =#{questionId}
+        AND del_flag = 0
+    </update>
+    <update id="incrCollectCount">
+        UPDATE t_question
+        SET collect_count = collect_count + 1
+        WHERE id =#{questionId}
+        AND del_flag = 0
+    </update>
+    <update id="decrCollectCount">
+        UPDATE t_question
+        SET collect_count = collect_count - 1
+        WHERE id =#{questionId}
+        AND del_flag = 0
+    </update>
 
 </mapper>

@@ -37,9 +37,10 @@ public class SecurityConfig {
     private final String[] AUTHENTICATED_PATH={
             "/mobile/user/getCurrentUserInfo",
             "/mobile/logout/",
-            "/mobile/question/starQuestion/**",
+            "/mobile/question/likeQuestion/**",
             "/mobile/question/collectQuestion/**",
-            "/doc.html"
+            "/mobile/question/selectCurUserAllLikeQuestionId",
+            "/mobile/question/selectCurUserAllCollectQuestionId"
     };
 
     @Autowired

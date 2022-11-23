@@ -111,5 +111,34 @@ public interface QuestionMapper extends BaseMapper<Question> {
      */
     long selectQuestionCountByTagId(@Param("tagid") long tagid);
 
+    /**
+     * t_question的like_count+1
+     *
+     * @param questionId 面试题id
+     */
+    int incrLikeCount(@Param("questionId") Long questionId);
+
+    /**
+     * t_question的like_count-1
+     *
+     * @param questionId 面试题id
+     */
+    int decrLikeCount(@Param("questionId") Long questionId);
+
+    /**
+     * t_question的collect_count+1
+     *
+     * @param questionId 面试题id
+     */
+    int incrCollectCount(@Param("questionId") Long questionId);
+
+    /**
+     * t_question的collect_count-1
+     *
+     * @param questionId 面试题id
+     */
+    int decrCollectCount(@Param("questionId") Long questionId);
+
+
 
 }

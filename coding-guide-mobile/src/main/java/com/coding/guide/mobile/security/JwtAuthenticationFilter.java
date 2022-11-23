@@ -1,11 +1,17 @@
 package com.coding.guide.mobile.security;
 
+import com.alibaba.fastjson2.JSON;
 import com.coding.guide.common.config.JwtProperties;
+import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.common.enums.ResponseType;
 import com.coding.guide.common.utils.JwtUtil;
+import com.coding.guide.common.utils.WebUtil;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.service.UserService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -76,9 +82,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         //2:如果有accessToken的情况下
         else {
+            String userid= null;
             //解析accessToken，如果accessToken解析失败则会报错
-            Claims claims = JwtUtil.parseAccessToken(accessToken);
-            String userid = claims.getSubject();
+            try {
+                Claims claims = JwtUtil.parseAccessToken(accessToken);
+                userid = claims.getSubject();
+            }catch (Exception ex){
+                ResponseResult<Object> responseResult = new ResponseResult<>();
+                //Jwt不正确会走这里（解析token失败）
+                if(ex instanceof MalformedJwtException){
+                    responseResult.setCode(ResponseType.TOKEN_ERROR.getCode());
+                    responseResult.setMsg(ResponseType.TOKEN_ERROR.getMessage());
+                }
+                //Jwt过期会走这里
+                else if(ex instanceof ExpiredJwtException){
+                    responseResult.setCode(ResponseType.ACCESS_TOKEN_EXPIRED.getCode());
+                    responseResult.setMsg(ResponseType.ACCESS_TOKEN_EXPIRED.getMessage());
+                }
+                //返回结果给前端
+                WebUtil.writeJsonString(response, JSON.toJSONString(responseResult));
+                //防止代码继续往下走
+                return;
+            }
 
             //---走到这里说明token解析成功，那么就说明用户已登录，后面只需要把SecurityUser对象设置进SpringSecurity中即可
 

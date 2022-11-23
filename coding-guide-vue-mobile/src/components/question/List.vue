@@ -10,7 +10,10 @@
         error-text="请求失败，点击重新加载"
       >
         <!-- 题目 -->
-        <quesion-item :list="list"> </quesion-item>
+        <quesion-item 
+        :list="list" 
+        />
+
       </van-list>
     </van-pull-refresh>
   </div>
@@ -23,6 +26,8 @@ import {
   searchLatestQuestionByKeyWordAndLimit,
   searchRecommendQuestionByKeyWordAndLimit,
   selectQuestionByTagIdAndLimit,
+  selectCurUserAllLikeQuestionId,
+  selectCurUserAllCollectQuestionId
 } from "../../api/question";
 import { Toast } from "vant";
 
@@ -46,7 +51,25 @@ export default {
       total: 0, //总记录数
     };
   },
+  created(){
+    this.loadLikeQuestionIdList();
+    this.loadCollectQuestionIdList();
+  },
   methods: {
+    //加载当前用户所有点赞的面试题id集合
+    loadLikeQuestionIdList(){
+        selectCurUserAllLikeQuestionId().then(res=>{
+          //将数据放到VueX中
+          this.$store.dispatch('initLikeList',res.data.data);
+      })
+    },
+    //加载当前用户所有收藏的面试题id集合
+    loadCollectQuestionIdList(){
+        selectCurUserAllCollectQuestionId().then(res=>{
+          //将数据放到VueX中
+          this.$store.dispatch('initCollectList',res.data.data);
+      })
+    },
     //滚动分页
     onLoad() {
       let tabid = this.currentTabId;

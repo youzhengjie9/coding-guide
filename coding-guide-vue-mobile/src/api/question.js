@@ -71,3 +71,17 @@ export function collectQuestion(questionId){
     })
 }
 
+export function selectCurUserAllLikeQuestionId(){
+    return request({
+        url:'/question/selectCurUserAllLikeQuestionId',
+        method:'get'
+    })
+}
+
+export function selectCurUserAllCollectQuestionId(){
+    return request({
+        url:'/question/selectCurUserAllCollectQuestionId',
+        method:'get'
+    })
+}
+

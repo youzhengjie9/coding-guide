@@ -10,25 +10,28 @@
         />
       </van-col>
 
+      <!-- 点赞 -->
       <van-col span="4" style="padding: 0.12667rem">
         <van-cell center>
-          <van-icon name="like-o" size="25"  />
+          <i class="van-icon van-icon-like" style="font-size: 27px;" @click="likeQuestion(item.id)"></i>
           <br />
-          <span>1</span>
+          <span>{{question.likeCount}}</span>
         </van-cell>
       </van-col>
+      <!-- 收藏 -->
       <van-col span="4" style="padding: 0.12667rem">
         <van-cell center>
-          <van-icon name="star-o" size="25" />
+          <i class="van-icon van-icon-star" style="font-size: 27px;" @click="likeQuestion(item.id)"></i>
           <br />
-          <span>100000</span>
+          <span>{{question.collectCount}}</span>
         </van-cell>
       </van-col>
+      <!-- 评论 -->
       <van-col span="4" style="padding: 0.12667rem">
         <van-cell center>
-          <van-icon name="comment-o" size="25" />
+          <van-icon name="comment-o" size="27" />
           <br />
-          <span>100000</span>
+          <span>{{question.commentCount}}</span>
         </van-cell>
       </van-col>
     </van-row>
@@ -39,14 +42,19 @@
 import { likeQuestion, collectQuestion } from "@/api/question";
 
 export default {
-  name: "QuestionFooterTabBar",
+  name: "QuestionDetailFooterTabBar",
+  props:{
+    question: Object
+  },
   methods: {
     //点赞
     likeQuestion(questionId) {
-      likeQuestion(questionId).then((res) => {});
+      // likeQuestion(questionId).then((res) => {});
+
     },
     collectQuestion(questionId) {
-      collectQuestion(questionId).then((res) => {});
+      // collectQuestion(questionId).then((res) => {});
+
     },
   },
 };

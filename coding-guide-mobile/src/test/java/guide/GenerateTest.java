@@ -35,8 +35,6 @@ public class GenerateTest {
         final StringBuilder questionSqlBuilder=new StringBuilder("INSERT INTO `t_question` VALUES \n");
         //t_question_tag表的sql建造器
         final StringBuilder questionTagSqlBuilder=new StringBuilder("INSERT INTO `t_question_tag` VALUES \n");
-        final AtomicLong s1=new AtomicLong(10000001L);
-        final AtomicLong s2=new AtomicLong(3123000001L);
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
 
@@ -65,8 +63,14 @@ public class GenerateTest {
             String publishTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             int sort=random.nextInt(300)+1;
 
-            long questionId = s1.getAndIncrement();
-            long questionUserId = s2.getAndIncrement();
+            long questionId = SnowId.nextId();
+            long questionUserId; //发布者用户id
+
+            if(i%2 == 0) {
+                questionUserId=5700000000000001L;
+            }else {
+                questionUserId=5700000000000002L;
+            }
             //生成t_question的sql
 
             String str1="("+questionId+","+questionUserId+","+"'我是标题"+questionId+"',"+"'我是内容"+questionId+"',"+"1,1,1,"+readCount+"" +

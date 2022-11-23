@@ -1,9 +1,16 @@
 package com.coding.guide.mobile.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.entity.Question;
+import com.coding.guide.mobile.entity.QuestionCollect;
+import com.coding.guide.mobile.entity.QuestionLike;
 import com.coding.guide.mobile.mapper.QuestionMapper;
+import com.coding.guide.mobile.service.QuestionCollectService;
+import com.coding.guide.mobile.service.QuestionLikeService;
 import com.coding.guide.mobile.service.QuestionService;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 面试题service impl
@@ -22,6 +33,7 @@ import java.util.function.Function;
  * @author youzhengjie
  * @date 2022/11/09 00:01:04
  */
+@Transactional
 @Service
 @Slf4j
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
@@ -30,9 +42,17 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     private QuestionMapper questionMapper;
 
     @Autowired
+    private QuestionLikeService questionLikeService;
+
+    @Autowired
+    private QuestionCollectService questionCollectService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
-    //拿到面试题的caffeine缓存对象（使用@Qualifier指定注入的bean）
+    /**
+     * 拿到面试题的caffeine缓存对象（使用@Qualifier指定注入的bean）
+     */
     @Autowired
     @Qualifier("questionCache")
     private Cache<Long,Question> questionCache;
@@ -105,6 +125,102 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public long selectQuestionCountByTagId(long tagid) {
         return questionMapper.selectQuestionCountByTagId(tagid);
+    }
+
+    @Override
+    public boolean likeQuestion(Long userid, Long questionId) {
+        try {
+            //判断该用户有没有点赞过这个面试题
+            Long count = questionLikeService.lambdaQuery()
+                    .eq(QuestionLike::getUserId, userid)
+                    .eq(QuestionLike::getQuestionId, questionId).count();
+            //如果面试题没有被该用户点赞过，则点赞
+            if(count == 0){
+                //修改t_question的like_count+1
+                questionMapper.incrLikeCount(questionId);
+                //添加点赞记录到t_question_like中
+                QuestionLike questionLike = QuestionLike.builder()
+                        .id(SnowId.nextId())
+                        .userId(userid)
+                        .questionId(questionId)
+                        .likeTime(LocalDateTime.now())
+                        .build();
+                questionLikeService.save(questionLike);
+            }
+            //如果面试题被该用户点赞过，则取消点赞
+            else {
+                //修改t_question的like_count-1
+                questionMapper.decrLikeCount(questionId);
+                //删除对应t_question_like的点赞记录
+                LambdaQueryWrapper<QuestionLike> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+                lambdaQueryWrapper.eq(QuestionLike::getUserId, userid)
+                        .eq(QuestionLike::getQuestionId, questionId);
+                questionLikeService.remove(lambdaQueryWrapper);
+            }
+            return true;
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public boolean collectQuestion(Long userid, Long questionId) {
+        try {
+            //判断该用户有没有收藏过这个面试题
+            Long count = questionCollectService.lambdaQuery()
+                    .eq(QuestionCollect::getUserId, userid)
+                    .eq(QuestionCollect::getQuestionId, questionId).count();
+            //如果面试题没有被该用户收藏过，则收藏
+            if(count == 0){
+                //修改t_question的collect_count+1
+                questionMapper.incrCollectCount(questionId);
+                //添加收藏记录到t_question_collect中
+                QuestionCollect questionCollect = QuestionCollect.builder()
+                        .id(SnowId.nextId())
+                        .userId(userid)
+                        .questionId(questionId)
+                        .collectTime(LocalDateTime.now())
+                        .build();
+                questionCollectService.save(questionCollect);
+            }
+            //如果面试题被该用户收藏过，则取消收藏
+            else {
+                //修改t_question的collect_count-1
+                questionMapper.decrCollectCount(questionId);
+                //删除对应t_question_collect的收藏记录
+                LambdaQueryWrapper<QuestionCollect> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+                lambdaQueryWrapper.eq(QuestionCollect::getUserId, userid)
+                        .eq(QuestionCollect::getQuestionId, questionId);
+                questionCollectService.remove(lambdaQueryWrapper);
+            }
+            return true;
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Long> selectAllLikeQuestionIdByUserId(Long userid) {
+        return questionLikeService.lambdaQuery()
+                .select(QuestionLike::getQuestionId)
+                .eq(QuestionLike::getUserId, userid)
+                .list()
+                //并行流提高效率，因为我们对这个集合元素的顺序没有要求才可以这样用
+                .parallelStream()
+                .map(QuestionLike::getQuestionId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> selectAllCollectQuestionIdByUserId(Long userid) {
+        return questionCollectService.lambdaQuery()
+                .select(QuestionCollect::getQuestionId)
+                .eq(QuestionCollect::getUserId, userid)
+                .list()
+                //并行流提高效率，因为我们对这个集合元素的顺序没有要求才可以这样用
+                .parallelStream()
+                .map(QuestionCollect::getQuestionId)
+                .collect(Collectors.toList());
     }
 
 }

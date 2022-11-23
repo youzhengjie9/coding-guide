@@ -49,7 +49,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
             responseResult.setCode(ResponseType.USERNAME_PASSWORD_ERROR.getCode());
             responseResult.setMsg(ResponseType.USERNAME_PASSWORD_ERROR.getMessage());
         }
-        //第三种情况：如果用户未进行登录、又访问了SecurityConfig配置类中的antMatchers("拦截路径列表").authenticated()中定义的拦截路径
+        //第二种情况：如果用户未进行登录、又访问了SecurityConfig配置类中的antMatchers("拦截路径列表").authenticated()中定义的拦截路径
         else if(authException instanceof InsufficientAuthenticationException){
             responseResult.setCode(ResponseType.NOT_LOGIN.getCode());
             responseResult.setMsg(ResponseType.NOT_LOGIN.getMessage());

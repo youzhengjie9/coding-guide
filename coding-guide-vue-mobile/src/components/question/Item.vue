@@ -97,8 +97,18 @@
           <!-- 点赞 -->
 
           <van-col span="5">
-            <!-- <i class="iconfont icon-dianzan" style="font:15px;color:red;"></i> -->
-            <van-icon name="like" size="20" color="red" @click="likeQuestion(item.id)"/>
+
+            <!-- 已被点赞 -->
+            <i class="van-icon van-icon-like" v-if="isLike(item.id)"
+            style="font-size: 20px;color:red;"
+            @click="likeQuestion(item.id)">
+            </i>
+            <!-- 未被点赞 -->
+            <i class="van-icon van-icon-like" v-else
+            style="font-size: 20px;"
+            @click="likeQuestion(item.id)">
+            </i>
+
             <span class="number">
               {{ item.likeCount }}
             </span>
@@ -107,8 +117,18 @@
           <!-- 收藏 -->
 
           <van-col span="5">
-            <!-- <i class="iconfont icon-shoucang" style="font:15px;color:red;"></i> -->
-            <van-icon name="star" size="20" color="red" @click="collectQuestion(item.id)"/>
+
+            <!-- 已被收藏 -->
+            <i class="van-icon van-icon-star" v-if="isCollect(item.id)"
+            style="font-size: 20px;color:red;"
+            @click="collectQuestion(item.id)">
+            </i>
+            <!-- 未被收藏 -->
+            <i class="van-icon van-icon-star" v-else
+            style="font-size: 20px;"
+            @click="collectQuestion(item.id)">
+            </i>
+
             <span class="number">
               {{ item.collectCount }}
             </span>
@@ -140,10 +160,11 @@ import {
   likeQuestion,
   collectQuestion
 } from '@/api/question'
+import { Toast } from 'vant';
 export default {
   name: "quesionItem",
   props: {
-    list: Array,
+    list: Array
   },
   methods: {
     //跳转到指定面试题详情
@@ -156,16 +177,46 @@ export default {
         },
       }); 
     },
-    //点赞
+    //如果没有点赞过则点赞，如果点赞过则取消点赞
     likeQuestion(questionId){
-      likeQuestion(questionId).then(res=>{
+      // likeQuestion(questionId).then(res=>{
         
-      })
+      // })
+      //如果Vuex中不包含该questionId，则说明要调用点赞接口
+      if(!this.$store.state.Question.QuestionLikeIds.includes(Number(questionId))){
+          this.$store.dispatch('like',Number(questionId));
+          Toast.success('点赞成功')
+      }
+      //反之，说明要调用取消点赞接口
+      else{
+          this.$store.dispatch('cancelLike',Number(questionId));
+          Toast.success('取消点赞成功')
+      }
+      
     },
+    //如果没有收藏过则收藏，如果收藏过则取消收藏
     collectQuestion(questionId){
-      collectQuestion(questionId).then(res=>{
+      // collectQuestion(questionId).then(res=>{
         
-      })
+      // })
+      //如果Vuex中不包含该questionId，则说明要调用收藏接口
+      if(!this.$store.state.Question.QuestionCollectIds.includes(Number(questionId))){
+          this.$store.dispatch('collect',Number(questionId));
+          Toast.success('收藏成功')
+      }
+      //反之，说明要调用取消收藏接口
+      else{
+          this.$store.dispatch('cancelCollect',Number(questionId));
+          Toast.success('取消收藏成功')
+      }
+    },
+    //判断面试题是否被点赞，只需要判断Vuex中是否包含该questionId，包含则说明点赞过
+    isLike(questionId){
+      return this.$store.state.Question.QuestionLikeIds.includes(Number(questionId));
+    },
+    //判断面试题是否被收藏，只需要判断Vuex中是否包含该questionId，包含则说明收藏过
+    isCollect(questionId){
+      return this.$store.state.Question.QuestionCollectIds.includes(Number(questionId));
     }
   },
 };

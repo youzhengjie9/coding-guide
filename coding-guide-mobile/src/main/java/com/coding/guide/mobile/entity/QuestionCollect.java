@@ -16,18 +16,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 点赞面试题类
+ * 收藏面试题类
  *
  * @author youzhengjie
- * @date 2022/11/20 22:24:10
+ * @date 2022/11/22 23:23:47
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_question_like")
+@TableName("t_question_collect")
 @Builder //开启建造者模式
 @Accessors(chain = true)
-public class QuestionLike implements Serializable {
+public class QuestionCollect implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,26 +40,26 @@ public class QuestionLike implements Serializable {
     private Long id;
 
     /**
-     * 点赞者的用户id
+     * 收藏者的用户id
      */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField("user_id")
-    @ApiModelProperty(name = "userId",value = "点赞者的用户id")
+    @ApiModelProperty(name = "userId",value = "收藏者的用户id")
     private Long userId;
 
     /**
-     * 被点赞的面试题id
+     * 被收藏的面试题id
      */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField("question_id")
-    @ApiModelProperty(name = "questionId",value = "被点赞的面试题id")
+    @ApiModelProperty(name = "questionId",value = "被收藏的面试题id")
     private Long questionId;
 
     /**
-     * 点赞时间
+     * 收藏时间
      */
-    @TableField("like_time")
-    @ApiModelProperty(name = "likeTime",value = "点赞时间")
-    private LocalDateTime likeTime;
+    @TableField("collect_time")
+    @ApiModelProperty(name = "collectTime",value = "收藏时间")
+    private LocalDateTime collectTime;
 
 }

@@ -100,4 +100,40 @@ public interface QuestionService extends IService<Question> {
      * @return long
      */
     long selectQuestionCountByTagId(long tagid);
+
+    /**
+     * 点赞面试题
+     *
+     * @param userid     用户id
+     * @param questionId 问题id
+     * @return boolean
+     */
+    boolean likeQuestion(Long userid, Long questionId);
+
+    /**
+     * 收藏面试题
+     *
+     * @param userid     用户id
+     * @param questionId 问题id
+     * @return boolean
+     */
+    boolean collectQuestion(Long userid, Long questionId);
+
+
+    /**
+     * 获取用户点赞的所有文章id
+     *
+     * @param userid 用户标识
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> selectAllLikeQuestionIdByUserId(Long userid);
+
+
+    /**
+     * 获取用户收藏的所有文章id集合
+     *
+     * @param userid 用户标识
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> selectAllCollectQuestionIdByUserId(Long userid);
 }
