@@ -97,16 +97,21 @@
           <!-- 点赞 -->
 
           <van-col span="5">
-
             <!-- 已被点赞 -->
-            <i class="van-icon van-icon-like" v-if="isLike(item.id)"
-            style="font-size: 20px;color:red;"
-            @click="likeQuestion(item.id)">
+            <i
+              class="van-icon van-icon-like"
+              v-if="isLike(item.id)"
+              style="font-size: 20px; color: red"
+              @click="likeQuestion(item.id)"
+            >
             </i>
             <!-- 未被点赞 -->
-            <i class="van-icon van-icon-like" v-else
-            style="font-size: 20px;"
-            @click="likeQuestion(item.id)">
+            <i
+              class="van-icon van-icon-like"
+              v-else
+              style="font-size: 20px"
+              @click="likeQuestion(item.id)"
+            >
             </i>
 
             <span class="number">
@@ -117,16 +122,21 @@
           <!-- 收藏 -->
 
           <van-col span="5">
-
             <!-- 已被收藏 -->
-            <i class="van-icon van-icon-star" v-if="isCollect(item.id)"
-            style="font-size: 20px;color:red;"
-            @click="collectQuestion(item.id)">
+            <i
+              class="van-icon van-icon-star"
+              v-if="isCollect(item.id)"
+              style="font-size: 20px; color: red"
+              @click="collectQuestion(item.id)"
+            >
             </i>
             <!-- 未被收藏 -->
-            <i class="van-icon van-icon-star" v-else
-            style="font-size: 20px;"
-            @click="collectQuestion(item.id)">
+            <i
+              class="van-icon van-icon-star"
+              v-else
+              style="font-size: 20px"
+              @click="collectQuestion(item.id)"
+            >
             </i>
 
             <span class="number">
@@ -137,12 +147,11 @@
           <!-- 遇见 -->
 
           <van-col span="5">
-            <van-icon name="bulb-o" size="20" color="red"/>
+            <van-icon name="bulb-o" size="20" color="red" />
             <span class="number">
               {{ item.meetCount }}
             </span>
           </van-col>
-
         </van-row>
       </div>
 
@@ -156,15 +165,12 @@
 </template>
 
 <script>
-import {
-  likeQuestion,
-  collectQuestion
-} from '@/api/question'
-import { Toast } from 'vant';
+import { likeQuestion, collectQuestion } from "@/api/question";
+import { Toast } from "vant";
 export default {
   name: "quesionItem",
   props: {
-    list: Array
+    list: Array,
   },
   methods: {
     //跳转到指定面试题详情
@@ -175,49 +181,63 @@ export default {
         query: {
           id: questionId,
         },
-      }); 
+      });
     },
     //如果没有点赞过则点赞，如果点赞过则取消点赞
-    likeQuestion(questionId){
-      // likeQuestion(questionId).then(res=>{
-        
-      // })
+    likeQuestion(questionId) {
       //如果Vuex中不包含该questionId，则说明要调用点赞接口
-      if(!this.$store.state.Question.QuestionLikeIds.includes(Number(questionId))){
-          this.$store.dispatch('like',Number(questionId));
-          Toast.success('点赞成功')
+      if (
+        !this.$store.state.Question.QuestionLikeIds.includes(Number(questionId))
+      ) {
+        likeQuestion(questionId).then((res) => {
+          this.$store.dispatch("like", Number(questionId));
+          Toast.success("点赞成功");
+        });
       }
-      //反之，说明要调用取消点赞接口
-      else{
-          this.$store.dispatch('cancelLike',Number(questionId));
-          Toast.success('取消点赞成功')
+      //反之，说明要调用取消点赞接口(和点赞接口是同一个)
+      else {
+        likeQuestion(questionId).then((res) => {
+          this.$store.dispatch("cancelLike", Number(questionId));
+          Toast.success("取消点赞成功");
+        });
       }
-      
     },
     //如果没有收藏过则收藏，如果收藏过则取消收藏
-    collectQuestion(questionId){
+    collectQuestion(questionId) {
       // collectQuestion(questionId).then(res=>{
-        
+
       // })
       //如果Vuex中不包含该questionId，则说明要调用收藏接口
-      if(!this.$store.state.Question.QuestionCollectIds.includes(Number(questionId))){
-          this.$store.dispatch('collect',Number(questionId));
-          Toast.success('收藏成功')
+      if (
+        !this.$store.state.Question.QuestionCollectIds.includes(
+          Number(questionId)
+        )
+      ) {
+        collectQuestion(questionId).then((res) => {
+          this.$store.dispatch("collect", Number(questionId));
+          Toast.success("收藏成功");
+        });
       }
       //反之，说明要调用取消收藏接口
-      else{
-          this.$store.dispatch('cancelCollect',Number(questionId));
-          Toast.success('取消收藏成功')
+      else {
+        collectQuestion(questionId).then((res) => {
+          this.$store.dispatch("cancelCollect", Number(questionId));
+          Toast.success("取消收藏成功");
+        });
       }
     },
     //判断面试题是否被点赞，只需要判断Vuex中是否包含该questionId，包含则说明点赞过
-    isLike(questionId){
-      return this.$store.state.Question.QuestionLikeIds.includes(Number(questionId));
+    isLike(questionId) {
+      return this.$store.state.Question.QuestionLikeIds.includes(
+        Number(questionId)
+      );
     },
     //判断面试题是否被收藏，只需要判断Vuex中是否包含该questionId，包含则说明收藏过
-    isCollect(questionId){
-      return this.$store.state.Question.QuestionCollectIds.includes(Number(questionId));
-    }
+    isCollect(questionId) {
+      return this.$store.state.Question.QuestionCollectIds.includes(
+        Number(questionId)
+      );
+    },
   },
 };
 </script>
@@ -251,8 +271,7 @@ export default {
   margin-left: 15px;
 }
 
-.number{
+.number {
   font-size: 17px;
 }
-
 </style>
