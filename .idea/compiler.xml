@@ -12,8 +12,6 @@
         <module name="coding-guide-mobile" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="coding-guide-core" target="8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17" />
   </component>
 </project>

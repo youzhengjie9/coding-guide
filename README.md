@@ -26,16 +26,11 @@
     - 前台系统：（前台展示-移动端）
 
         - 数据库：MySQL8.0、Redis6、ElasticSearch7.8
-
         - 后端技术：SpringBoot2、SpringSecurity、Mybatis-Plus、JWT、Canal、minio（或者七牛云OSS）、Druid、fastjson2、hutool、Swagger3、knife4j、lombok
-
         - 前端技术：Vue2、Vue-Router、Vuex、Vue-Cli5、Axios、Vant（移动端ui组件）、Echarts
-
         - 测试技术：Jmeter
-
         - 运维技术：Docker、Kubernetes(后期才上)、Jenkins（看情况）
-
-        - 开发环境：vscode
+        - 开发环境：JDK17、IDEA2022.2.4、vscode
 
         - **功能列表（需求）：**
 
@@ -98,7 +93,7 @@
     - 前端技术：Vue2、Vue-Router、Vuex、Vue-Cli5、Axios、Element-Ui（电脑端ui组件）、Echarts
         - 测试技术：Jmeter
     - 运维技术：Docker、Kubernetes(后期才上)、Jenkins（看情况）
-        - 开发环境：JDK8、IDEA2021.3
+        - 开发环境：JDK17、IDEA2022.2.4、vscode
         
 - 未来展望⭐
     - 1：使用分布式、微服务架构对整个后台项目进行全部重构、对整个后台项目进行模块拆分等。

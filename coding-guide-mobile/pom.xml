@@ -29,8 +29,9 @@
         <swagger.version>3.0.0</swagger.version>
         <!--        springboot版本-->
         <spring-boot.version>2.7.5</spring-boot.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!--    指定jdk17版本     -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>

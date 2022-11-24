@@ -183,6 +183,16 @@ export default {
         },
       });
     },
+    //修改Props传过来的List集合对应的面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)
+    changeLikeCount(questionId,val){
+      //由于子组件不能修改props的属性，必须通过下面这种方式让父组件去修改props属性
+      this.$emit('changeLikeCount',questionId,val);
+    },
+    //修改Props传过来的List集合对应的面试题的收藏数。修改为当前收藏数+val(val可以为1和-1)
+    changeCollectCount(questionId,val){
+      //由于子组件不能修改props的属性，必须通过下面这种方式让父组件去修改props属性
+      this.$emit('changeCollectCount',questionId,val);
+    },
     //如果没有点赞过则点赞，如果点赞过则取消点赞
     likeQuestion(questionId) {
       //如果Vuex中不包含该questionId，则说明要调用点赞接口
@@ -191,6 +201,8 @@ export default {
       ) {
         likeQuestion(questionId).then((res) => {
           this.$store.dispatch("like", Number(questionId));
+          //点赞数+1
+          this.changeLikeCount(questionId,1);
           Toast.success("点赞成功");
         });
       }
@@ -198,6 +210,8 @@ export default {
       else {
         likeQuestion(questionId).then((res) => {
           this.$store.dispatch("cancelLike", Number(questionId));
+          //点赞数-1
+          this.changeLikeCount(questionId,-1);
           Toast.success("取消点赞成功");
         });
       }
@@ -215,6 +229,8 @@ export default {
       ) {
         collectQuestion(questionId).then((res) => {
           this.$store.dispatch("collect", Number(questionId));
+          //收藏数+1
+          this.changeCollectCount(questionId,1);
           Toast.success("收藏成功");
         });
       }
@@ -222,6 +238,8 @@ export default {
       else {
         collectQuestion(questionId).then((res) => {
           this.$store.dispatch("cancelCollect", Number(questionId));
+          //收藏数-1
+          this.changeCollectCount(questionId,-1);
           Toast.success("取消收藏成功");
         });
       }

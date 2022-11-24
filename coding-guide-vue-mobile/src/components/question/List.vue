@@ -12,6 +12,8 @@
         <!-- 题目 -->
         <quesion-item 
         :list="list" 
+        @changeLikeCount="changeLikeCount"
+        @changeCollectCount="changeCollectCount"
         />
 
       </van-list>
@@ -56,6 +58,28 @@ export default {
     this.loadCollectQuestionIdList();
   },
   methods: {
+    //修改List集合对应的面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)
+    changeLikeCount(questionId,val){
+
+      for(let i = 0 ; i< this.list.length ; i++){
+          if(this.list[i].id === questionId){
+            this.list[i].likeCount=this.list[i].likeCount+val
+            break;
+          }
+      }
+      
+    },
+    //修改List集合对应的面试题的收藏数。修改为当前收藏数+val(val可以为1和-1)
+    changeCollectCount(questionId,val){
+      
+      for(let i = 0 ; i< this.list.length ; i++){
+          if(this.list[i].id === questionId){
+            this.list[i].collectCount=this.list[i].collectCount+val
+            break;
+          }
+      }
+      
+    },
     //加载当前用户所有点赞的面试题id集合
     loadLikeQuestionIdList(){
         selectCurUserAllLikeQuestionId().then(res=>{

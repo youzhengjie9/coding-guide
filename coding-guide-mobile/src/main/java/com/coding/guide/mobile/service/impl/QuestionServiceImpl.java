@@ -157,6 +157,11 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                         .eq(QuestionLike::getQuestionId, questionId);
                 questionLikeService.remove(lambdaQueryWrapper);
             }
+            //修改本地缓存（caffeine）
+            Question question = questionCache.getIfPresent(questionId);
+//            question.set
+            //修改分布式缓存（Redis）
+
             return true;
         }catch (Exception e){
             throw new RuntimeException();
