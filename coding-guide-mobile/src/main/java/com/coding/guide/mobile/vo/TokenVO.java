@@ -3,6 +3,7 @@ package com.coding.guide.mobile.vo;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Builder
 public class TokenVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String userName;

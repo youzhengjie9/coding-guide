@@ -21,7 +21,7 @@ public final class RedisConstant {
     public static final String PHONE_CODE_KEY_PREFIX="mobile:phone:code:";
 
     /**
-     * 面试题内容的redis的key前缀
+     * 面试题对象的redis的key前缀
      * 后面加上面试题id
      */
     public static final String QUESTION_DETAIL_KEY_PREFIX="mobile:question:detail:";

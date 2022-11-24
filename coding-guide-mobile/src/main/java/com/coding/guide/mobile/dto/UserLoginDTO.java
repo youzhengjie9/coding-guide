@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Builder
 public class UserLoginDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

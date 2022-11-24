@@ -20,7 +20,7 @@ public final class BrowserUtils {
     /**
      * 获取发起请求的浏览器名称
      */
-    public static final String getBrowserName(HttpServletRequest request) {
+    public static String getBrowserName(HttpServletRequest request) {
         String header = request.getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(header);
         Browser browser = userAgent.getBrowser();
@@ -30,7 +30,7 @@ public final class BrowserUtils {
     /**
      * 获取发起请求的浏览器版本号
      */
-    public static final String getBrowserVersion(HttpServletRequest request) {
+    public static String getBrowserVersion(HttpServletRequest request) {
         String header = request.getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(header);
         // 获取浏览器信息
@@ -43,7 +43,7 @@ public final class BrowserUtils {
     /**
      * 获取发起请求的操作系统名称
      */
-    public static final String getOsName(HttpServletRequest request) {
+    public static String getOsName(HttpServletRequest request) {
         String header = request.getHeader("User-Agent");
         UserAgent userAgent = UserAgent.parseUserAgentString(header);
         OperatingSystem operatingSystem = userAgent.getOperatingSystem();

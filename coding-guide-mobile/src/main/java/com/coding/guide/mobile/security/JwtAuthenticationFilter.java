@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * >>>>>特别注意: 所有请求都要经过这个过滤器（不管该请求路径是否在SecurityConfig类的authorizeRequests()中配置了permitAll还是authenticated都会进来这里）<<<<<<<<
      * >>>>>虽然所有请求路径（不管是permitAll还是authenticated都会进来这里），但是还是有很大不同的>>>>>>>>>.
-     *
+     * <p>
      * > 1:如果该请求路径配置在authorizeRequests方法的authenticated中，则说明需要认证才能访问。
      * > 1.1: 如果此时没有携带token的话，则进入了我们自定义的JWT过滤器就会直接放行（因为token为空我们就直接放行），
      * 此时SpringSecurity底层自带的拦截器就会判断这个请求是否配置在authenticated中，
@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * ,但是问题就是由于这个请求没有携带token直接被放行了，
      * 导致没有执行到SecurityContextHolder.getContext().setAuthentication这行代码（因为在自定义jwt过滤器中的逻辑是：首先要有token,其次token要合法,最后才可以执行到这行代码，进行登录）
      * 所以spring security就判断用户没有登录，从而拦截该请求，并自动调用自定义未登录处理器（AuthenticationEntryPointImpl）。
-     *
+     * <p>
      * > 2: 如果该请求路径配置在authorizeRequests方法的permitAll中，则说明不需要登录也可以访问。
      * > 2.1: 此时如果没有携带token,请求也会进入JWT认证过滤器，但是进入JWT认证过滤器后会被直接放行，后面会被SpringSecurity底层拦截器拦截
      * ，当SpringSecurity发现该请求路径在permitAll中（说明不用登录也可以访问），则直接放行，允许访问该请求。

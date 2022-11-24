@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Data
 public class UserRegisterDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Length(min = 5,max = 15,message = "帐号长度要在5-15位之间")

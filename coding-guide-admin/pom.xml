@@ -28,6 +28,7 @@
         <!--        springboot版本-->
         <spring-boot.version>2.7.5</spring-boot.version>
         <!--    指定jdk17版本     -->
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>

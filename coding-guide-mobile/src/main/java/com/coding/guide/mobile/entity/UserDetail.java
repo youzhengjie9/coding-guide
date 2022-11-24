@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -30,6 +31,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class UserDetail implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

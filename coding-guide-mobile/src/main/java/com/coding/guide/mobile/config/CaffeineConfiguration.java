@@ -20,10 +20,10 @@ public class CaffeineConfiguration {
     /**
      * 面试题的caffeine缓存（这里利用到Spring默认的bean是单例的这个性质，来集中存储缓存对象）
      *
-     * @return Cache<面试题id,面试题对象>
+     * @return Cache<CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX常量+面试题id,面试题对象>
      */
     @Bean
-    public Cache<Long,Question> questionCache(){
+    public Cache<String,Question> questionCache(){
         return Caffeine.newBuilder()
                 //初始化容量
                 .initialCapacity(1000)

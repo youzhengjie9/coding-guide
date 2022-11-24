@@ -1,9 +1,9 @@
 package com.coding.guide.mobile.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.coding.guide.common.utils.SnowId;
+import com.coding.guide.mobile.constant.CaffeineConstant;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.entity.Question;
 import com.coding.guide.mobile.entity.QuestionCollect;
@@ -19,12 +19,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +52,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
      */
     @Autowired
     @Qualifier("questionCache")
-    private Cache<Long,Question> questionCache;
+    private Cache<String,Question> questionCache;
 
     @Override
     public List<Question> selectHottestQuestionByLimit(int page, int size) {
@@ -66,7 +63,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public Question selectQuestionDetail(long id) {
         //使用多级缓存提高性能
         //1：先查JVM本地缓存caffeine,如果有则直接返回。
-        Question q = questionCache.get(id, questionId -> {
+        Question q = questionCache.get(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX+id, questionId -> {
             //---如果caffeine没有对应缓存的话则会进入这个lambda表达式中---
             //2：如果redis中也没有这道面试题缓存
             final String KEY = RedisConstant.QUESTION_DETAIL_KEY_PREFIX + id;
@@ -146,6 +143,26 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                         .likeTime(LocalDateTime.now())
                         .build();
                 questionLikeService.save(questionLike);
+                //修改本地缓存（caffeine）
+
+                //查询本地缓存
+                Question q1 = questionCache.getIfPresent(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                //如果caffeine有缓存才修改。（没有缓存则不用修改）
+                if(q1 != null){
+                    //点赞数+1
+                    q1.setLikeCount(q1.getLikeCount()+1);
+                    //把新缓存放到caffeine中
+                    questionCache.put(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,q1);
+                }
+                //修改分布式缓存（Redis）
+                Question q2 = (Question) redisTemplate.opsForValue().get(RedisConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                if(q2 != null){
+                    //点赞数+1
+                    q2.setLikeCount(q2.getLikeCount()+1);
+                    //把新缓存放到redis中
+                    redisTemplate.opsForValue().set(RedisConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,
+                            q2, 1, TimeUnit.HOURS);
+                }
             }
             //如果面试题被该用户点赞过，则取消点赞
             else {
@@ -156,12 +173,28 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                 lambdaQueryWrapper.eq(QuestionLike::getUserId, userid)
                         .eq(QuestionLike::getQuestionId, questionId);
                 questionLikeService.remove(lambdaQueryWrapper);
-            }
-            //修改本地缓存（caffeine）
-            Question question = questionCache.getIfPresent(questionId);
-//            question.set
-            //修改分布式缓存（Redis）
 
+                //修改本地缓存（caffeine）
+
+                //查询本地缓存
+                Question q1 = questionCache.getIfPresent(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                //如果caffeine有缓存才修改。（没有缓存则不用修改）
+                if(q1 != null){
+                    //点赞数-1
+                    q1.setLikeCount(q1.getLikeCount()-1);
+                    //把新缓存放到caffeine中
+                    questionCache.put(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,q1);
+                }
+                //修改分布式缓存（Redis）
+                Question q2 = (Question) redisTemplate.opsForValue().get(RedisConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                if(q2 != null){
+                    //点赞数-1
+                    q2.setLikeCount(q2.getLikeCount()+1);
+                    //把新缓存放到redis中
+                    redisTemplate.opsForValue().set(RedisConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,
+                            q2, 1, TimeUnit.HOURS);
+                }
+            }
             return true;
         }catch (Exception e){
             throw new RuntimeException();
@@ -187,6 +220,27 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                         .collectTime(LocalDateTime.now())
                         .build();
                 questionCollectService.save(questionCollect);
+
+                //修改本地缓存（caffeine）
+
+                //查询本地缓存
+                Question q1 = questionCache.getIfPresent(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                //如果caffeine有缓存才修改。（没有缓存则不用修改）
+                if(q1 != null){
+                    //收藏数+1
+                    q1.setCollectCount(q1.getCollectCount()+1);
+                    //把新缓存放到caffeine中
+                    questionCache.put(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,q1);
+                }
+                //修改分布式缓存（Redis）
+                Question q2 = (Question) redisTemplate.opsForValue().get(RedisConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                if(q2 != null){
+                    //收藏数+1
+                    q2.setCollectCount(q2.getCollectCount()+1);
+                    //把新缓存放到redis中
+                    redisTemplate.opsForValue().set(RedisConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,
+                            q2, 1, TimeUnit.HOURS);
+                }
             }
             //如果面试题被该用户收藏过，则取消收藏
             else {
@@ -197,6 +251,27 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                 lambdaQueryWrapper.eq(QuestionCollect::getUserId, userid)
                         .eq(QuestionCollect::getQuestionId, questionId);
                 questionCollectService.remove(lambdaQueryWrapper);
+
+                //修改本地缓存（caffeine）
+
+                //查询本地缓存
+                Question q1 = questionCache.getIfPresent(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                //如果caffeine有缓存才修改。（没有缓存则不用修改）
+                if(q1 != null){
+                    //收藏数-1
+                    q1.setCollectCount(q1.getCollectCount()-1);
+                    //把新缓存放到caffeine中
+                    questionCache.put(CaffeineConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,q1);
+                }
+                //修改分布式缓存（Redis）
+                Question q2 = (Question) redisTemplate.opsForValue().get(RedisConstant.QUESTION_DETAIL_KEY_PREFIX + questionId);
+                if(q2 != null){
+                    //收藏数-1
+                    q2.setCollectCount(q2.getCollectCount()-1);
+                    //把新缓存放到redis中
+                    redisTemplate.opsForValue().set(RedisConstant.QUESTION_DETAIL_KEY_PREFIX+questionId,
+                            q2, 1, TimeUnit.HOURS);
+                }
             }
             return true;
         }catch (Exception e){
