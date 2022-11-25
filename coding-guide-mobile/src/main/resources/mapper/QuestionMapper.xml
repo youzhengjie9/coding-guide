@@ -23,7 +23,6 @@
           AND is_public = 1
         ORDER BY read_count DESC, like_count DESC, collect_count DESC, comment_count DESC
         LIMIT #{page},#{size}
-
     </select>
     <select id="searchHottestQuestionByKeyWordAndLimit" resultType="com.coding.guide.mobile.entity.Question">
         SELECT
@@ -111,27 +110,101 @@
     <update id="incrLikeCount">
         UPDATE t_question
         SET like_count = like_count + 1
-        WHERE id =#{questionId}
+        WHERE id = #{questionId}
         AND del_flag = 0
     </update>
 
     <update id="decrLikeCount">
         UPDATE t_question
         SET like_count = like_count - 1
-        WHERE id =#{questionId}
+        WHERE id = #{questionId}
         AND del_flag = 0
     </update>
     <update id="incrCollectCount">
         UPDATE t_question
         SET collect_count = collect_count + 1
-        WHERE id =#{questionId}
+        WHERE id = #{questionId}
         AND del_flag = 0
     </update>
     <update id="decrCollectCount">
         UPDATE t_question
         SET collect_count = collect_count - 1
-        WHERE id =#{questionId}
+        WHERE id = #{questionId}
         AND del_flag = 0
     </update>
+
+    <select id="selectUserPublicQuestionByLimit" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 1
+        AND user_id= #{currentUserId}
+        ORDER BY publish_time DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectUserPrivateQuestionByLimit" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT
+        <include refid="field01"/>
+        FROM `t_question`
+        WHERE del_flag = 0
+        AND is_public = 0
+        AND user_id= #{currentUserId}
+        ORDER BY publish_time DESC
+        LIMIT #{page},#{size}
+    </select>
+
+    <sql id="field02">
+            tq.id,
+               title,
+               recommend,
+               read_count,
+               like_count,
+               collect_count,
+               meet_count,
+               difficulty,
+               tags,
+               publish_time
+    </sql>
+
+    <select id="selectUserCollectQuestionByLimit" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT
+        <include refid="field02"/>
+        FROM t_question as tq
+        LEFT JOIN t_question_collect tqc on tq.id = tqc.question_id
+        WHERE tqc.user_id = #{currentUserId}
+        AND tq.del_flag = 0
+        AND tq.is_public = 1
+        ORDER BY tqc.collect_time DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectUserCollectQuestionCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM t_question as tq
+        LEFT JOIN t_question_collect tqc on tq.id = tqc.question_id
+        WHERE tqc.user_id = #{currentUserId}
+        AND tq.del_flag = 0
+        AND tq.is_public = 1
+    </select>
+    <select id="selectUserLikeQuestionByLimit" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT
+        <include refid="field02"/>
+        FROM t_question as tq
+                 LEFT JOIN t_question_like tql on tq.id = tql.question_id
+        WHERE tql.user_id = #{currentUserId}
+          AND tq.del_flag = 0
+          AND tq.is_public = 1
+        ORDER BY tql.like_time DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectUserLikeQuestionCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM t_question as tq
+        LEFT JOIN t_question_like tql on tq.id = tql.question_id
+        WHERE tql.user_id = #{currentUserId}
+        AND tq.del_flag = 0
+        AND tq.is_public = 1
+    </select>
+
 
 </mapper>

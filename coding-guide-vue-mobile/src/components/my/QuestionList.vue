@@ -1,32 +1,37 @@
 <template>
-    <div>
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-        <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了..."
-            @load="onLoad"
-            :error.sync="error"
-            error-text="请求失败，点击重新加载">
-
-            <!-- 题目 -->
-            <quesion-item :list="list"> </quesion-item>
-
-        </van-list>
-        </van-pull-refresh>
-    </div>
+  <div>
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了..."
+        @load="onLoad"
+        :error.sync="error"
+        error-text="请求失败，点击重新加载"
+      >
+        <!-- 题目 -->
+        <quesion-item
+          :list="list"
+          @changeLikeCount="changeLikeCount"
+          @changeCollectCount="changeCollectCount"
+        />
+      </van-list>
+    </van-pull-refresh>
+  </div>
 </template>
 
 <script>
 import quesionItem from "../question/Item.vue";
 import {
-  selectHottestQuestionByLimit,
-  searchLatestQuestionByKeyWordAndLimit,
-  searchRecommendQuestionByKeyWordAndLimit,
-  selectQuestionByTagIdAndLimit,
+  selectCurUserPublicQuestionByLimit,
+  selectCurUserPrivateQuestionByLimit,
+  selectCurUserCollectQuestionByLimit,
+  selectCurUserLikeQuestionByLimit,
+  selectCurUserAllLikeQuestionId,
+  selectCurUserAllCollectQuestionId,
 } from "../../api/question";
 import { Toast } from "vant";
- 
+
 export default {
   name: "MyQuestionList",
   components: {
@@ -47,7 +52,43 @@ export default {
       total: 0, //总记录数
     };
   },
+  created() {
+    this.loadLikeQuestionIdList();
+    this.loadCollectQuestionIdList();
+  },
   methods: {
+    //修改List集合对应的面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)
+    changeLikeCount(questionId, val) {
+      for (let i = 0; i < this.list.length; i++) {
+        if (this.list[i].id === questionId) {
+          this.list[i].likeCount = this.list[i].likeCount + val;
+          break;
+        }
+      }
+    },
+    //修改List集合对应的面试题的收藏数。修改为当前收藏数+val(val可以为1和-1)
+    changeCollectCount(questionId, val) {
+      for (let i = 0; i < this.list.length; i++) {
+        if (this.list[i].id === questionId) {
+          this.list[i].collectCount = this.list[i].collectCount + val;
+          break;
+        }
+      }
+    },
+    //加载当前用户所有点赞的面试题id集合
+    loadLikeQuestionIdList() {
+      selectCurUserAllLikeQuestionId().then((res) => {
+        //将数据放到VueX中
+        this.$store.dispatch("initLikeList", res.data.data);
+      });
+    },
+    //加载当前用户所有收藏的面试题id集合
+    loadCollectQuestionIdList() {
+      selectCurUserAllCollectQuestionId().then((res) => {
+        //将数据放到VueX中
+        this.$store.dispatch("initCollectList", res.data.data);
+      });
+    },
     //滚动分页
     onLoad() {
       let tabid = this.currentTabId;
@@ -58,21 +99,25 @@ export default {
         }
 
         switch (tabid) {
-          //如果选择的是最热
+          //如果选择的是作品
           case 1:
-            this.loadHottestList();
+            this.loadCurUserPublicQuestionList();
             break;
-          //如果选择的是最新
+          //如果选择的是私密
           case 2:
-            this.loadLatestList();
+            this.loadCurUserPrivateQuestionList();
             break;
-          //如果选择的是推荐
+          //如果选择的是收藏
           case 3:
-            this.loadRecommendList();
+            this.loadCurUserCollectQuestionList();
             break;
-          //如果选择的是其他普通标签，比如Java、SpringBoot等
+          //如果选择的是点赞
+          case 4:
+            this.loadCurUserLikeQuestionList();
+            break;
+          //如果选择的是其他
           default:
-            this.loadListByTabId(tabid);
+            Toast.fail("选项错误");
             break;
         }
       }, 1000);
@@ -91,9 +136,9 @@ export default {
       this.loading = true;
       this.onLoad();
     },
-    //加载最热列表
-    loadHottestList() {
-      selectHottestQuestionByLimit(this.page, this.size)
+    //加载作品列表
+    loadCurUserPublicQuestionList() {
+      selectCurUserPublicQuestionByLimit(this.page, this.size)
         .then((res) => {
           if (res.data.code === 200) {
             //页数+1
@@ -116,9 +161,9 @@ export default {
           Toast.fail("服务器异常,接口请求失败");
         });
     },
-    //加载最新列表
-    loadLatestList() {
-      searchLatestQuestionByKeyWordAndLimit(this.page, this.size, "")
+    //加载私密列表
+    loadCurUserPrivateQuestionList() {
+      selectCurUserPrivateQuestionByLimit(this.page, this.size)
         .then((res) => {
           if (res.data.code === 200) {
             //页数+1
@@ -141,9 +186,9 @@ export default {
           Toast.fail("服务器异常,接口请求失败");
         });
     },
-    //加载推荐列表
-    loadRecommendList() {
-      searchRecommendQuestionByKeyWordAndLimit(this.page, this.size, "")
+    //加载收藏列表
+    loadCurUserCollectQuestionList() {
+      selectCurUserCollectQuestionByLimit(this.page, this.size)
         .then((res) => {
           if (res.data.code === 200) {
             //页数+1
@@ -166,8 +211,9 @@ export default {
           Toast.fail("服务器异常,接口请求失败");
         });
     },
-    loadListByTabId(tabid) {
-      selectQuestionByTagIdAndLimit(tabid, this.page, this.size)
+    //加载点赞列表
+    loadCurUserLikeQuestionList() {
+      selectCurUserLikeQuestionByLimit(this.page, this.size)
         .then((res) => {
           if (res.data.code === 200) {
             //页数+1
@@ -195,5 +241,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -85,3 +85,32 @@ export function selectCurUserAllCollectQuestionId(){
     })
 }
 
+export function selectCurUserPublicQuestionByLimit(page,size){
+    return request({
+        url:'/question/selectCurUserPublicQuestionByLimit/'+page+'/'+size,
+        method:'get'
+    })
+}
+
+export function selectCurUserPrivateQuestionByLimit(page,size){
+    return request({
+        url:'/question/selectCurUserPrivateQuestionByLimit/'+page+'/'+size,
+        method:'get'
+    })
+}
+
+export function selectCurUserCollectQuestionByLimit(page,size){
+    return request({
+        url:'/question/selectCurUserCollectQuestionByLimit/'+page+'/'+size,
+        method:'get'
+    })
+}
+
+export function selectCurUserLikeQuestionByLimit(page,size){
+    return request({
+        url:'/question/selectCurUserLikeQuestionByLimit/'+page+'/'+size,
+        method:'get'
+    })
+}
+
+

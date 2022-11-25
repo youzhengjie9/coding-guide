@@ -32,15 +32,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     /**
-     * 下面这些请求会被spring security拦截，需要认证才能放行（除了这些请求，其余的所有请求不用被拦截）
+     * 下面这些请求《不用登录》（也就是不用携带Token）都可以访问
      */
-    private final String[] AUTHENTICATED_PATH={
-            "/mobile/user/getCurrentUserInfo",
-            "/mobile/logout/",
-            "/mobile/question/likeQuestion/**",
-            "/mobile/question/collectQuestion/**",
-            "/mobile/question/selectCurUserAllLikeQuestionId",
-            "/mobile/question/selectCurUserAllCollectQuestionId"
+    private final String[] PERMIT_PATHS={
+            "/mobile/login/",
+            "/mobile/register/**"
     };
 
     @Autowired
@@ -77,10 +73,10 @@ public class SecurityConfig {
                 .and()
                 //配置认证请求
                 .authorizeRequests()
-                // 设置部分请求需要认证才能访问
-                .antMatchers(AUTHENTICATED_PATH).authenticated()
-                // 除了上面的请求之外，其他所有请求都不用认证即可访问
-                .anyRequest().permitAll()
+                // 设置部分请求《不用登录》（也就是不用携带Token）都可以访问
+                .antMatchers(PERMIT_PATHS).permitAll()
+                // 除了上面的请求之外，其他所有请求《只有登录了》（要携带token）才能访问，否则会被SpringSecurity底层拦截器拦截
+                .anyRequest().authenticated()
                 .and()
                 //添加jwt认证过滤器，并放在UsernamePasswordAuthenticationFilter之前
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

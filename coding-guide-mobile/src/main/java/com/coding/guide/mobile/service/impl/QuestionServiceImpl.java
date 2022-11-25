@@ -303,4 +303,34 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Question> selectUserPublicQuestionByLimit(Long currentUserId, int page, int size) {
+        return questionMapper.selectUserPublicQuestionByLimit(currentUserId, page, size);
+    }
+
+    @Override
+    public List<Question> selectUserPrivateQuestionByLimit(Long currentUserId, int page, int size) {
+        return questionMapper.selectUserPrivateQuestionByLimit(currentUserId, page, size);
+    }
+
+    @Override
+    public List<Question> selectUserCollectQuestionByLimit(Long currentUserId, int page, int size) {
+        return questionMapper.selectUserCollectQuestionByLimit(currentUserId, page, size);
+    }
+
+    @Override
+    public Long selectUserCollectQuestionCount(Long currentUserId) {
+        return questionMapper.selectUserCollectQuestionCount(currentUserId);
+    }
+
+    @Override
+    public List<Question> selectUserLikeQuestionByLimit(Long currentUserId, int page, int size) {
+        return questionMapper.selectUserLikeQuestionByLimit(currentUserId, page, size);
+    }
+
+    @Override
+    public Long selectUserLikeQuestionCount(Long currentUserId) {
+        return questionMapper.selectUserLikeQuestionCount(currentUserId);
+    }
+
 }

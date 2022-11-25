@@ -140,5 +140,71 @@ public interface QuestionMapper extends BaseMapper<Question> {
     int decrCollectCount(@Param("questionId") Long questionId);
 
 
+    /**
+     * 查询用户的作品（公开的面试题），并按照发布日期排序
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserPublicQuestionByLimit(@Param("currentUserId") Long currentUserId,
+                                                      @Param("page") int page,
+                                                      @Param("size") int size);
+
+    /**
+     * 查询用户的私密（私密的面试题），并按照发布日期排序
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserPrivateQuestionByLimit(@Param("currentUserId") Long currentUserId,
+                                                    @Param("page") int page,
+                                                    @Param("size") int size);
+
+
+    /**
+     * 查询用户的收藏（收藏并且公开的面试题）
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserCollectQuestionByLimit(@Param("currentUserId") Long currentUserId,
+                                                    @Param("page") int page,
+                                                    @Param("size") int size);
+
+    /**
+     * 查询用户的收藏数（收藏并且公开的面试题数）
+     *
+     * @return {@link Long}
+     */
+    Long selectUserCollectQuestionCount(@Param("currentUserId") Long currentUserId);
+
+
+    /**
+     * 查询用户的点赞（点赞并且公开的面试题）
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserLikeQuestionByLimit(@Param("currentUserId") Long currentUserId,
+                                                 @Param("page") int page,
+                                                 @Param("size") int size);
+
+
+    /**
+     * 查询用户的点赞数（点赞并且公开的面试题数）
+     *
+     * @param currentUserId 当前用户id
+     * @return {@link Long}
+     */
+    Long selectUserLikeQuestionCount(@Param("currentUserId") Long currentUserId);
+
 
 }

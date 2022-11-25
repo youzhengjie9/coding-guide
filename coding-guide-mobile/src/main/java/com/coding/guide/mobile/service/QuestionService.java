@@ -136,4 +136,65 @@ public interface QuestionService extends IService<Question> {
      * @return {@link List}<{@link Long}>
      */
     List<Long> selectAllCollectQuestionIdByUserId(Long userid);
+
+    /**
+     * 查询用户的作品（公开的面试题），并按照发布日期排序
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserPublicQuestionByLimit(Long currentUserId, int page, int size);
+
+
+    /**
+     * 查询用户的私密（私密的面试题），并按照发布日期排序
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserPrivateQuestionByLimit(Long currentUserId, int page, int size);
+
+
+    /**
+     * 查询用户的收藏（收藏并且公开的面试题）
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserCollectQuestionByLimit(Long currentUserId, int page, int size);
+
+
+    /**
+     * 查询用户的收藏数（收藏并且公开的面试题数）
+     *
+     * @return {@link Long}
+     */
+    Long selectUserCollectQuestionCount(Long currentUserId);
+
+
+    /**
+     * 查询用户的点赞（点赞并且公开的面试题）
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserLikeQuestionByLimit(Long currentUserId, int page, int size);
+
+
+    /**
+     * 查询用户的点赞数（点赞并且公开的面试题数）
+     *
+     * @param currentUserId 当前用户id
+     * @return {@link Long}
+     */
+    Long selectUserLikeQuestionCount(Long currentUserId);
+
 }
