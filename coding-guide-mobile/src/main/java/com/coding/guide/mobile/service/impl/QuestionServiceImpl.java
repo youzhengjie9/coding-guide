@@ -2,6 +2,7 @@ package com.coding.guide.mobile.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.coding.guide.common.utils.ConverCountUtil;
 import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.CaffeineConstant;
 import com.coding.guide.mobile.constant.RedisConstant;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -331,6 +334,23 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public Long selectUserLikeQuestionCount(Long currentUserId) {
         return questionMapper.selectUserLikeQuestionCount(currentUserId);
+    }
+
+
+    @Override
+    public String selectLikedCountByUserId(Long userid) {
+        //1：查询出来结果
+        Long likedCount = questionMapper.selectLikedCountByUserId(userid);
+        //2：转换结果
+        return ConverCountUtil.conver(likedCount);
+    }
+
+    @Override
+    public String selectCollectedCountByUserId(Long userid) {
+        //1：查询出来结果
+        Long collectedCount = questionMapper.selectCollectedCountByUserId(userid);
+        //2：转换结果
+        return ConverCountUtil.conver(collectedCount);
     }
 
 }

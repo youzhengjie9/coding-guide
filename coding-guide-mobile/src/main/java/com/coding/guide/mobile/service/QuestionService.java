@@ -140,34 +140,34 @@ public interface QuestionService extends IService<Question> {
     /**
      * 查询用户的作品（公开的面试题），并按照发布日期排序
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserPublicQuestionByLimit(Long currentUserId, int page, int size);
+    List<Question> selectUserPublicQuestionByLimit(Long userid, int page, int size);
 
 
     /**
      * 查询用户的私密（私密的面试题），并按照发布日期排序
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserPrivateQuestionByLimit(Long currentUserId, int page, int size);
+    List<Question> selectUserPrivateQuestionByLimit(Long userid, int page, int size);
 
 
     /**
      * 查询用户的收藏（收藏并且公开的面试题）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserCollectQuestionByLimit(Long currentUserId, int page, int size);
+    List<Question> selectUserCollectQuestionByLimit(Long userid, int page, int size);
 
 
     /**
@@ -175,26 +175,40 @@ public interface QuestionService extends IService<Question> {
      *
      * @return {@link Long}
      */
-    Long selectUserCollectQuestionCount(Long currentUserId);
+    Long selectUserCollectQuestionCount(Long userid);
 
 
     /**
      * 查询用户的点赞（点赞并且公开的面试题）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserLikeQuestionByLimit(Long currentUserId, int page, int size);
+    List<Question> selectUserLikeQuestionByLimit(Long userid, int page, int size);
 
 
     /**
      * 查询用户的点赞数（点赞并且公开的面试题数）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @return {@link Long}
      */
-    Long selectUserLikeQuestionCount(Long currentUserId);
+    Long selectUserLikeQuestionCount(Long userid);
+
+    /**
+     * 根据用户id查询用户发布的所有面试题被点赞数之和
+     *
+     * @param userid 用户id
+     */
+    String selectLikedCountByUserId(Long userid);
+
+    /**
+     * 根据用户id查询用户发布的所有面试题被收藏数之和
+     *
+     * @param userid 用户id
+     */
+    String selectCollectedCountByUserId(Long userid);
 
 }

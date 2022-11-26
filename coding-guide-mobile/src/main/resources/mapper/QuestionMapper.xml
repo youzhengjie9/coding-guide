@@ -139,7 +139,7 @@
         FROM `t_question`
         WHERE del_flag = 0
         AND is_public = 1
-        AND user_id= #{currentUserId}
+        AND user_id= #{userid}
         ORDER BY publish_time DESC
         LIMIT #{page},#{size}
     </select>
@@ -149,7 +149,7 @@
         FROM `t_question`
         WHERE del_flag = 0
         AND is_public = 0
-        AND user_id= #{currentUserId}
+        AND user_id= #{userid}
         ORDER BY publish_time DESC
         LIMIT #{page},#{size}
     </select>
@@ -172,7 +172,7 @@
         <include refid="field02"/>
         FROM t_question as tq
         LEFT JOIN t_question_collect tqc on tq.id = tqc.question_id
-        WHERE tqc.user_id = #{currentUserId}
+        WHERE tqc.user_id = #{userid}
         AND tq.del_flag = 0
         AND tq.is_public = 1
         ORDER BY tqc.collect_time DESC
@@ -182,7 +182,7 @@
         SELECT COUNT(*)
         FROM t_question as tq
         LEFT JOIN t_question_collect tqc on tq.id = tqc.question_id
-        WHERE tqc.user_id = #{currentUserId}
+        WHERE tqc.user_id = #{userid}
         AND tq.del_flag = 0
         AND tq.is_public = 1
     </select>
@@ -191,7 +191,7 @@
         <include refid="field02"/>
         FROM t_question as tq
                  LEFT JOIN t_question_like tql on tq.id = tql.question_id
-        WHERE tql.user_id = #{currentUserId}
+        WHERE tql.user_id = #{userid}
           AND tq.del_flag = 0
           AND tq.is_public = 1
         ORDER BY tql.like_time DESC
@@ -201,9 +201,19 @@
         SELECT COUNT(*)
         FROM t_question as tq
         LEFT JOIN t_question_like tql on tq.id = tql.question_id
-        WHERE tql.user_id = #{currentUserId}
+        WHERE tql.user_id = #{userid}
         AND tq.del_flag = 0
         AND tq.is_public = 1
+    </select>
+    <select id="selectLikedCountByUserId" resultType="java.lang.Long">
+        SELECT SUM(like_count)
+        FROM t_question
+        WHERE user_id = #{userid}
+    </select>
+    <select id="selectCollectedCountByUserId" resultType="java.lang.Long">
+        SELECT SUM(collect_count)
+        FROM t_question
+        WHERE user_id = #{userid}
     </select>
 
 

@@ -43,17 +43,17 @@
           class="avator"
           width="1.5rem"
           height="1.5rem"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="userCard.avatar"
         />
       </van-col>
 
       <van-col span="20">
         <div class="userinfo">
           <!-- 昵称 -->
-          <span class="nickname">abcabc123</span>
+          <span class="nickname">{{userCard.nickName}}</span>
           <br />
           <!-- 帐号/用户名 -->
-          <span class="username">帐号: abcabc123</span>
+          <span class="username">帐号: {{userCard.userName}}</span>
         </div>
       </van-col>
     </div>
@@ -64,18 +64,21 @@
 
       <!-- 男 -->
 
-      <!-- <van-tag color="deepskyblue">
-        <svg class="icon" aria-hidden="true" style="width:23px;height:23px;">
-          <use xlink:href="#icon-xingbienan" rel="external nofollow" ></use>
-        </svg>
+      <van-tag size="medium" color="deepskyblue" v-if="userCard.sex == 0">
+        
+        <i class="iconfont icon-xingbienan" style="font-size: 17px;"></i>
         &nbsp;19岁
-      </van-tag> -->
+      </van-tag>
 
-      <van-tag color="deeppink">
-        <!-- 女 -->
-        <svg class="icon" aria-hidden="true" style="width:17px;height:17px;">
-          <use xlink:href="#icon-xingbienv" rel="external nofollow" ></use>
-        </svg>
+      <!-- 女 -->
+      <van-tag size="medium" color="deeppink" v-else-if="userCard.sex == 1">
+        <i class="iconfont icon-xingbienv" style="font-size: 17px;"></i>
+        &nbsp;19岁
+      </van-tag>
+
+      <!-- 未知 -->
+      <van-tag size="medium" color="#7232dd" plain v-else>
+        <!-- 未知 -->
         &nbsp;19岁
       </van-tag>
 
@@ -83,7 +86,7 @@
 
     <!-- 地址（省市区） -->
     <div class="address">
-      <van-tag plain type="primary">
+      <van-tag size="medium" plain type="primary">
         广东省-河源市-源城区
       </van-tag>
     </div>
@@ -91,11 +94,12 @@
     <!-- 学校 -->
     <div class="school">
 
-      <van-tag plain type="primary" style="margin-right:10px">
+      <van-tag plain size="medium" type="primary" style="margin-right:10px">
         东莞理工学院城市学院
       </van-tag>
     </div>
 
+    <!--  -->
     <div class="footer_top">
           <van-col span="6">
             <span style="font-size: 15px">获赞</span>
@@ -114,14 +118,20 @@
           </van-col>
         </div>
 
-        <!--  -->
+        
         <div class="footer_bottom">
+
+          <!-- 获赞 -->
           <van-col span="6">
-            <span style="font-size: 15px; color: orangered">9999999</span>
+            <span style="font-size: 15px; color: orangered">
+              {{userCard.likedCount}}
+            </span>
           </van-col>
 
           <van-col span="6">
-            <span style="font-size: 15px; color: orangered">9999999</span>
+            <span style="font-size: 15px; color: orangered">
+              {{userCard.collectedCount}}
+            </span>
           </van-col>
 
           <van-col span="6">
@@ -141,11 +151,19 @@ import { Toast } from "vant";
 import{
   logout
 } from '@/api/logout'
+import{
+  getCurUserCardInfo
+} from '@/api/user'
+
 export default {
   data() {
     return {
       menuShow: false, //控制左上角菜单弹出层展示状态
+      userCard:{}  //用户资料卡
     };
+  },
+  created(){
+    this.loadCurUserCardInfo();
   },
   methods: {
     //打开左上角菜单弹出层
@@ -181,6 +199,12 @@ export default {
                 duration: 1500,
               });
         })
+    },
+    //加载当前用户个人资料卡信息
+    loadCurUserCardInfo(){
+      getCurUserCardInfo().then(res=>{
+        this.userCard=res.data.data;
+      })
     }
   },
 };

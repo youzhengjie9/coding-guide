@@ -99,7 +99,7 @@ public class User implements Serializable {
     * 头像地址
     */
     @TableField("avatar")
-    @ApiModelProperty(name = "status",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
+    @ApiModelProperty(name = "avatar",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
     @ExcelIgnore //easy-excel忽视这个属性（也就是不导出这个属性）
     private String avatar;
     /**

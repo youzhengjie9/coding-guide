@@ -143,24 +143,24 @@ public interface QuestionMapper extends BaseMapper<Question> {
     /**
      * 查询用户的作品（公开的面试题），并按照发布日期排序
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserPublicQuestionByLimit(@Param("currentUserId") Long currentUserId,
+    List<Question> selectUserPublicQuestionByLimit(@Param("userid") Long userid,
                                                       @Param("page") int page,
                                                       @Param("size") int size);
 
     /**
      * 查询用户的私密（私密的面试题），并按照发布日期排序
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserPrivateQuestionByLimit(@Param("currentUserId") Long currentUserId,
+    List<Question> selectUserPrivateQuestionByLimit(@Param("userid") Long userid,
                                                     @Param("page") int page,
                                                     @Param("size") int size);
 
@@ -168,12 +168,12 @@ public interface QuestionMapper extends BaseMapper<Question> {
     /**
      * 查询用户的收藏（收藏并且公开的面试题）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserCollectQuestionByLimit(@Param("currentUserId") Long currentUserId,
+    List<Question> selectUserCollectQuestionByLimit(@Param("userid") Long userid,
                                                     @Param("page") int page,
                                                     @Param("size") int size);
 
@@ -182,18 +182,18 @@ public interface QuestionMapper extends BaseMapper<Question> {
      *
      * @return {@link Long}
      */
-    Long selectUserCollectQuestionCount(@Param("currentUserId") Long currentUserId);
+    Long selectUserCollectQuestionCount(@Param("userid") Long userid);
 
 
     /**
      * 查询用户的点赞（点赞并且公开的面试题）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @param page          页面
      * @param size          大小
      * @return {@link List}<{@link Question}>
      */
-    List<Question> selectUserLikeQuestionByLimit(@Param("currentUserId") Long currentUserId,
+    List<Question> selectUserLikeQuestionByLimit(@Param("userid") Long userid,
                                                  @Param("page") int page,
                                                  @Param("size") int size);
 
@@ -201,10 +201,26 @@ public interface QuestionMapper extends BaseMapper<Question> {
     /**
      * 查询用户的点赞数（点赞并且公开的面试题数）
      *
-     * @param currentUserId 当前用户id
+     * @param userid 用户id
      * @return {@link Long}
      */
-    Long selectUserLikeQuestionCount(@Param("currentUserId") Long currentUserId);
+    Long selectUserLikeQuestionCount(@Param("userid") Long userid);
 
+
+    /**
+     * 根据用户id查询用户发布的所有面试题被点赞数之和
+     *
+     * @param userid 用户id
+     * @return {@link Long}
+     */
+    Long selectLikedCountByUserId(@Param("userid") Long userid);
+
+    /**
+     * 根据用户id查询用户发布的所有面试题被收藏数之和
+     *
+     * @param userid 用户id
+     * @return {@link Long}
+     */
+    Long selectCollectedCountByUserId(@Param("userid") Long userid);
 
 }
