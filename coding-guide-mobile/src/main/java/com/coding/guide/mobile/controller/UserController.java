@@ -72,7 +72,6 @@ public class UserController {
     @ApiModelProperty("根据用户id获取用户资料卡信息")
     public ResponseResult<UserCardInfoVO> getUserCardInfoByUserId(@RequestParam("userid") long userid){
 
-        System.out.println(userid);
         UserCardInfoVO userCardInfoVO =userService.getUserCardInfoByUserId(userid);
 
         return ResponseResult.ok(userCardInfoVO);

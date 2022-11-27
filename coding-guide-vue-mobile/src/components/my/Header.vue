@@ -85,17 +85,17 @@
     </div>
 
     <!-- 地址（省市区） -->
-    <div class="address">
+    <div class="address" v-if="userCard.address != ''">
       <van-tag size="medium" plain type="primary">
-        广东省-河源市-源城区
+        {{userCard.address}}
       </van-tag>
     </div>
 
     <!-- 学校 -->
-    <div class="school">
+    <div class="school" v-if="userCard.school != ''">
 
-      <van-tag plain size="medium" type="primary" style="margin-right:10px">
-        东莞理工学院城市学院
+      <van-tag plain size="medium" type="primary">
+        {{userCard.school}}
       </van-tag>
     </div>
 
@@ -258,20 +258,20 @@ export default {
 }
 
 .sex {
-  width: 16%;
+  width: 19%;
   height: 17px;
   margin-left: 15px;
   float: left;
 }
 
 .address {
-  width: 35%;
+  width: 37%;
   height: 25px;
   float: left;
 }
 
 .school {
-  width: 45%;
+  width: 40%;
   height: 25px;
   float: left;
 }

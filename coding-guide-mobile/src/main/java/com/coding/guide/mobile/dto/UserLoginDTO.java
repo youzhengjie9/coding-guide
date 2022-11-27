@@ -38,19 +38,4 @@ public class UserLoginDTO implements Serializable {
     @ApiModelProperty(name = "password",value = "密码",example = "123456")
     private String password;
 
-//    /**
-//     * 验证码
-//     */
-//    @NotBlank(message = "验证码不能为空")
-//    @ApiModelProperty(name = "code",value = "验证码")
-//    private String code;
-//
-//    /**
-//     * 存储在redis中的正确的验证码的key，通过这个key能找到正确的验证码
-//     */
-//    @NotBlank(message = "codeKey不能为空")
-//    @ApiModelProperty(name = "codeKey",value = "存储在redis中的正确的验证码的key，通过这个key能找到正确的验证码")
-//    private String codeKey;
-
-
 }

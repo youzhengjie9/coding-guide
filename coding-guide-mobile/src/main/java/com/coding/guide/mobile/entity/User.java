@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -75,20 +76,6 @@ public class User implements Serializable {
     @ExcelProperty(value = "用户状态",converter = StatusConverter.class)
     private Integer status;
     /**
-    * 邮箱
-    */
-    @TableField("email")
-    @ApiModelProperty(name = "email",value = "用户邮箱",example = "1550324080@qq.com")
-    @ExcelProperty("用户邮箱")
-    private String email;
-    /**
-    * 手机号
-    */
-    @TableField("phone")
-    @ApiModelProperty(name = "phone",value = "用户手机号",example = "18420161234")
-    @ExcelProperty("用户手机号")
-    private String phone;
-    /**
     * 用户性别（0男，1女，2未知）
     */
     @TableField("sex")
@@ -102,6 +89,23 @@ public class User implements Serializable {
     @ApiModelProperty(name = "avatar",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
     @ExcelIgnore //easy-excel忽视这个属性（也就是不导出这个属性）
     private String avatar;
+
+    /**
+     * 用户积分
+     */
+    @TableField("integral")
+    @ApiModelProperty(name = "integral",value = "用户积分",example = "0")
+    @ExcelProperty(value = "用户积分")
+    private Integer integral;
+
+    /**
+     * 用户钱包余额
+     */
+    @TableField("money")
+    @ApiModelProperty(name = "money",value = "用户钱包余额",example = "0.00")
+    @ExcelProperty(value = "用户钱包余额")
+    private BigDecimal money;
+
     /**
     * 创建时间
     */
@@ -110,7 +114,7 @@ public class User implements Serializable {
     @ExcelProperty(value = "创建时间",converter = LocalDateConverter.class) //导出该属性，并且指定LocalDateConverter
     private LocalDate createTime;
     /**
-    * 更新时间
+    * 最后一次修改时间
     */
     @TableField("update_time")
     @ApiModelProperty(name = "updateTime",value = "最后一次修改时间",example = "2022-05-20 10:20:30")

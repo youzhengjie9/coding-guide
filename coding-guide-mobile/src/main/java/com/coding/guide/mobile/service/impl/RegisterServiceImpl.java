@@ -7,7 +7,9 @@ import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.dto.UserRegisterDTO;
 import com.coding.guide.mobile.entity.User;
+import com.coding.guide.mobile.entity.UserDetail;
 import com.coding.guide.mobile.service.RegisterService;
+import com.coding.guide.mobile.service.UserDetailService;
 import com.coding.guide.mobile.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -33,6 +36,9 @@ public class RegisterServiceImpl implements RegisterService {
     private UserService userService;
 
     @Autowired
+    private UserDetailService userDetailService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
@@ -45,7 +51,7 @@ public class RegisterServiceImpl implements RegisterService {
     private static final String DEFAULT_NICK_NAME_PREFIX="昵称-";
 
     //默认头像
-    private static final String DEFAULT_AVATAR="https://img2.baidu.com/it/u=361550957,796293689&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500";
+    private static final String DEFAULT_AVATAR="https://pic4.zhimg.com/80/v2-c5a0d0d57c1a85c6db56e918707f54a3_720w.webp";
 
     /**
      * 注册用户
@@ -96,17 +102,30 @@ public class RegisterServiceImpl implements RegisterService {
             User user = new User();
             BeanUtils.copyProperties(userRegisterDTO,user);
 
-            user.setId(SnowId.nextId())
+            long userid = SnowId.nextId();
+            user.setId(userid)
                     .setNickName(DEFAULT_NICK_NAME_PREFIX+user.getUserName())
                     .setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()))
                     .setStatus(0)
                     .setSex(2)
                     .setAvatar(DEFAULT_AVATAR)
+                    .setIntegral(0)
+                    .setMoney(new BigDecimal("0.00"))
                     .setCreateTime(LocalDate.now())
                     .setUpdateTime(LocalDateTime.now()).setDelFlag(0);
-            //创建用户
+            //将user对象数据添加到t_user表中
             userService.save(user);
 
+            UserDetail userDetail = UserDetail.builder()
+                    .id(SnowId.nextId())
+                    .userId(userid)
+                    .phone(userRegisterDTO.getPhone())
+                    .birthday(LocalDate.now())
+                    .updateTime(LocalDateTime.now())
+                    .delFlag(0)
+                    .build();
+            //将userDetail对象添加到t_user_detail表中
+            userDetailService.save(userDetail);
 
             //最后要把验证码删除掉
             redisTemplate.delete(RedisConstant.PHONE_CODE_KEY_PREFIX +userRegisterDTO.getPhone());

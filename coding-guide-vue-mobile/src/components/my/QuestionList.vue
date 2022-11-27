@@ -48,7 +48,7 @@ export default {
       refreshing: false,
       error: false,
       page: 1, //默认是第一页
-      size: 4, //一次4条
+      size: 6, //一次6条
       total: 0, //总记录数
     };
   },
@@ -128,7 +128,7 @@ export default {
       this.finished = false;
       (this.error = false),
         (this.page = 1), //默认是第一页
-        (this.size = 4), //一次4条
+        (this.size = 6), //一次6条
         (this.total = 0); //总记录数
 
       // 重新加载数据
