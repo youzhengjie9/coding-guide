@@ -18,8 +18,20 @@ export function getUserCardInfoByUserId(userid){
     return request({
         method:'get',
         url:'/user/getUserCardInfoByUserId',
-        data:{
+        params:{
             userid:userid
+        }
+    })
+}
+
+
+
+export function getSimpleUserInfoByPublisherId(publisherId){
+    return request({
+        method:'get',
+        url:'/user/getSimpleUserInfoByPublisherId',
+        params:{
+            publisherId:publisherId
         }
     })
 }

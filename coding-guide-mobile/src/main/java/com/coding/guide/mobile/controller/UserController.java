@@ -6,6 +6,7 @@ import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.security.SecurityUser;
 import com.coding.guide.mobile.service.UserService;
+import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.TokenVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
 import io.swagger.annotations.Api;
@@ -76,5 +77,23 @@ public class UserController {
 
         return ResponseResult.ok(userCardInfoVO);
     }
+
+    /**
+     * 根据发布者用户id获取简单的用户信息（包括用户昵称、头像、积分等级、是否被当前用户关注）
+     *
+     * @param publisherId 发布者用户id
+     * @return {@link ResponseResult}<{@link SimpleUserInfoVO}>
+     */
+    @GetMapping(path = "/getSimpleUserInfoByPublisherId")
+    @ApiModelProperty("根据发布者用户id获取简单的用户信息")
+    public ResponseResult<SimpleUserInfoVO> getSimpleUserInfoByPublisherId(@RequestParam("publisherId") long publisherId){
+
+        SimpleUserInfoVO simpleUserInfoVO=userService.getSimpleUserInfoByPublisherId(publisherId);
+
+        return ResponseResult.ok(simpleUserInfoVO);
+    }
+
+
+
 
 }

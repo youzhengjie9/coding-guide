@@ -9,7 +9,7 @@
                 width="1rem"
                 height="1rem"
                 lazy-load
-                src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                :src="userInfo.avatar"
                 />
             </div>
 
@@ -17,9 +17,10 @@
                 
                 <span style="margin-left:0.2rem;font-size: 0.42rem;">
 
-                    abcabc123
-                <!-- 会员图标，如果有会员则显示这个图标 -->
-                <van-icon name="diamond-o" color="red" size="20"/>
+                    {{userInfo.nickName}}
+                    <van-tag :color="userInfo.backgroundColor">
+                        {{userInfo.levelFormat}}
+                    </van-tag>
 
                 </span>
                 <!-- <br/> -->
@@ -42,14 +43,18 @@
 
 <script>
 export default {
-    name:'QuestionDetailUserInfo'
+    name:'QuestionDetailUserInfo',
+    props:{
+        userInfo:Object
+    }
 }
 </script>
 
 <style scoped>
 
 .userinfo{
-    padding: 0.22667rem 0.45333rem 0.05333rem;
+    padding: 0.52667rem 0.45333rem 0.55333rem;
+    
 }
 .avatar{
     float: left;

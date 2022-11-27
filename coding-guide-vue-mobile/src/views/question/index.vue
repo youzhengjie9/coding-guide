@@ -6,8 +6,8 @@
     <!-- 标题组件 -->
     <question-detail-title :questionTitle="questionTitle" />
 
-    <!-- 用户信息组件 -->
-    <question-detail-user-info />
+    <!-- 用户（发布者）信息组件 -->
+    <question-detail-user-info :userInfo="userInfo" />
 
     <!-- 面试题内容组件 -->
     <question-detail-content :question="question" />
@@ -32,11 +32,15 @@ import {
   selectCurUserAllLikeQuestionId,
   selectCurUserAllCollectQuestionId
 } from "../../api/question";
+import{
+  getSimpleUserInfoByPublisherId
+}from '@/api/user'
 export default {
   data() {
     return {
       question: {},
       questionTitle: "",
+      userInfo:{} //用户（发布者）信息
     };
   },
   components: {
@@ -73,7 +77,14 @@ export default {
           this.$store.dispatch('initCollectList',res.data.data);
       })
     },
-    getQuestion() {
+    //加载发布者用户信息
+    loadPublisherInfo(publisherId){
+      console.log(publisherId)
+      getSimpleUserInfoByPublisherId(publisherId).then(res=>{
+        this.userInfo=res.data.data;
+      })
+    },
+    loadQuestionContent() {
       let questionId = this.$route.query.id;
 
       selectQuestionDetail(questionId)
@@ -81,6 +92,9 @@ export default {
           if (res.data.code == 200) {
             this.question = res.data.data;
             this.questionTitle = res.data.data.title;
+            //调用加载发布者用户信息方法
+            this.loadPublisherInfo(this.question.userId);
+
           } else {
             Toast.fail("加载失败,请重试");
           }
@@ -91,7 +105,8 @@ export default {
     },
   },
   mounted() {
-    this.getQuestion();
+
+    this.loadQuestionContent();
   },
 };
 </script>

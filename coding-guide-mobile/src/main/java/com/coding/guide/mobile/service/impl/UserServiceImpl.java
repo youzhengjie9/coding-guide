@@ -3,13 +3,16 @@ package com.coding.guide.mobile.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.coding.guide.common.utils.ConverUtil;
+import com.coding.guide.mobile.entity.IntegralLevel;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.entity.UserDetail;
 import com.coding.guide.mobile.mapper.UserMapper;
 import com.coding.guide.mobile.security.SecurityContext;
+import com.coding.guide.mobile.service.IntegralLevelService;
 import com.coding.guide.mobile.service.QuestionService;
 import com.coding.guide.mobile.service.UserDetailService;
 import com.coding.guide.mobile.service.UserService;
+import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserDetailService userDetailService;
+
+    @Autowired
+    private IntegralLevelService integralLevelService;
 
     @Override
     public UserCardInfoVO getCurUserCardInfo() {
@@ -127,6 +133,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         //反之如果user对象为空则返回null
         return null;
+    }
+
+    @Override
+    public SimpleUserInfoVO getSimpleUserInfoByPublisherId(long publisherId) {
+
+        //获取当前登录的用户id。
+        var currentUserId = SecurityContext.getCurrentUserId();
+        //根据发布者用户id（publisherId）查询用户的nickName和avatar和integral
+        var user = this.lambdaQuery()
+                .select(
+                        User::getNickName,
+                        User::getAvatar,
+                        User::getIntegral
+                )
+                .eq(User::getId, publisherId)
+                .eq(User::getStatus, 0)
+                .one();
+        //第一次bean拷贝
+        var simpleUserInfoVO = BeanUtil.copyProperties(user, SimpleUserInfoVO.class);
+        //获取用户的积分
+        var integral = user.getIntegral();
+        var integralLevel = integralLevelService.getIntegralLevelByIntegral(integral);
+        String levelFormat = "Lv" + integralLevel.getLevel() + "-" + integralLevel.getDescribe();
+        simpleUserInfoVO.setBackgroundColor(integralLevel.getBackgroundColor())
+                        .setLevelFormat(levelFormat);
+
+        // TODO: 2022/11/28 查询当前用户（currentUserId）是否关注了该用户（publisherId）
+
+        return simpleUserInfoVO;
     }
 }
 
