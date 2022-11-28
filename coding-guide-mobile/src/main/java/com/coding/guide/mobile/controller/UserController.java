@@ -89,7 +89,6 @@ public class UserController {
     public ResponseResult<SimpleUserInfoVO> getSimpleUserInfoByPublisherId(@RequestParam("publisherId") long publisherId){
 
         SimpleUserInfoVO simpleUserInfoVO=userService.getSimpleUserInfoByPublisherId(publisherId);
-        simpleUserInfoVO.setPublisherId(publisherId);
 
         return ResponseResult.ok(simpleUserInfoVO);
     }

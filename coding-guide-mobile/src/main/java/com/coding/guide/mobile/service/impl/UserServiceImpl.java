@@ -152,12 +152,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .one();
         //第一次bean拷贝
         var simpleUserInfoVO = BeanUtil.copyProperties(user, SimpleUserInfoVO.class);
-        //获取用户的积分
+        //根据publisherId查询其学校
+        UserDetail userDetail = userDetailService.lambdaQuery()
+                .select(UserDetail::getSchool)
+                .eq(UserDetail::getUserId, publisherId)
+                .one();
+        //获取用户当前的积分
         var integral = user.getIntegral();
         var integralLevel = integralLevelService.getIntegralLevelByIntegral(integral);
         String levelFormat = "Lv" + integralLevel.getLevel() + "-" + integralLevel.getDescribe();
         simpleUserInfoVO.setBackgroundColor(integralLevel.getBackgroundColor())
-                        .setLevelFormat(levelFormat);
+                        .setLevelFormat(levelFormat)
+                        .setPublisherId(publisherId)
+                        .setSchool((Objects.nonNull(userDetail)) ? userDetail.getSchool() : "" );
 
         // TODO: 2022/11/28 查询当前用户（currentUserId）是否关注了该用户（publisherId）
 

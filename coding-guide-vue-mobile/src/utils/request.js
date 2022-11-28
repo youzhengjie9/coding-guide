@@ -6,10 +6,10 @@ const service = axios.create({
   //我们springboot后端服务器的ip+端口号
   
   //后端的内网ip地址（当项目在本机内网上运行则配置这个）
-  baseURL: "http://localhost:16666/mobile",
+  // baseURL: "http://localhost:16666/mobile",
 
   //后端的外网反向代理ip地址（当后端项目部署到云服务器或者反向代理就要这样配置成自己的地址）
-  // baseURL: "http://24a650a5.cpolar.top/mobile",
+  baseURL: "http://36efff3.r6.cpolar.top/mobile",
 
   //6s没有响应就算超时
   timeout: 6000

@@ -35,11 +35,12 @@ import {
 import{
   getSimpleUserInfoByPublisherId
 }from '@/api/user'
+
 export default {
   data() {
     return {
-      question: {},
-      questionTitle: "",
+      question: {}, //面试题对象
+      questionTitle: "", //面试题标题
       userInfo:{} //用户（发布者）信息
     };
   },
@@ -89,7 +90,9 @@ export default {
       selectQuestionDetail(questionId)
         .then((res) => {
           if (res.data.code == 200) {
+    
             this.question = res.data.data;
+
             this.questionTitle = res.data.data.title;
             //调用加载发布者用户信息方法
             this.loadPublisherInfo(this.question.userId);

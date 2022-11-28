@@ -610,12 +610,12 @@ CREATE TABLE `t_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
 # 明文密码都为123456
-INSERT INTO `t_user` VALUES (5700000000000001, 'youzhengjie1', '蔡徐坤', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic4.zhimg.com/80/v2-c5a0d0d57c1a85c6db56e918707f54a3_720w.webp',6352,23532.12, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000002, 'youzhengjie2', '周杰伦', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://inews.gtimg.com/newsapp_bt/0/9680744080/1000',1735,3100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000003, 'youzhengjie3', '马化腾', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://inews.gtimg.com/newsapp_bt/0/9680744086/1000',2360,5200.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000004, 'youzhengjie4', '马云', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-7a72eb660888bfeaabccc81b2b77e43e_720w.webp',10510,7300.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000005, 'youzhengjie5', '王健林', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-d19367c9372cedcfbe010ccf493862ae_720w.webp',360,8100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000006, 'youzhengjie6', '刘强东', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic1.zhimg.com/80/v2-3330141ad8f6029c499016deae2f8eac_720w.webp',0,18100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000001, 'youzhengjie1', '蔡徐坤', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',6352,23532.12, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000002, 'youzhengjie2', '周杰伦', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-7a72eb660888bfeaabccc81b2b77e43e_720w.webp',1735,3100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000003, 'youzhengjie3', '马化腾', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic1.zhimg.com/80/v2-3330141ad8f6029c499016deae2f8eac_720w.webp',2360,5200.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000004, 'youzhengjie4', '马云', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-d19367c9372cedcfbe010ccf493862ae_720w.webp',10510,7300.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000005, 'youzhengjie5', '王健林', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',360,8100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000006, 'youzhengjie6', '刘强东', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp',0,18100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
 
 
 /* 用户细节表 */

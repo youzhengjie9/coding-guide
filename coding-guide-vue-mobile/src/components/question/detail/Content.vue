@@ -22,6 +22,7 @@
 <script>
 import BackToTop from "@/components/common/BackToTop.vue";
 import QuestionDetailContentFooter from "@/components/question/detail/ContentFooter.vue";
+
 export default {
   name:'QuestionDetailContent',
   props:{
@@ -34,7 +35,7 @@ export default {
 };
 </script>
 
-<!-- 这里不加scoped，不然.github-markdown-body样式不会生效 -->
+<!-- 这里不加scoped，.github-markdown-body样式就不会生效 -->
 <!-- 由于没有加scoped，那么下面的classname一定要全局唯一 -->
 <style lang="scss">
 

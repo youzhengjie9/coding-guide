@@ -1,13 +1,13 @@
 <template>
   <div class="userinfo">
     <van-row>
-      <van-col span="18">
+      <van-col span="19">
         <div class="avatar">
           <van-image
+            class="vant-avatar"
             round
             width="1rem"
             height="1rem"
-            lazy-load
             :src="userInfo.avatar"
           />
         </div>
@@ -15,27 +15,42 @@
         <div class="username">
           <span style="margin-left: 0.2rem; font-size: 0.42rem">
             {{ userInfo.nickName }}
-            <van-tag :color="userInfo.backgroundColor">
+            <van-tag :color="userInfo.backgroundColor" class="vant-level">
               {{ userInfo.levelFormat }}
             </van-tag>
           </span>
-          <!-- <br/> -->
-          <!-- <span style="margin-left:0.2rem;font-size: 0.32rem;">
-                    <van-icon name="diamond-o" color="red" size="20"/>
-                </span> -->
+          <br />
+          <!-- 学校 -->
+          <span 
+          v-if="userInfo.school != null && userInfo.school != ''"
+          style="margin-left: 0.2rem; font-size: 0.32rem">
+
+            <i style="color: darkviolet">{{userInfo.school}}</i>
+
+          </span>
         </div>
       </van-col>
-      <van-col span="6">
-        <!-- 未关注 -->
-        <van-button v-if="!isFollow(userInfo.publisherId)" color="red" plain round style="height: 0.7rem">
-          关注
-        </van-button>
+      <van-col span="5">
+        <div class="vant-follow">
 
-        <!-- 已关注 -->
-        <van-button v-else color="black" plain round style="height:0.70rem;">
+          <!-- 未关注 -->
+          <button 
+          class="follow"
+          v-if="!isFollow(userInfo.publisherId)"
+          >
+            关注
+          </button>
+
+          <!-- 已关注 -->
+          <button
+          v-else
+          class="already-follow"
+          >
             已关注
-        </van-button>
+          </button>
 
+          
+        </div>
       </van-col>
     </van-row>
   </div>
@@ -50,8 +65,6 @@ export default {
   methods: {
     //判断发布这篇面试题的用户是否被当前用户关注，
     isFollow(userid) {
-        console.log('=====')
-        console.log(userid)
       return this.$store.state.User.userFollowIdList.includes(Number(userid));
     },
   },
@@ -67,23 +80,46 @@ export default {
 }
 
 .username {
-  margin-top: 0.15rem;
+  /* margin-top: 0.13rem; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
 }
 
-/*
-修改.van-image、van-icon、van-button的position，解决面试题详情中的用户头像、图标、关注按钮遮挡头部组件
-*/
-.van-image {
+.vant-avatar {
   position: inherit;
 }
-.van-icon {
+
+.vant-level {
   position: inherit;
 }
-.van-button {
+.vant-follow {
+  
   position: inherit;
 }
+
+/* 关注按钮 */
+.follow{
+  height: 0.70rem;
+  width:  1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.35rem;
+  background-color: white; /* 背景颜色 */
+  color: red;  /* 字体 */
+  border: 1px solid red; /* 边框 */
+}
+
+/* 已关注按钮 */
+.already-follow{
+  height: 0.70rem;
+  width:  1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.35rem;
+  background-color: white; /* 背景颜色 */
+  color: black;  /* 字体 */
+  border: 1px solid black; /* 边框 */
+}
+
+
 </style>

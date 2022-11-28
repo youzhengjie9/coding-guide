@@ -15,7 +15,7 @@
             <li>数据库:MySQL8.0、Redis6、ElasticSearch7.8</li>
             <li>测试工具:Jmeter、Postman</li>
             <li>运维技术:Docker、Kubernetes(后期才上)、Jenkins(看情况)</li>
-            <li>开发环境:JDK8、IDEA2021.3、vscode</li>
+            <li>开发环境:JDK17、IDEA2022.2.4、vscode</li>
         </ul>
         </div>
       </div>
