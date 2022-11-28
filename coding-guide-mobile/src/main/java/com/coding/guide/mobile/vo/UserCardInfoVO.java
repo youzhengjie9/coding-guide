@@ -51,8 +51,8 @@ public class UserCardInfoVO implements Serializable {
     @ApiModelProperty(name = "collectedCount",value = "被收藏数")
     private String collectedCount;
 
-    @ApiModelProperty(name = "focusCount",value = "关注数")
-    private String focusCount;
+    @ApiModelProperty(name = "followCount",value = "关注数")
+    private String followCount;
 
     @ApiModelProperty(name = "fansCount",value = "粉丝数")
     private String fansCount;

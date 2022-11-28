@@ -38,7 +38,10 @@ public class SimpleUserInfoVO implements Serializable {
     @ApiModelProperty(name = "backgroundColor",value = "背景颜色,一定要为rgb格式（例如：rgb(79 121 222)）")
     private String backgroundColor;
 
-    @ApiModelProperty(name = "hasForce",value = "当前用户是否关注了该用户")
-    private boolean hasForce;
+    @ApiModelProperty(name = "followed",value = "该用户是否被当前用户关注")
+    private boolean followed;
+
+
+
 
 }
