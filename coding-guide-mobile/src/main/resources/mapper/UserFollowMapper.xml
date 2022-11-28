@@ -4,23 +4,35 @@
 
 
     <select id="getFollowUserIdListByUserId" resultType="java.lang.Long">
-
+        SELECT follow_user_id
+        FROM t_user_follow
+        WHERE user_id = #{userid}
     </select>
 
     <select id="getFollowUserListByUserId" resultType="com.coding.guide.mobile.entity.User">
-
+        SELECT tu.id, tu.nick_name, tu.avatar
+        FROM t_user_follow as tuf
+                 LEFT JOIN t_user as tu ON tuf.follow_user_id = tu.id
+        WHERE user_id = #{userid}
     </select>
 
     <select id="getFollowCountByUserId" resultType="java.lang.Long">
-
+        SELECT count(follow_user_id)
+        FROM t_user_follow
+        WHERE user_id = #{userid}
     </select>
 
     <select id="getFansUserListByUserId" resultType="com.coding.guide.mobile.entity.User">
-
+        SELECT tu.id, tu.nick_name, tu.avatar
+        FROM t_user_follow as tuf
+                 LEFT JOIN t_user as tu ON tuf.user_id = tu.id
+        WHERE follow_user_id = #{userid}
     </select>
 
     <select id="getFansCountByUserId" resultType="java.lang.Long">
-
+        SELECT count(user_id)
+        FROM t_user_follow
+        WHERE follow_user_id = #{userid}
     </select>
 
 

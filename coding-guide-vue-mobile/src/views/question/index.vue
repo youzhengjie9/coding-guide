@@ -79,7 +79,6 @@ export default {
     },
     //加载发布者用户信息
     loadPublisherInfo(publisherId){
-      console.log(publisherId)
       getSimpleUserInfoByPublisherId(publisherId).then(res=>{
         this.userInfo=res.data.data;
       })

@@ -7,6 +7,7 @@ import com.coding.guide.mobile.entity.UserFollow;
 import com.coding.guide.mobile.mapper.UserFollowMapper;
 import com.coding.guide.mobile.service.UserFollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +23,16 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
 
     private UserFollowMapper userFollowMapper;
 
+    private RedisTemplate redisTemplate;
+
     @Autowired
     public void setUserFollowMapper(UserFollowMapper userFollowMapper) {
         this.userFollowMapper = userFollowMapper;
+    }
+
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
     @Override

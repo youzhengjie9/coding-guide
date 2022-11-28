@@ -1,5 +1,8 @@
 package com.coding.guide.mobile.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +29,17 @@ public class SimpleUserInfoVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(name = "nickName",value = "昵称",example = "我的昵称")
+    /**
+     * 发布者用户id
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @ApiModelProperty(name = "publisherId",value = "发布者用户id")
+    private Long publisherId;
+
+    @ApiModelProperty(name = "nickName",value = "昵称")
     private String nickName;
 
-    @ApiModelProperty(name = "avatar",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
+    @ApiModelProperty(name = "avatar",value = "头像地址")
     private String avatar;
 
     @ApiModelProperty(name = "levelFormat",value = "积分等级格式化字符串（例如：Lv1-倔强青铜）")
@@ -37,11 +47,5 @@ public class SimpleUserInfoVO implements Serializable {
 
     @ApiModelProperty(name = "backgroundColor",value = "背景颜色,一定要为rgb格式（例如：rgb(79 121 222)）")
     private String backgroundColor;
-
-    @ApiModelProperty(name = "followed",value = "该用户是否被当前用户关注")
-    private boolean followed;
-
-
-
 
 }

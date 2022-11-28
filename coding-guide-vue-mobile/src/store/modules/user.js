@@ -2,14 +2,18 @@ import Vue from 'vue'
 import { getCurrentUserInfo } from '../../api/user'
 import {
     refreshToken
-} from '../../api/refreshToken'
+} from '../../api/refresh-token'
+import {
+    selectCurUserFollowUserIdList
+} from '@/api/user-follow'
 
 const state = {
     userName: '', //用户帐号
     nickName: '', //用户昵称
     avatar: '',//当前用户头像地址
     accessToken: localStorage.getItem('accessToken'),
-    refreshToken: localStorage.getItem('refreshToken')
+    refreshToken: localStorage.getItem('refreshToken'),
+    userFollowIdList: [] //当前用户关注的所有用户的id集合
 }
 
 const mutations = {
@@ -27,6 +31,9 @@ const mutations = {
     },
     SET_REFRESHTOKEN: (state, refreshToken) => {
         state.refreshToken = refreshToken
+    },
+    SET_USER_FOLLOW_ID_LIST: (state, userFollowIdList) => {
+        state.userFollowIdList = userFollowIdList
     }
 }
 
@@ -45,19 +52,34 @@ const actions = {
         //点击登录后还需要执行一次手动把token放到vuex中（这步操作只在login操作执行一次即可）
         context.commit('SET_ACCESSTOKEN', data.data.accessToken);
         context.commit('SET_REFRESHTOKEN', data.data.refreshToken);
+
+        //加载当前用户关注的所有用户的id集合
+        actions.getCurrentUserFollowIdList(context);
     },
     //退出成功
-    logoutSuccess(context){
+    logoutSuccess(context) {
         //此时，后端已经成功将用户退出，前端只需要把token和用户信息清空即可（localstorage内容也要清空）
         //清空VUEX内容
-        context.commit('SET_USERNAME','')
-        context.commit('SET_NICKNAME','');
-        context.commit('SET_AVATAR','');
-        context.commit('SET_ACCESSTOKEN','');
-        context.commit('SET_REFRESHTOKEN','');
+        context.commit('SET_USERNAME', '')
+        context.commit('SET_NICKNAME', '');
+        context.commit('SET_AVATAR', '');
+        context.commit('SET_ACCESSTOKEN', '');
+        context.commit('SET_REFRESHTOKEN', '');
+        context.commit('SET_USER_FOLLOW_ID_LIST', []);
         //清空localstorage的accessToken和refreshToken
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
+    },
+    //获取当前用户关注的所有用户的id集合
+    getCurrentUserFollowIdList(context) {
+
+        //如果userFollowIdList为空才去后端查询关注列表,防止一直请求后端
+        if (state.userFollowIdList.length == 0) {
+            selectCurUserFollowUserIdList().then(res => {
+                context.commit('SET_USER_FOLLOW_ID_LIST', res.data.data);
+            })
+        }
+
     },
     getCurrentUserInfo(context) {
         return new Promise((resolve, reject) => {
@@ -66,6 +88,7 @@ const actions = {
                     context.commit('SET_USERNAME', res.data.data.userName);
                     context.commit('SET_NICKNAME', res.data.data.nickName);
                     context.commit('SET_AVATAR', res.data.data.avatar);
+                    actions.getCurrentUserFollowIdList(context);
                     resolve(res);
                 } else if (res.data.code === 301) {
                     //这里不做任何事，为了就是防止下一个else将token全部清掉，因为code=301是刷新token的编码，而不需要被清空数据
@@ -81,6 +104,7 @@ const actions = {
                     context.commit('SET_AVATAR', '');
                     context.commit('SET_ACCESSTOKEN', '');
                     context.commit('SET_REFRESHTOKEN', '');
+                    context.commit('SET_USER_FOLLOW_ID_LIST', []);
                     //清空localstorage的accessToken和refreshToken
                     localStorage.removeItem('accessToken')
                     localStorage.removeItem('refreshToken')
@@ -98,6 +122,7 @@ const actions = {
                 context.commit('SET_AVATAR', '');
                 context.commit('SET_ACCESSTOKEN', '');
                 context.commit('SET_REFRESHTOKEN', '');
+                context.commit('SET_USER_FOLLOW_ID_LIST', []);
                 //清空localstorage的accessToken和refreshToken
                 localStorage.removeItem('accessToken')
                 localStorage.removeItem('refreshToken')
@@ -122,6 +147,7 @@ const actions = {
             context.commit('SET_AVATAR', '');
             context.commit('SET_ACCESSTOKEN', '');
             context.commit('SET_REFRESHTOKEN', '');
+            context.commit('SET_USER_FOLLOW_ID_LIST', []);
             //清空localstorage的accessToken和refreshToken
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
