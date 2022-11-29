@@ -24,8 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Api("退出登录控制器")
 public class LogoutController {
 
-    @Autowired
+
     private LogoutService logoutService;
+
+    @Autowired
+    public void setLogoutService(LogoutService logoutService) {
+        this.logoutService = logoutService;
+    }
 
     /**
      * 用户退出接口。

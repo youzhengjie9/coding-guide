@@ -31,14 +31,24 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
     private JwtProperties jwtProperties;
+
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+    @Autowired
+    public void setJwtProperties(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     @Override
     public ResponseResult<TokenVO> login(UserLoginDTO userLoginDto, HttpServletRequest request) throws Throwable {

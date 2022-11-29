@@ -23,8 +23,12 @@ import javax.validation.Valid;
 @Api("移动端登录控制器")
 public class LoginController {
 
-    @Autowired
     private LoginService loginService;
+
+    @Autowired
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     /**
      * 移动端登录接口

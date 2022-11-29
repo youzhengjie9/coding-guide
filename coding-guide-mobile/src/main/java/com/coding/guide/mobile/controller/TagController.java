@@ -26,8 +26,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RequestMapping(path = "/mobile/tag")
 public class TagController {
 
-    @Autowired
     private TagService tagService;
+
+    @Autowired
+    public void setTagService(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     /**
      * 查询所有没被删除的标签（也就是条件为del_flag=0）

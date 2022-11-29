@@ -8,10 +8,7 @@ import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.entity.UserDetail;
 import com.coding.guide.mobile.mapper.UserMapper;
 import com.coding.guide.mobile.security.SecurityContext;
-import com.coding.guide.mobile.service.IntegralLevelService;
-import com.coding.guide.mobile.service.QuestionService;
-import com.coding.guide.mobile.service.UserDetailService;
-import com.coding.guide.mobile.service.UserService;
+import com.coding.guide.mobile.service.*;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +28,30 @@ import java.util.Objects;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Autowired
     private QuestionService questionService;
 
-    @Autowired
     private UserDetailService userDetailService;
 
-    @Autowired
     private IntegralLevelService integralLevelService;
+
+    private UserFollowService userFollowService;
+
+    @Autowired
+    public void setUserFollowService(UserFollowService userFollowService) {
+        this.userFollowService = userFollowService;
+    }
+    @Autowired
+    public void setIntegralLevelService(IntegralLevelService integralLevelService) {
+        this.integralLevelService = integralLevelService;
+    }
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+    @Autowired
+    public void setUserDetailService(UserDetailService userDetailService) {
+        this.userDetailService = userDetailService;
+    }
 
     @Override
     public UserCardInfoVO getCurUserCardInfo() {
@@ -74,9 +87,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String likedCount = questionService.selectLikedCountByUserId(userId);
         //查询收藏总数
         String collectedCount = questionService.selectCollectedCountByUserId(userId);
-        //设置点赞总数和收藏总数到userCardInfoVO对象
+        //查询关注数
+        String followCount = userFollowService.getFollowCountByUserId(userId);
+        //查询粉丝数
+        String fansCount = userFollowService.getFansCountByUserId(userId);
+        //放入userCardInfoVO对象中
         userCardInfoVO.setLikedCount(likedCount)
-                .setCollectedCount(collectedCount);
+                .setCollectedCount(collectedCount)
+                .setFollowCount(followCount)
+                .setFansCount(fansCount);
         return userCardInfoVO;
     }
 
@@ -126,9 +145,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             String likedCount = questionService.selectLikedCountByUserId(userid);
             //查询收藏总数
             String collectedCount = questionService.selectCollectedCountByUserId(userid);
-            //设置点赞总数和收藏总数到userCardInfoVO对象
+            //查询关注数
+            String followCount = userFollowService.getFollowCountByUserId(userid);
+            //查询粉丝数
+            String fansCount = userFollowService.getFansCountByUserId(userid);
+            //放入userCardInfoVO对象中
             userCardInfoVO.setLikedCount(likedCount)
-                    .setCollectedCount(collectedCount);
+                    .setCollectedCount(collectedCount)
+                    .setFollowCount(followCount)
+                    .setFansCount(fansCount);
             return userCardInfoVO;
         }
         //反之如果user对象为空则返回null

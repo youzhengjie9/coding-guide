@@ -21,8 +21,12 @@ import javax.validation.Valid;
 @RequestMapping(path = "/mobile/register")
 public class RegisterController {
 
-    @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    public void setRegisterService(RegisterService registerService) {
+        this.registerService = registerService;
+    }
 
     /**
      * 注册

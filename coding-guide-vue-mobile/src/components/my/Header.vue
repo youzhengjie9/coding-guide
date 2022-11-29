@@ -121,25 +121,29 @@
         
         <div class="footer_bottom">
 
-          <!-- 获赞 -->
+          <!-- 获赞数 -->
           <van-col span="6">
             <span style="font-size: 15px; color: orangered">
               {{userCard.likedCount}}
             </span>
           </van-col>
-
+          <!-- 收藏数 -->
           <van-col span="6">
             <span style="font-size: 15px; color: orangered">
               {{userCard.collectedCount}}
             </span>
           </van-col>
-
+          <!-- 关注数 -->
           <van-col span="6">
-            <span style="font-size: 15px; color: orangered">9999999</span>
+            <span style="font-size: 15px; color: orangered">
+              {{userCard.followCount}}
+            </span>
           </van-col>
-
+          <!-- 收藏数 -->
           <van-col span="6">
-            <span style="font-size: 15px; color: orangered">9999999</span>
+            <span style="font-size: 15px; color: orangered">
+              {{userCard.fansCount}}
+            </span>
           </van-col>
         </div>
     

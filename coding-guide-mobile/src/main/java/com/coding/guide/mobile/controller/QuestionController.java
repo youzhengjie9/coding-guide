@@ -32,8 +32,12 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/mobile/question")
 public class QuestionController {
 
-    @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     /**
      * 将List<Question>转成List<QuestionVO>

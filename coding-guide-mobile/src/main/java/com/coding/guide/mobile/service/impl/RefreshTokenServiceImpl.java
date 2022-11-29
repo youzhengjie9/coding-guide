@@ -24,11 +24,17 @@ import java.util.Map;
 @Slf4j
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    @Autowired
     private JwtProperties jwtProperties;
 
-    @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    public void setJwtProperties(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public ResponseResult<TokenVO> refresh(String refreshToken) {

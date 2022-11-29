@@ -37,24 +37,40 @@ import java.util.stream.Collectors;
 @Slf4j
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
 
-    @Autowired
     private QuestionMapper questionMapper;
 
-    @Autowired
     private QuestionLikeService questionLikeService;
 
-    @Autowired
     private QuestionCollectService questionCollectService;
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
     /**
      * 拿到面试题的caffeine缓存对象（使用@Qualifier指定注入的bean）
      */
+    private Cache<String,Question> questionCache;
+    @Autowired
+    public void setQuestionMapper(QuestionMapper questionMapper) {
+        this.questionMapper = questionMapper;
+    }
+    @Autowired
+    public void setQuestionLikeService(QuestionLikeService questionLikeService) {
+        this.questionLikeService = questionLikeService;
+    }
+    @Autowired
+    public void setQuestionCollectService(QuestionCollectService questionCollectService) {
+        this.questionCollectService = questionCollectService;
+    }
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
     @Autowired
     @Qualifier("questionCache")
-    private Cache<String,Question> questionCache;
+    public void setQuestionCache(Cache<String, Question> questionCache) {
+        this.questionCache = questionCache;
+    }
 
     @Override
     public List<Question> selectHottestQuestionByLimit(int page, int size) {

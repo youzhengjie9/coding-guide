@@ -32,17 +32,29 @@ import java.util.concurrent.TimeUnit;
 @Transactional //开启事务
 public class RegisterServiceImpl implements RegisterService {
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private UserDetailService userDetailService;
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setUserDetailService(UserDetailService userDetailService) {
+        this.userDetailService = userDetailService;
+    }
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     //手机验证码过期时间，单位是:分钟
     private static final long PHONE_CODE_EXPIRED= 5L;

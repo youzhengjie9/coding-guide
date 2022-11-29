@@ -21,8 +21,12 @@ import java.util.Objects;
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

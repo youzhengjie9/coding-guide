@@ -39,17 +39,30 @@ public class SecurityConfig {
             "/mobile/register/**"
     };
 
-    @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
-    @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
     private AccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
     private AuthenticationEntryPointImpl authenticationEntryPoint;
+
+    @Autowired
+    public void setAuthenticationConfiguration(AuthenticationConfiguration authenticationConfiguration) {
+        this.authenticationConfiguration = authenticationConfiguration;
+    }
+    @Autowired
+    public void setJwtAuthenticationFilter(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+    @Autowired
+    public void setAccessDeniedHandler(AccessDeniedHandler accessDeniedHandler) {
+        this.accessDeniedHandler = accessDeniedHandler;
+    }
+    @Autowired
+    public void setAuthenticationEntryPoint(AuthenticationEntryPointImpl authenticationEntryPoint) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

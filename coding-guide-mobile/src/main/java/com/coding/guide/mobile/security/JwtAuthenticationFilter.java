@@ -36,14 +36,27 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtProperties jwtProperties;
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
     private UserService userService;
+
+
+    @Autowired
+    public void setJwtProperties(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
+
+    @Autowired
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * >>>>>特别注意: 所有请求都要经过这个过滤器（不管该请求路径是否在SecurityConfig类的authorizeRequests()中配置了permitAll还是authenticated都会进来这里）<<<<<<<<

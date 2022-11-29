@@ -17,8 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class IntegralLevelServiceImpl extends ServiceImpl<IntegralLevelMapper, IntegralLevel> implements IntegralLevelService {
 
-    @Autowired
     private IntegralLevelMapper integralLevelMapper;
+
+    @Autowired
+    public void setIntegralLevelMapper(IntegralLevelMapper integralLevelMapper) {
+        this.integralLevelMapper = integralLevelMapper;
+    }
 
     @Override
     public IntegralLevel getIntegralLevelByIntegral(int integral) {

@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/mobile")
 public class RefreshTokenController {
 
-    @Autowired
     private RefreshTokenService refreshTokenService;
+
+    @Autowired
+    public void setRefreshTokenService(RefreshTokenService refreshTokenService) {
+        this.refreshTokenService = refreshTokenService;
+    }
 
     /**
      * RequestHeader注解可以接收前端传来的名为value（refreshToken）的请求头，
