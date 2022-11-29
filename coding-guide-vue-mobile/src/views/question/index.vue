@@ -12,12 +12,18 @@
     <!-- 面试题内容组件 -->
     <question-detail-content :question="question" />
 
+    <!-- 展示全部评论组件 -->
+    <question-comment-list ref="commentListParent" />
+
     <!-- 底部标签栏（点赞、收藏、评论） -->
     <question-detail-footer-tab-bar 
     :question="question"
     @changeLikeCount="changeLikeCount"
     @changeCollectCount="changeCollectCount"
+    @moveCommentList="moveCommentList"
     />
+
+
   </div>
 </template>
 
@@ -27,6 +33,8 @@ import QuestionDetailTitle from "../../components/question/detail/Title.vue";
 import QuestionDetailContent from "../../components/question/detail/Content.vue";
 import QuestionDetailUserInfo from "../../components/question/detail/UserInfo.vue";
 import QuestionDetailFooterTabBar from "../../components/question/detail/FooterTabBar.vue";
+import QuestionCommentList from '@/components/question/comment/List.vue'
+
 import { selectQuestionDetail } from "../../api/question";
 import {
   selectCurUserAllLikeQuestionId,
@@ -50,12 +58,18 @@ export default {
     QuestionDetailContent,
     QuestionDetailUserInfo,
     QuestionDetailFooterTabBar,
+    QuestionCommentList
   },
   created(){
     this.loadLikeQuestionIdList();
     this.loadCollectQuestionIdList();
   },
   methods: {
+    // 滚动到评论列表
+    moveCommentList(){
+      const commentList = this.$refs['commentListParent'].$refs['commentList']
+      window.scrollTo (0,commentList.offsetTop-400);
+    },
     //修改面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)
     changeLikeCount(val) {
         this.question.likeCount = this.question.likeCount + val;

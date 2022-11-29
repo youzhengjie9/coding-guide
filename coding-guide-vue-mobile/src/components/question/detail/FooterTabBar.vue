@@ -51,11 +51,13 @@
       <!-- 评论 -->
       <van-col span="4" style="padding: 0.12667rem">
         <van-cell center>
-          <van-icon name="comment-o" size="27" />
+          <van-icon name="comment-o" size="27" @click="moveCommentList"/>
           <br />
           <span>{{question.commentCount}}</span>
         </van-cell>
       </van-col>
+
+
     </van-row>
   </div>
 </template>
@@ -69,7 +71,13 @@ export default {
   props:{
     question: Object
   },
+  components:{
+    
+  },
   methods: {
+    moveCommentList(){
+      this.$emit('moveCommentList')
+    },
     //修改Props传过来的question的点赞数。修改为当前点赞数+val(val可以为1和-1)
     changeLikeCount(val){
       //由于子组件不能修改props的属性，必须通过下面这种方式让父组件去修改props属性

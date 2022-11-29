@@ -13,6 +13,7 @@
     <!-- 内容底部组件 -->
     <question-detail-content-footer :question="question"/>
 
+
     <!-- 回到顶部组件 -->
     <back-to-top></back-to-top>
     
@@ -22,7 +23,6 @@
 <script>
 import BackToTop from "@/components/common/BackToTop.vue";
 import QuestionDetailContentFooter from "@/components/question/detail/ContentFooter.vue";
-
 export default {
   name:'QuestionDetailContent',
   props:{
