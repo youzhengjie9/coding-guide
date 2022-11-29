@@ -34,7 +34,19 @@ const mutations = {
     },
     SET_USER_FOLLOW_ID_LIST: (state, userFollowIdList) => {
         state.userFollowIdList = userFollowIdList
-    }
+    },
+    //关注用户（将publisherId添加到数组中）
+    FOLLOW_USER(state,publisherId) {
+        state.userFollowIdList.push(publisherId)
+    },
+    //取消关注用户（从数组中移除指定publisherId元素）
+    CANCEL_FOLLOW_USER(state,publisherId) {
+        for (var i in state.userFollowIdList) {
+            if (state.userFollowIdList[i] == publisherId) {
+                state.userFollowIdList.splice(i, 1);
+            }
+        }
+    },
 }
 
 const actions = {
@@ -54,7 +66,7 @@ const actions = {
         context.commit('SET_REFRESHTOKEN', data.data.refreshToken);
 
         //加载当前用户关注的所有用户的id集合
-        actions.getCurrentUserFollowIdList(context);
+        actions.loadCurrentUserFollowIdList(context);
     },
     //退出成功
     logoutSuccess(context) {
@@ -70,8 +82,8 @@ const actions = {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
     },
-    //获取当前用户关注的所有用户的id集合
-    getCurrentUserFollowIdList(context) {
+    //加载当前用户关注的所有用户的id集合
+    loadCurrentUserFollowIdList(context) {
 
         //如果userFollowIdList为空才去后端查询关注列表,防止一直请求后端
         if (state.userFollowIdList.length == 0) {
@@ -81,6 +93,14 @@ const actions = {
         }
 
     },
+    //关注用户
+    followUser(context, publisherId) {
+        context.commit('FOLLOW_USER', publisherId)
+    },
+    //取消关注用户
+    cancelFollowUser(context, publisherId) {
+        context.commit('CANCEL_FOLLOW_USER', publisherId)
+    },
     getCurrentUserInfo(context) {
         return new Promise((resolve, reject) => {
             getCurrentUserInfo().then((res) => {
@@ -88,7 +108,7 @@ const actions = {
                     context.commit('SET_USERNAME', res.data.data.userName);
                     context.commit('SET_NICKNAME', res.data.data.nickName);
                     context.commit('SET_AVATAR', res.data.data.avatar);
-                    actions.getCurrentUserFollowIdList(context);
+                    actions.loadCurrentUserFollowIdList(context);
                     resolve(res);
                 } else if (res.data.code === 301) {
                     //这里不做任何事，为了就是防止下一个else将token全部清掉，因为code=301是刷新token的编码，而不需要被清空数据

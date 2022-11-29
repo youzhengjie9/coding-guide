@@ -37,14 +37,16 @@
           <button 
           class="follow"
           v-if="!isFollow(userInfo.publisherId)"
+          @click="followUser(userInfo.publisherId)"
           >
             关注
           </button>
 
           <!-- 已关注 -->
           <button
-          v-else
           class="already-follow"
+          v-else
+          @click="followUser(userInfo.publisherId)"
           >
             已关注
           </button>
@@ -57,6 +59,12 @@
 </template>
 
 <script>
+
+import{
+  followUser
+} from '@/api/user-follow'
+import { Toast } from "vant";
+
 export default {
   name: "QuestionDetailUserInfo",
   props: {
@@ -64,8 +72,27 @@ export default {
   },
   methods: {
     //判断发布这篇面试题的用户是否被当前用户关注，
-    isFollow(userid) {
-      return this.$store.state.User.userFollowIdList.includes(Number(userid));
+    isFollow(publisherId) {
+      return this.$store.state.User.userFollowIdList.includes(Number(publisherId));
+    },
+    //如果没有关注则关注该用户，如果关注了则取消关注该用户
+    followUser(publisherId) {
+      //如果Vuex中不包含该publisherId，则关注用户
+      if (
+        !this.$store.state.User.userFollowIdList.includes(Number(publisherId))
+      ) {
+        followUser(publisherId).then((res) => {
+          this.$store.dispatch("followUser", Number(publisherId));
+          Toast.success("关注成功");
+        });
+      }
+      //反之，则取消关注该用户
+      else {
+        followUser(publisherId).then((res) => {
+          this.$store.dispatch("cancelFollowUser", Number(publisherId));
+          Toast.success("取消关注成功");
+        });
+      }
     },
   },
 };

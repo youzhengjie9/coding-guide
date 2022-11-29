@@ -56,4 +56,23 @@ public interface UserFollowService extends IService<UserFollow> {
      */
     String getFansCountByUserId(long userid);
 
+    /**
+     * 判断用户1（userid）是否关注了用户2（followUserId）
+     *
+     * @param userid       用户id
+     * @param followUserId 关注的用户id
+     * @return boolean true代表关注了，反之则没关注
+     */
+    boolean isFollow(Long userid, Long followUserId);
+
+    /**
+     * 关注用户
+     *
+     * @param userid       关注者用户id
+     * @param followUserId 被关注的用户id
+     * @return boolean
+     */
+    boolean followUser(Long userid, Long followUserId);
+
+
 }

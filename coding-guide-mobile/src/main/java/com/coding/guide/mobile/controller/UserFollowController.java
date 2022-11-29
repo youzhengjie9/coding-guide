@@ -4,11 +4,12 @@ import com.coding.guide.common.data.ResponseResult;
 import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.service.UserFollowService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 /**
@@ -42,6 +43,25 @@ public class UserFollowController {
         var followUserIdList = userFollowService.getFollowUserIdListByUserId(currentUserId);
 
         return ResponseResult.ok(followUserIdList);
+    }
+
+    /**
+     * 关注用户
+     *
+     * @param followUserId 被关注的用户id
+     * @return {@link ResponseResult}<{@link Object}>
+     */
+    @GetMapping(path = "/{followUserId}")
+    @ApiOperation("关注用户")
+    public ResponseResult<Object> followUser(@PathVariable("followUserId") Long followUserId){
+        try {
+            //当前的用户id
+            var userid = SecurityContext.getCurrentUserId();
+            var res= userFollowService.followUser(userid,followUserId);
+            return ResponseResult.ok(res);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
     }
 
 

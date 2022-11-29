@@ -41,21 +41,27 @@ const mutations = {
 };
 
 const actions = {
+    //初始化点赞数据
     initLikeList(context,likeList){
         context.commit('INIT_LIKE_LIST',likeList)
     },
+    //初始化收藏数据
     initCollectList(context,collectList){
         context.commit('INIT_COLLECT_LIST',collectList)
     },
+    //点赞
     like(context, questionId) {
         context.commit('LIKE', questionId)
     },
+    //取消点赞
     cancelLike(context, questionId) {
         context.commit('CANCEL_LIKE', questionId)
     },
+    //收藏
     collect(context, questionId) {
         context.commit('COLLECT', questionId)
     },
+    //取消收藏
     cancelCollect(context, questionId) {
         context.commit('CANCEL_COLLECT', questionId)
     }
