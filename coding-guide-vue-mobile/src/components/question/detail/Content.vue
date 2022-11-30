@@ -13,6 +13,9 @@
     <!-- 内容底部组件 -->
     <question-detail-content-footer :question="question"/>
 
+    <question-comment-list 
+      ref="commentListParent" 
+    />
 
     <!-- 回到顶部组件 -->
     <back-to-top></back-to-top>
@@ -23,6 +26,9 @@
 <script>
 import BackToTop from "@/components/common/BackToTop.vue";
 import QuestionDetailContentFooter from "@/components/question/detail/ContentFooter.vue";
+import QuestionCommentList from '@/components/question/comment/List.vue'
+
+
 export default {
   name:'QuestionDetailContent',
   props:{
@@ -30,7 +36,11 @@ export default {
   },
   components:{
     BackToTop,
-    QuestionDetailContentFooter
+    QuestionDetailContentFooter,
+    QuestionCommentList
+  },
+  methods:{
+    
   }
 };
 </script>

@@ -10,20 +10,23 @@
     <question-detail-user-info :userInfo="userInfo" />
 
     <!-- 面试题内容组件 -->
-    <question-detail-content :question="question" />
-
-    <!-- 展示全部评论组件 -->
-    <question-comment-list ref="commentListParent" />
-
-    <!-- 底部标签栏（点赞、收藏、评论） -->
-    <question-detail-footer-tab-bar 
-    :question="question"
-    @changeLikeCount="changeLikeCount"
-    @changeCollectCount="changeCollectCount"
-    @moveCommentList="moveCommentList"
+    <question-detail-content
+      :question="question"
+      ref="questionDetailContentParent"
     />
 
+    <!-- 全部评论组件 -->
+    <!-- <question-comment-list 
+      ref="commentListParent" 
+    /> -->
 
+    <!-- 底部标签栏（点赞、收藏、评论） -->
+    <question-detail-footer-tab-bar
+      :question="question"
+      @changeLikeCount="changeLikeCount"
+      @changeCollectCount="changeCollectCount"
+      @moveCommentList="moveCommentList"
+    />
   </div>
 </template>
 
@@ -33,70 +36,71 @@ import QuestionDetailTitle from "../../components/question/detail/Title.vue";
 import QuestionDetailContent from "../../components/question/detail/Content.vue";
 import QuestionDetailUserInfo from "../../components/question/detail/UserInfo.vue";
 import QuestionDetailFooterTabBar from "../../components/question/detail/FooterTabBar.vue";
-import QuestionCommentList from '@/components/question/comment/List.vue'
+import QuestionCommentList from "@/components/question/comment/List.vue";
 
 import { selectQuestionDetail } from "../../api/question";
 import {
   selectCurUserAllLikeQuestionId,
-  selectCurUserAllCollectQuestionId
+  selectCurUserAllCollectQuestionId,
 } from "../../api/question";
-import{
-  getSimpleUserInfoByPublisherId
-}from '@/api/user'
+import { getSimpleUserInfoByPublisherId } from "@/api/user";
 
 export default {
   data() {
     return {
       question: {}, //面试题对象
       questionTitle: "", //面试题标题
-      userInfo:{} //用户（发布者）信息
+      userInfo: {}, //用户（发布者）信息
     };
   },
+  props: {},
   components: {
     QuestionDetailHeader,
     QuestionDetailTitle,
     QuestionDetailContent,
     QuestionDetailUserInfo,
     QuestionDetailFooterTabBar,
-    QuestionCommentList
+    QuestionCommentList,
   },
-  created(){
+  created() {
     this.loadLikeQuestionIdList();
     this.loadCollectQuestionIdList();
   },
   methods: {
     // 滚动到评论列表
-    moveCommentList(){
-      const commentList = this.$refs['commentListParent'].$refs['commentList']
-      window.scrollTo (0,commentList.offsetTop-400);
+    moveCommentList() {
+      const commentList =
+        this.$refs["questionDetailContentParent"].$refs["commentListParent"]
+          .$refs["commentList"];
+      window.scrollTo(0, commentList.offsetTop - 400);
     },
     //修改面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)
     changeLikeCount(val) {
-        this.question.likeCount = this.question.likeCount + val;
+      this.question.likeCount = this.question.likeCount + val;
     },
     //修改面试题的收藏数。修改为当前收藏数+val(val可以为1和-1)
     changeCollectCount(val) {
       this.question.collectCount = this.question.collectCount + val;
     },
     //加载当前用户所有点赞的面试题id集合
-    loadLikeQuestionIdList(){
-        selectCurUserAllLikeQuestionId().then(res=>{
-          //将数据放到VueX中
-          this.$store.dispatch('initLikeList',res.data.data);
-      })
+    loadLikeQuestionIdList() {
+      selectCurUserAllLikeQuestionId().then((res) => {
+        //将数据放到VueX中
+        this.$store.dispatch("initLikeList", res.data.data);
+      });
     },
     //加载当前用户所有收藏的面试题id集合
-    loadCollectQuestionIdList(){
-        selectCurUserAllCollectQuestionId().then(res=>{
-          //将数据放到VueX中
-          this.$store.dispatch('initCollectList',res.data.data);
-      })
+    loadCollectQuestionIdList() {
+      selectCurUserAllCollectQuestionId().then((res) => {
+        //将数据放到VueX中
+        this.$store.dispatch("initCollectList", res.data.data);
+      });
     },
     //加载发布者用户信息
-    loadPublisherInfo(publisherId){
-      getSimpleUserInfoByPublisherId(publisherId).then(res=>{
-        this.userInfo=res.data.data;
-      })
+    loadPublisherInfo(publisherId) {
+      getSimpleUserInfoByPublisherId(publisherId).then((res) => {
+        this.userInfo = res.data.data;
+      });
     },
     loadQuestionContent() {
       let questionId = this.$route.query.id;
@@ -104,13 +108,11 @@ export default {
       selectQuestionDetail(questionId)
         .then((res) => {
           if (res.data.code == 200) {
-    
             this.question = res.data.data;
 
             this.questionTitle = res.data.data.title;
             //调用加载发布者用户信息方法
             this.loadPublisherInfo(this.question.userId);
-
           } else {
             Toast.fail("加载失败,请重试");
           }
@@ -121,7 +123,6 @@ export default {
     },
   },
   mounted() {
-
     this.loadQuestionContent();
   },
 };

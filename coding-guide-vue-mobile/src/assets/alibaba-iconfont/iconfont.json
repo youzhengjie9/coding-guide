@@ -6,25 +6,11 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "5663246",
-      "name": "LV1",
-      "font_class": "1",
-      "unicode": "e691",
-      "unicode_decimal": 59025
-    },
-    {
-      "icon_id": "4880022",
-      "name": "点赞1",
-      "font_class": "dianzan",
-      "unicode": "e611",
-      "unicode_decimal": 58897
-    },
-    {
-      "icon_id": "17868600",
-      "name": "收藏",
-      "font_class": "shoucang",
-      "unicode": "e60d",
-      "unicode_decimal": 58893
+      "icon_id": "6548553",
+      "name": "已点赞",
+      "font_class": "yidianzan",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
     },
     {
       "icon_id": "1221225",
