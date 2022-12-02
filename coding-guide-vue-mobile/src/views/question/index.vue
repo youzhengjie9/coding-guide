@@ -15,10 +15,17 @@
       ref="questionDetailContentParent"
     />
 
-    <!-- 全部评论组件 -->
-    <!-- <question-comment-list 
-      ref="commentListParent" 
-    /> -->
+    <!-- 写评论popup -->
+    <van-popup
+      v-model="showWriteCommentPopup"
+      position="bottom"
+      get-container="body"
+    >
+      
+    <!-- “写评论”组件 -->
+      <write-comment/>
+
+    </van-popup>
 
     <!-- 底部标签栏（点赞、收藏、评论） -->
     <question-detail-footer-tab-bar
@@ -26,6 +33,7 @@
       @changeLikeCount="changeLikeCount"
       @changeCollectCount="changeCollectCount"
       @moveCommentList="moveCommentList"
+      @clickWriteComment="clickWriteComment"
     />
   </div>
 </template>
@@ -36,7 +44,9 @@ import QuestionDetailTitle from "../../components/question/detail/Title.vue";
 import QuestionDetailContent from "../../components/question/detail/Content.vue";
 import QuestionDetailUserInfo from "../../components/question/detail/UserInfo.vue";
 import QuestionDetailFooterTabBar from "../../components/question/detail/FooterTabBar.vue";
-import QuestionCommentList from "@/components/question/comment/List.vue";
+import WriteComment from '@/components/question/comment/WriteComment.vue'
+
+
 
 import { selectQuestionDetail } from "../../api/question";
 import {
@@ -51,6 +61,7 @@ export default {
       question: {}, //面试题对象
       questionTitle: "", //面试题标题
       userInfo: {}, //用户（发布者）信息
+      showWriteCommentPopup: false, //控制打开和关闭“写评论”的popup弹出层
     };
   },
   props: {},
@@ -60,18 +71,21 @@ export default {
     QuestionDetailContent,
     QuestionDetailUserInfo,
     QuestionDetailFooterTabBar,
-    QuestionCommentList,
+    WriteComment,
   },
   created() {
     this.loadLikeQuestionIdList();
     this.loadCollectQuestionIdList();
   },
   methods: {
+    //点击“写评论”按钮
+    clickWriteComment(){
+      this.showWriteCommentPopup=true
+    },
     // 滚动到评论列表
     moveCommentList() {
       const commentList =
-        this.$refs["questionDetailContentParent"].$refs["commentListParent"]
-          .$refs["commentList"];
+        this.$refs["questionDetailContentParent"].$refs["commentList"];
       window.scrollTo(0, commentList.offsetTop - 400);
     },
     //修改面试题的点赞数。修改为当前点赞数+val(val可以为1和-1)

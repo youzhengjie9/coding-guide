@@ -2,12 +2,14 @@
   <div class="footerTabBar">
     <van-row>
       <van-col span="10">
-        <van-search
-          left-icon=""
-          shape="round"
-          placeholder="快来评论鸭"
-          style="padding: 0.36667rem 0.32rem"
-        />
+        <van-button
+          class="write-btn"
+          type="primary"
+          round
+          plain 
+          @click="$emit('clickWriteComment')"
+          style="margin-left: 5px;width: 160px;"
+        >写评论</van-button>
       </van-col>
 
       <!-- 点赞 -->
