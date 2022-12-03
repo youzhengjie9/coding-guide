@@ -22,7 +22,7 @@
 
       <p>
         <!-- 回复时间 -->
-        <span class="replyTime"> {{ reply.commentTime }} </span>
+        <span class="replyTime"> {{ reply.replyTime }} </span>
 
         <!-- “回复”按钮 -->
         <button
@@ -55,7 +55,7 @@
       >
       </i>
 
-      <span> 10000 </span>
+      <span> {{reply.likeCount}} </span>
     </div>
   </van-cell>
 </template>

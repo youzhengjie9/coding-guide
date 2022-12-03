@@ -7,7 +7,7 @@
           type="primary"
           round
           plain 
-          @click="$emit('clickWriteComment')"
+          @click="$emit('clickWriteComment',question.id)"
           style="margin-left: 5px;width: 160px;"
         >写评论</van-button>
       </van-col>

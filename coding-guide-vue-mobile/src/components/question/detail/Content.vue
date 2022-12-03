@@ -26,11 +26,11 @@
       全部评论
     </p>
 
-    <!-- 全部评论展示列表 -->
+    <!-- 全部评论展示列表。 -->
     <question-comment-list
       ref="commentListParent"
       :currentQuestionId="Number(this.question.id)"
-      @clickReplyBtn="openReplyList"
+      @clickReplyBtn="clickReplyBtn"
       :commentList="commentList"
     />
 
@@ -49,6 +49,7 @@
         :questionId="getCurrentQuestionId"
         :currentReplyComment="currentReplyComment"
         @click-close="showReplyListPopup = false"
+        @changeCurrentReplyCommentReplyCount="changeCurrentReplyCommentReplyCount"
       />
       
     </van-popup>
@@ -68,7 +69,10 @@ import WriteComment from "@/components/question/comment/WriteComment.vue";
 export default {
   name: "QuestionDetailContent",
   props: {
+    //面试题对象
     question: Object,
+    //评论列表数组
+    commentList: Array
   },
   components: {
     BackToTop,
@@ -87,41 +91,23 @@ export default {
     return {
       showReplyListPopup: false, //控制打开和关闭popup弹出层（点击评论的“回复”按钮则设置为true，点击关闭则false）
       showWriteReplyPopup: false, //控制打开和关闭“写回复”的popup弹出层
-      //评论列表数据
-      commentList: [
-        {
-          id: "123456789000",
-          userId: "5700000000000002",
-          nickName: "昵称666",
-          content: "评论内容666",
-          commentTime: "2022-10-20 12:30:52",
-          replyCount: "600",
-          avatar:
-            "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
-        },
-      ],
       //当前回复的评论数据
-      currentReplyComment: {
-        id: "123456789000",
-        userId: "5700000000000002",
-        nickName: "昵称666",
-        content: "评论内容666",
-        commentTime: "2022-10-20 12:30:52",
-        replyCount: "600",
-        avatar:
-          "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
-      },
+      currentReplyComment: {},
     };
   },
   methods: {
-    // 点击“回复按钮”打开回复列表的popup弹出层。
-    //（currentReplyComment是我们点击回复的那条顶级评论）
-    openReplyList(currentReplyComment) {
+    // 点击评论列表的“回复按钮”时打开回复列表的popup弹出层。
+    //（currentReplyComment是我们点击回复的那条评论）
+    clickReplyBtn(currentReplyComment) {
       //打开回复列表的popup弹出层
       this.showReplyListPopup = true;
       //更新当前回复的评论数据
       this.currentReplyComment = currentReplyComment;
     },
+    //修改我们点击“回复”按钮的那条评论的回复数
+    changeCurrentReplyCommentReplyCount(count){
+      this.currentReplyComment.replyCount+=count;
+    }
   },
 };
 </script>

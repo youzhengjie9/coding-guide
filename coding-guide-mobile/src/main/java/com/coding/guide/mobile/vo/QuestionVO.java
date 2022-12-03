@@ -36,14 +36,12 @@ public class QuestionVO implements Serializable {
      * 主键
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId("id")
     @ApiModelProperty(name = "id",value = "主键")
     private Long id;
 
     /**
      * 面试题标题
      */
-    @TableField("title")
     @ApiModelProperty(name = "title",value = "面试题标题")
     private String title;
 

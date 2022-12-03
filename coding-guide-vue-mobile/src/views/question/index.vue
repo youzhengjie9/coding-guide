@@ -11,8 +11,9 @@
 
     <!-- 面试题内容组件 -->
     <question-detail-content
-      :question="question"
       ref="questionDetailContentParent"
+      :question="question"
+      :commentList="commentList"
     />
 
     <!-- 写评论popup -->
@@ -23,7 +24,10 @@
     >
       
     <!-- “写评论”组件 -->
-      <write-comment/>
+      <write-comment
+      :writeCommentQuestionId="Number(writeCommentQuestionId)"
+      @sendCommentSuccess="sendCommentSuccess"
+      />
 
     </van-popup>
 
@@ -62,6 +66,21 @@ export default {
       questionTitle: "", //面试题标题
       userInfo: {}, //用户（发布者）信息
       showWriteCommentPopup: false, //控制打开和关闭“写评论”的popup弹出层
+      writeCommentQuestionId: null, //点击“写评论”按钮时,记录我们发送的评论所属的面试题id
+      //该面试的评论列表数组
+      commentList: [
+        {
+          id: 2300000000000001,
+          userId: 5700000000000002,
+          nickName: "昵称5700000000000002",
+          content: "评论内容2300000000000001",
+          commentTime: "2022-10-20 12:30:52",
+          replyCount: 260,
+          likeCount:177,
+          avatar:
+            "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
+        },
+      ],
     };
   },
   props: {},
@@ -78,9 +97,22 @@ export default {
     this.loadCollectQuestionIdList();
   },
   methods: {
-    //点击“写评论”按钮
-    clickWriteComment(){
+    //点击“写评论”按钮。writeCommentQuestionId保存的是“我们发送的评论所属的面试题id”
+    clickWriteComment(writeCommentQuestionId){
+      this.writeCommentQuestionId=writeCommentQuestionId;
       this.showWriteCommentPopup=true
+    },
+    //发送评论成功的回调方法
+    sendCommentSuccess(newCommentObject){
+      
+      // 将新发送的评论放到评论列表的第一个
+      this.commentList.unshift(newCommentObject)
+
+      // 面试题的评论总数+1
+      this.question.commentCount++
+
+      // 关闭 “写评论” popup弹出层
+      this.showWriteCommentPopup = false
     },
     // 滚动到评论列表
     moveCommentList() {

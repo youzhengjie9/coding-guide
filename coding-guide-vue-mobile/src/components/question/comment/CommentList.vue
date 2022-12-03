@@ -27,7 +27,7 @@ export default {
     QuestionCommentItem,
   },
   props: {
-    //评论或者回复的列表数据
+    //评论列表数据
     commentList: {
       type: Array,
       default: () => []
@@ -37,11 +37,6 @@ export default {
 
     totalCount: {
       type: Number
-    },
-
-    type: {
-      type: String,
-      default: 'comment',//comment是评论，reply是回复
     }
   },
   data() {

@@ -56,8 +56,8 @@
         @click="likeComment"
       >
       </i>
-
-      <span> 10000 </span>
+      
+      <span> {{comment.likeCount}} </span>
     </div>
   </van-cell>
 </template>
