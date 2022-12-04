@@ -14,17 +14,17 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 回复实体类VO
+ * 面试题评论实体类VO
  *
  * @author youzhengjie
- * @date 2022/12/04 01:34:47
+ * @date 2022/12/04 01:12:58
  */
 @Data
 @Accessors(chain = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyVO implements Serializable {
+public class QuestionCommentVO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -37,40 +37,46 @@ public class ReplyVO implements Serializable {
     private Long id;
 
     /**
-     * 发送这条回复的用户id
+     * 发送这条评论的用户id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty(name = "userId",value = "发送这条回复的用户id")
+    @ApiModelProperty(name = "userId",value = "发送这条评论的用户id")
     private Long userId;
 
     /**
-     * 发送这条回复的用户昵称
+     * 发送这条评论的用户昵称
      */
-    @ApiModelProperty(name = "nickName",value = "发送这条回复的用户昵称")
+    @ApiModelProperty(name = "nickName",value = "发送这条评论的用户昵称")
     private String nickName;
 
     /**
-     * 发送这条回复的用户头像
+     * 发送这条评论的用户头像
      */
-    @ApiModelProperty(name = "avatar",value = "发送这条回复的用户头像")
+    @ApiModelProperty(name = "avatar",value = "发送这条评论的用户头像")
     private String avatar;
 
     /**
-     * 回复内容
+     * 评论内容（不能超过100字）
      */
-    @ApiModelProperty(name = "content",value = "回复内容")
+    @ApiModelProperty(name = "content",value = "评论内容（不能超过100字）")
     private String content;
 
     /**
-     * 回复时间
+     * 评论时间
      */
-    @ApiModelProperty(name = "replyTime",value = "回复时间",example = "2022-12-3 16:30")
-    private LocalDateTime replyTime;
+    @ApiModelProperty(name = "commentTime",value = "评论时间",example = "2022-12-3 16:30")
+    private LocalDateTime commentTime;
 
     /**
-     * 这条回复的点赞数
+     * 这条评论的回复数
      */
-    @ApiModelProperty(name = "likeCount",value = "这条回复的点赞数")
+    @ApiModelProperty(name = "replyCount",value = "这条评论的回复数")
+    private Integer replyCount;
+
+    /**
+     * 这条评论的点赞数
+     */
+    @ApiModelProperty(name = "likeCount",value = "这条评论的点赞数")
     private Integer likeCount;
 
 }

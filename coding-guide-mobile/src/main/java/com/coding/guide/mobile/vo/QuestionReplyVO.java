@@ -14,17 +14,17 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 评论实体类VO
+ * 面试题回复实体类VO
  *
  * @author youzhengjie
- * @date 2022/12/04 01:12:58
+ * @date 2022/12/04 01:34:47
  */
 @Data
 @Accessors(chain = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentVO implements Serializable {
+public class QuestionReplyVO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -37,46 +37,40 @@ public class CommentVO implements Serializable {
     private Long id;
 
     /**
-     * 发送这条评论的用户id
+     * 发送这条回复的用户id
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty(name = "userId",value = "发送这条评论的用户id")
+    @ApiModelProperty(name = "userId",value = "发送这条回复的用户id")
     private Long userId;
 
     /**
-     * 发送这条评论的用户昵称
+     * 发送这条回复的用户昵称
      */
-    @ApiModelProperty(name = "nickName",value = "发送这条评论的用户昵称")
+    @ApiModelProperty(name = "nickName",value = "发送这条回复的用户昵称")
     private String nickName;
 
     /**
-     * 发送这条评论的用户头像
+     * 发送这条回复的用户头像
      */
-    @ApiModelProperty(name = "avatar",value = "发送这条评论的用户头像")
+    @ApiModelProperty(name = "avatar",value = "发送这条回复的用户头像")
     private String avatar;
 
     /**
-     * 评论内容
+     * 回复内容（不能超过100字）
      */
-    @ApiModelProperty(name = "content",value = "评论内容")
+    @ApiModelProperty(name = "content",value = "回复内容（不能超过100字）")
     private String content;
 
     /**
-     * 评论时间
+     * 回复时间
      */
-    @ApiModelProperty(name = "commentTime",value = "评论时间",example = "2022-12-3 16:30")
-    private LocalDateTime commentTime;
+    @ApiModelProperty(name = "replyTime",value = "回复时间",example = "2022-12-3 16:30")
+    private LocalDateTime replyTime;
 
     /**
-     * 这条评论的回复数
+     * 这条回复的点赞数
      */
-    @ApiModelProperty(name = "replyCount",value = "这条评论的回复数")
-    private Integer replyCount;
-
-    /**
-     * 这条评论的点赞数
-     */
-    @ApiModelProperty(name = "likeCount",value = "这条评论的点赞数")
+    @ApiModelProperty(name = "likeCount",value = "这条回复的点赞数")
     private Integer likeCount;
 
 }

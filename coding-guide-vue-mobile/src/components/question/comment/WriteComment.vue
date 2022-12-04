@@ -6,7 +6,7 @@
         v-model.trim="content"
         autosize
         type="textarea"
-        maxlength="50"
+        maxlength="100"
         show-word-limit
         placeholder="善语结善缘,恶语伤人心"
       />
