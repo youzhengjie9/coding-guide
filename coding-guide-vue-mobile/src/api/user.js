@@ -24,8 +24,6 @@ export function getUserCardInfoByUserId(userid){
     })
 }
 
-
-
 export function getSimpleUserInfoByPublisherId(publisherId){
     return request({
         method:'get',

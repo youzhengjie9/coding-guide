@@ -9,10 +9,13 @@
       style="margin-right: 10px"
       class="avatar"
       :src="comment.avatar"
+      @click="toUserCardInfo(comment.userId)"
     />
 
     <!-- 用户昵称 -->
-    <span style="color: #466b9d" slot="title">{{ comment.nickName }}</span>
+    <span style="color: #466b9d" slot="title" @click="toUserCardInfo(comment.userId)">
+      {{ comment.nickName }}
+    </span>
 
     <div slot="label">
       <!-- 评论内容 -->
@@ -83,6 +86,15 @@ export default {
   methods: {
     //点赞评论
     likeComment(commentId) {},
+    //进入用户资料卡页面
+    toUserCardInfo(userId){
+      this.$router.push({
+        path:'/user/card',
+        query: {
+          id: userId,
+        },
+      })
+    }
   },
 };
 </script>

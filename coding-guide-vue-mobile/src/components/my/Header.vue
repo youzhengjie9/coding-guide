@@ -139,7 +139,7 @@
               {{userCard.followCount}}
             </span>
           </van-col>
-          <!-- 收藏数 -->
+          <!-- 粉丝数 -->
           <van-col span="6">
             <span style="font-size: 15px; color: orangered">
               {{userCard.fansCount}}
@@ -234,7 +234,7 @@ export default {
 .share{
   height: 0.66667rem;
   padding: 4px;
-  margin-right: 25px;
+  margin-right: 2px;
   float: right;
 }
 

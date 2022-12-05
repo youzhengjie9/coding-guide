@@ -6,7 +6,11 @@
     </van-nav-bar>
 
     <!-- 当前评论 -->
-    <question-comment-item :comment="currentReplyComment" :canReply="false" />
+    <question-comment-item 
+    :comment="currentReplyComment" 
+    :canReply="false" 
+    @click="toUserCardInfo(reply.repliedUserId)"
+    />
 
     <van-cell title="全部回复" :border="false" />
 
@@ -86,6 +90,8 @@ export default {
           content: "回复内容3300000000000001",
           replyTime: "2022-10-22 12:30:52",
           likeCount:10,
+          repliedUserId: 5700000000000002,
+          repliedNickName: '昵称5700000000000002',
           avatar:
             "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
         },
@@ -96,6 +102,8 @@ export default {
           content: "回复内容3300000000000002",
           replyTime: "2022-10-25 15:30:52",
           likeCount:20,
+          repliedUserId: 5700000000000003,
+          repliedNickName: '昵称5700000000000003',
           avatar:
             "https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp",
         },
@@ -107,6 +115,8 @@ export default {
           content: "回复内容3300000000000003",
           replyTime: "2022-11-22 13:30:52",
           likeCount:30,
+          repliedUserId: 0,
+          repliedNickName: null,
           avatar:
             "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
         },

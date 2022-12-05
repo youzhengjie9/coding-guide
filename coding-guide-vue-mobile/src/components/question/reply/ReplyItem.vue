@@ -1,6 +1,6 @@
 <template>
   <van-cell class="replyItem">
-    <!-- 用户头像 -->
+    <!-- 用户头像。点击头像进入用户资料卡页面 -->
     <van-image
       slot="icon"
       round
@@ -9,10 +9,38 @@
       style="margin-right: 10px"
       class="avatar"
       :src="reply.avatar"
+      @click="toUserCardInfo(reply.userId)"
     />
 
-    <!-- 用户昵称 -->
-    <span style="color: #466b9d" slot="title">{{ reply.nickName }}</span>
+    <!-- 用户昵称（点击昵称也可以进入用户资料卡页面）。有两种不同的展示方式： -->
+    <!-- 第1种：如果该“回复”回复的是评论。（repliedUserId==0则是这种情况） -->
+    <span slot="title" v-if="(reply.repliedUserId==0)">
+
+      <!-- 回复的发送者 -->
+      <span style="color: #466b9d" @click="toUserCardInfo(reply.userId)">
+        {{ reply.nickName }}
+      </span>
+
+    </span>
+    <!-- 第2种：如果该“回复”回复的是其他人的回复。（repliedUserId!=0则是这种情况） -->
+    <span slot="title" v-else>
+
+      <!-- 回复的发送者 -->
+      <span style="color: #466b9d" @click="toUserCardInfo(reply.userId)">
+        {{ reply.nickName }}
+      </span>
+      
+      <!-- 用户昵称之前的分隔符 -->
+      <span style="color:darkgrey;">
+        &nbsp;回复&nbsp;
+      </span> 
+
+      <!-- 被回复者 -->
+      <span style="color: #466b9d" @click="toUserCardInfo(reply.repliedUserId)">
+        {{ reply.repliedNickName }}
+      </span>
+
+    </span>
 
     <div slot="label">
       <!-- 回复内容 -->
@@ -31,6 +59,7 @@
         >
           回复
         </button>
+         
       </p>
     </div>
 
@@ -57,6 +86,7 @@
 
       <span> {{reply.likeCount}} </span>
     </div>
+
   </van-cell>
 </template>
 
@@ -76,6 +106,17 @@ export default {
   methods: {
     //点赞回复
     likeReply(replyId) {},
+    //进入用户资料卡页面
+    toUserCardInfo(userId){
+      
+      this.$router.push({
+        path:'/user/card',
+        query: {
+          id: userId,
+        },
+      })
+
+    }
   },
 };
 </script>
