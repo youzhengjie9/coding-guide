@@ -1,19 +1,20 @@
 <template>
   <van-cell class="comment-item">
     <!-- 用户头像 -->
-    <van-image
+
+    <img
       slot="icon"
-      round
-      width="30"
-      height="30"
-      style="margin-right: 10px"
-      class="avatar"
+      style="width: 1rem; height: 1rem; border-radius: 50%;margin-right: 10px;"
       :src="comment.avatar"
       @click="toUserCardInfo(comment.userId)"
     />
 
     <!-- 用户昵称 -->
-    <span style="color: #466b9d" slot="title" @click="toUserCardInfo(comment.userId)">
+    <span
+      style="color: #466b9d"
+      slot="title"
+      @click="toUserCardInfo(comment.userId)"
+    >
       {{ comment.nickName }}
     </span>
 
@@ -59,8 +60,8 @@
         @click="likeComment"
       >
       </i>
-      
-      <span> {{comment.likeCount}} </span>
+
+      <span> {{ comment.likeCount }} </span>
     </div>
   </van-cell>
 </template>
@@ -87,14 +88,14 @@ export default {
     //点赞评论
     likeComment(commentId) {},
     //进入用户资料卡页面
-    toUserCardInfo(userId){
+    toUserCardInfo(userId) {
       this.$router.push({
-        path:'/user/card',
+        path: "/user/card",
         query: {
           id: userId,
         },
-      })
-    }
+      });
+    },
   },
 };
 </script>
@@ -103,10 +104,6 @@ export default {
 .comment-item {
   position: inherit; /* 解决vant组件导致评论区样式阻挡头部 */
 }
-.avatar {
-  position: inherit; /* 解决评论区样式阻挡头部 */
-}
-
 .showReplyBtn {
   border-radius: 0.5rem;
   background-color: white; /* 背景颜色 */

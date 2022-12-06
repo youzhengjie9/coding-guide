@@ -45,6 +45,9 @@ public class UserCardInfoVO implements Serializable {
     @ApiModelProperty(name = "school",value = "学校")
     private String school;
 
+    @ApiModelProperty(name = "intro",value = "简介")
+    private String intro;
+
     @ApiModelProperty(name = "likedCount",value = "获赞数")
     private String likedCount;
 

@@ -3,8 +3,8 @@
     
     <!-- 评论展示列表 -->
     <van-list
-      v-model="loading"
-      :finished="finished"
+      v-model="commentListloading"
+      :finished="commentListFinished"
       finished-text="没有更多的评论了..."
       @load="onLoad"
     >
@@ -27,30 +27,33 @@ export default {
     QuestionCommentItem,
   },
   props: {
-    //评论列表数据
+    //该面试题的分页评论列表数据
     commentList: {
       type: Array,
       default: () => []
-    },
-    //当前面试题id
-    currentQuestionId: Number,
-
-    totalCount: {
-      type: Number
-    }
+    }, 
   },
   data() {
     return {
-      loading: false,
-      finished: false,
-      page: 1, //默认是第一页
-      size: 7, //一次7条
-      total: 0, //总记录数
+      commentListloading: false, //控制显示评论加载状态
+      commentListFinished: false, //评论列表分页数据是否展示到底了 
     };
   },
   methods: {
     //滚动分页
-    onLoad() {},
+    onLoad() {
+
+      this.$emit('loadCurrentQuestionCommentList',responseResult =>{
+          //如果code==1001，说明数据全部加载完成，没有更多的评论了
+          if(responseResult.lodingStatus == false){
+              this.commentListloading = false;
+          }
+          if(responseResult.finishStatus == true){
+              this.commentListFinished = true;
+          }
+      })
+      
+    },
   },
 };
 </script>

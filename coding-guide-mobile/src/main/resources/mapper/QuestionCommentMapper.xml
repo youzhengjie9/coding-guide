@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coding.guide.mobile.mapper.QuestionCommentMapper">
+
+    <sql id="question_comment_vo_field01">
+        tqc.id,
+        user_id,
+        tu.nick_name,
+        content,
+        comment_time,
+        reply_count,
+        like_count,
+        tu.avatar
+    </sql>
+
+    <select id="selectListVoByQuestionIdAndLimit" resultType="com.coding.guide.mobile.vo.QuestionCommentVO">
+        SELECT
+        <include refid="question_comment_vo_field01"/>
+        FROM t_question_comment as tqc
+                 LEFT JOIN `t_user` as tu ON tu.id = tqc.user_id
+        WHERE question_id = #{questionId}
+          AND tqc.del_flag = 0
+        ORDER BY like_count DESC, comment_time DESC
+            LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectCountByQuestionId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM t_question_comment
+        WHERE question_id = #{questionId}
+          AND del_flag = 0
+    </select>
+
+
+</mapper>

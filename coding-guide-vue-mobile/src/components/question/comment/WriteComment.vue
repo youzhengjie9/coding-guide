@@ -71,11 +71,11 @@ export default {
         {
           id: 2300000000000002,
           userId: 5700000000000006,
-          nickName: "昵称5700000000000006-测试评论",
+          nickName: "昵称5700000000000006-测试评论66",
           content: content,
           commentTime: "2022-12-3 16:30",
-          replyCount: 0,
-          likeCount:520,
+          replyCount: 20,
+          likeCount:0,
           avatar:
             "https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp",
         }

@@ -12,6 +12,7 @@ import com.coding.guide.mobile.service.*;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private IntegralLevelService integralLevelService;
 
     private UserFollowService userFollowService;
+
+    private static final String DEFAULT_INTRO = "该用户暂时没有个人简介...";
 
     @Autowired
     public void setUserFollowService(UserFollowService userFollowService) {
@@ -67,11 +70,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                         UserDetail::getProvince,
                         UserDetail::getCity,
                         UserDetail::getSchool,
-                        UserDetail::getBirthday
+                        UserDetail::getBirthday,
+                        UserDetail::getIntro
                 )
                 .eq(UserDetail::getUserId, userId)
                 .one();
-
         //通过birthday计算出用户年龄
         int age = userDetail.getBirthday().until(LocalDate.now()).getDays();
         userCardInfoVO.setAge(age);
@@ -83,6 +86,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userCardInfoVO.setAddress(address);
         //school
         userCardInfoVO.setSchool(Objects.isNull(userDetail.getSchool())? "" : userDetail.getSchool());
+        //intro
+        userCardInfoVO.setIntro(StringUtils.isBlank(userDetail.getIntro()) ? DEFAULT_INTRO : userCardInfoVO.getIntro());
         //查询点赞总数
         String likedCount = questionService.selectLikedCountByUserId(userId);
         //查询收藏总数
@@ -125,11 +130,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                             UserDetail::getProvince,
                             UserDetail::getCity,
                             UserDetail::getSchool,
-                            UserDetail::getBirthday
+                            UserDetail::getBirthday,
+                            UserDetail::getIntro
                     )
                     .eq(UserDetail::getUserId, userid)
                     .one();
-
             //通过birthday计算出用户年龄
             int age = userDetail.getBirthday().until(LocalDate.now()).getDays();
             userCardInfoVO.setAge(age);
@@ -141,6 +146,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userCardInfoVO.setAddress(address);
             //school
             userCardInfoVO.setSchool(Objects.isNull(userDetail.getSchool())? "" : userDetail.getSchool());
+            //intro
+            userCardInfoVO.setIntro(StringUtils.isBlank(userDetail.getIntro()) ? DEFAULT_INTRO : userCardInfoVO.getIntro());
             //查询点赞总数
             String likedCount = questionService.selectLikedCountByUserId(userid);
             //查询收藏总数

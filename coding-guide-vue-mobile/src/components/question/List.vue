@@ -153,7 +153,6 @@ export default {
             // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
             if (this.list.length >= this.total) {
               this.finished = true;
-              Toast.fail("没有更多了...");
             }
           }
         })
@@ -178,7 +177,6 @@ export default {
             // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
             if (this.list.length >= this.total) {
               this.finished = true;
-              Toast.fail("没有更多了...");
             }
           }
         })
@@ -203,7 +201,6 @@ export default {
             // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
             if (this.list.length >= this.total) {
               this.finished = true;
-              Toast.fail("没有更多了...");
             }
           }
         })
@@ -227,7 +224,6 @@ export default {
             // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了
             if (this.list.length >= this.total) {
               this.finished = true;
-              Toast.fail("没有更多了...");
             }
           }
         })

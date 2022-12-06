@@ -1,13 +1,10 @@
 <template>
   <van-cell class="replyItem">
     <!-- 用户头像。点击头像进入用户资料卡页面 -->
-    <van-image
+
+    <img
       slot="icon"
-      round
-      width="30"
-      height="30"
-      style="margin-right: 10px"
-      class="avatar"
+      style="width: 1rem; height: 1rem; border-radius: 50%;margin-right: 10px;"
       :src="reply.avatar"
       @click="toUserCardInfo(reply.userId)"
     />
@@ -124,9 +121,6 @@ export default {
 <style scoped>
 .replyItem {
   position: inherit; /* 解决vant组件导致回复区样式阻挡头部 */
-}
-.avatar {
-  position: inherit; /* 解决回复区样式阻挡头部 */
 }
 
 .showReplyBtn {

@@ -29,9 +29,9 @@
     <!-- 全部评论展示列表。 -->
     <question-comment-list
       ref="commentListParent"
-      :currentQuestionId="Number(this.question.id)"
       @clickReplyBtn="clickReplyBtn"
       :commentList="commentList"
+      @loadCurrentQuestionCommentList="loadCurrentQuestionCommentList"
     />
 
     <!-- 当点击评论的“回复”按钮，展示所点击的那条评论对应的所有回复数据 -->
@@ -46,7 +46,6 @@
       <!-- 展示点击“回复”按钮的那条评论对应的所有回复数据  -->
       <question-reply
         v-if="showReplyListPopup == true"
-        :questionId="getCurrentQuestionId"
         :currentReplyComment="currentReplyComment"
         @click-close="showReplyListPopup = false"
         @changeCurrentReplyCommentReplyCount="changeCurrentReplyCommentReplyCount"
@@ -71,8 +70,11 @@ export default {
   props: {
     //面试题对象
     question: Object,
-    //评论列表数组
-    commentList: Array
+    //该面试题的分页评论列表数据
+    commentList: {
+      type: Array,
+      default: () => []
+    },
   },
   components: {
     BackToTop,
@@ -80,12 +82,6 @@ export default {
     QuestionCommentList,
     QuestionReply,
     WriteComment,
-  },
-  computed: {
-    //获取当前面试题id
-    getCurrentQuestionId() {
-      return Number(this.question.id);
-    },
   },
   data() {
     return {
@@ -96,6 +92,11 @@ export default {
     };
   },
   methods: {
+    loadCurrentQuestionCommentList(callback){
+      this.$emit('loadCurrentQuestionCommentList',code =>{
+        callback(code) //将回调结果传给下一个子组件
+      })
+    },
     // 点击评论列表的“回复按钮”时打开回复列表的popup弹出层。
     //（currentReplyComment是我们点击回复的那条评论）
     clickReplyBtn(currentReplyComment) {
@@ -107,7 +108,7 @@ export default {
     //修改我们点击“回复”按钮的那条评论的回复数
     changeCurrentReplyCommentReplyCount(count){
       this.currentReplyComment.replyCount+=count;
-    }
+    },
   },
 };
 </script>

@@ -34,8 +34,9 @@
     </div>
 
 
+    <!-- 用户简介 -->
     <div class="introduce">
-      该用户暂时没有个人简介
+      {{userCard.intro}}
     </div>
 
     <!-- 性别 -->
@@ -62,16 +63,16 @@
 
     <!-- 地址（省市区） -->
     <div class="address" v-if="userCard.address != ''">
-      <van-tag size="medium" plain type="primary">
+      <div class="addressTag">
         {{ userCard.address }}
-      </van-tag>
+      </div>
     </div>
 
     <!-- 学校 -->
     <div class="school" v-if="userCard.school != ''">
-      <van-tag plain size="medium" type="primary">
+      <div class="schoolTag">
         {{ userCard.school }}
-      </van-tag>
+      </div>
     </div>
 
     <!-- 底部的左侧 -->
@@ -197,7 +198,7 @@ export default {
 <style lang="scss" scoped>
 .userCardHeaderBox {
   width: 100%;
-  height: 260px;
+  height: 257px;
   background: url("../../assets/my/my01.png") no-repeat;
   background-size: 100% 100%;
 }
@@ -263,15 +264,50 @@ export default {
 }
 
 .address {
-  width: 37%;
+  width: auto;
+  height: 25px;
+  float: left;
+  margin-right: 12px;
+}
+
+.addressTag{
+  width: auto;
+  height: 14px;
+  float: left;
+  border: 1px solid;
+  color: #1989fa;
+  background-color: #fff;
+  padding: 0.05333rem 0.16rem;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 0.32rem;
+  line-height: 0.42667rem;
+  border-radius: 0.05333rem;
+  pointer-events: none;
+}
+
+.school {
+  width: auto;
   height: 25px;
   float: left;
 }
 
-.school {
-  width: 40%;
-  height: 25px;
+.schoolTag{
+  width: auto;
+  height: 14px;
   float: left;
+  border: 1px solid;
+  color: #1989fa;
+  background-color: #fff;
+  padding: 0.05333rem 0.16rem;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 0.32rem;
+  line-height: 0.42667rem;
+  border-radius: 0.05333rem;
+  pointer-events: none;
 }
 
 .footer-left {

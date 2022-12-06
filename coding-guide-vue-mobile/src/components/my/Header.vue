@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <div class="myHeaderBox">
+
     <!-- 左上角的菜单 -->
     <div class="menu">
       <van-icon name="wap-nav" size="30" @click="showMenuPopup" />
@@ -58,6 +59,10 @@
       </van-col>
     </div>
 
+    <!-- 用户简介 -->
+    <div class="introduce">
+      {{userCard.intro}}
+    </div>
     
     <!-- 性别 -->
     <div class="sex">
@@ -93,59 +98,70 @@
 
     <!-- 学校 -->
     <div class="school" v-if="userCard.school != ''">
-
-      <van-tag plain size="medium" type="primary">
-        {{userCard.school}}
-      </van-tag>
+      <div class="schoolTag">
+        {{ userCard.school }}
+      </div>
     </div>
 
-    <!--  -->
-    <div class="footer_top">
-          <van-col span="6">
-            <span style="font-size: 15px">获赞</span>
-          </van-col>
+    <!-- 底部的左侧 -->
+    <div class="footer-left">
+      <!-- 用户数据名称 -->
+      <div class="data_name">
+        <van-col span="6">
+          <span style="font-size: 15px">获赞</span>
+        </van-col>
 
-          <van-col span="6">
-            <span style="font-size: 15px">被收藏</span>
-          </van-col>
+        <van-col span="7">
+          <span style="font-size: 15px">被收藏</span>
+        </van-col>
 
-          <van-col span="6">
-            <span style="font-size: 15px">关注</span>
-          </van-col>
+        <van-col span="6">
+          <span style="font-size: 15px">关注</span>
+        </van-col>
 
-          <van-col span="6">
-            <span style="font-size: 15px">粉丝</span>
-          </van-col>
-        </div>
+        <van-col span="5">
+          <span style="font-size: 15px">粉丝</span>
+        </van-col>
+      </div>
 
-        
-        <div class="footer_bottom">
+      <!-- 用户数据 -->
+      <div class="data">
+        <!-- 获赞数 -->
+        <van-col span="6">
+          <span style="font-size: 15px; color: orangered">
+            {{ userCard.likedCount }}
+          </span>
+        </van-col>
+        <!-- 收藏数 -->
+        <van-col span="7">
+          <span style="font-size: 15px; color: orangered">
+            {{ userCard.collectedCount }}
+          </span>
+        </van-col>
+        <!-- 关注数 -->
+        <van-col span="6">
+          <span style="font-size: 15px; color: orangered">
+            {{ userCard.followCount }}
+          </span>
+        </van-col>
+        <!-- 粉丝数 -->
+        <van-col span="5">
+          <span style="font-size: 15px; color: orangered">
+            {{ userCard.fansCount }}
+          </span>
+        </van-col>
+      </div>
+    </div>
 
-          <!-- 获赞数 -->
-          <van-col span="6">
-            <span style="font-size: 15px; color: orangered">
-              {{userCard.likedCount}}
-            </span>
-          </van-col>
-          <!-- 收藏数 -->
-          <van-col span="6">
-            <span style="font-size: 15px; color: orangered">
-              {{userCard.collectedCount}}
-            </span>
-          </van-col>
-          <!-- 关注数 -->
-          <van-col span="6">
-            <span style="font-size: 15px; color: orangered">
-              {{userCard.followCount}}
-            </span>
-          </van-col>
-          <!-- 粉丝数 -->
-          <van-col span="6">
-            <span style="font-size: 15px; color: orangered">
-              {{userCard.fansCount}}
-            </span>
-          </van-col>
-        </div>
+    <!-- 底部的右侧 -->
+    <div class="footer-right">
+
+      <!-- 编辑资料 -->
+      <div class="edit">
+        <button class="edit-btn" @click="toEdit">编辑资料</button>
+      </div>
+
+    </div>
     
   </div>
 </template>
@@ -209,15 +225,19 @@ export default {
       getCurUserCardInfo().then(res=>{
         this.userCard=res.data.data;
       })
+    },
+    //点击编辑资料按钮
+    toEdit(){
+      Toast("编辑资料功能暂未实现！");
     }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.box {
+.myHeaderBox {
   width: 100%;
-  height: 200px;
+  height: 257px;
   background: url("../../assets/my/my01.png") no-repeat;
   background-size: 100% 100%;
 }
@@ -261,6 +281,22 @@ export default {
   font-size: 0.35rem;
 }
 
+.introduce{
+
+width: 75%;
+height: auto; //自动高度
+margin-left: 15px;
+float: left;
+font-size: 13px;
+margin-bottom: 8px;
+// 文本在div只会占用两行，如果超出会在最后面显示"..."
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+}
+
 .sex {
   width: 19%;
   height: 17px;
@@ -269,19 +305,61 @@ export default {
 }
 
 .address {
-  width: 37%;
+  width: auto;
   height: 25px;
   float: left;
+  margin-right: 12px;
 }
+
+.addressTag{
+  width: auto;
+  height: 14px;
+  float: left;
+  border: 1px solid;
+  color: #1989fa;
+  background-color: #fff;
+  padding: 0.05333rem 0.16rem;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 0.32rem;
+  line-height: 0.42667rem;
+  border-radius: 0.05333rem;
+  pointer-events: none;
+}
+
 
 .school {
-  width: 40%;
+  width: auto;
   height: 25px;
   float: left;
 }
 
-.footer_top {
-  width: 93%;
+.schoolTag{
+  width: auto;
+  height: 14px;
+  float: left;
+  border: 1px solid;
+  color: #1989fa;
+  background-color: #fff;
+  padding: 0.05333rem 0.16rem;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 0.32rem;
+  line-height: 0.42667rem;
+  border-radius: 0.05333rem;
+  pointer-events: none;
+}
+
+.footer-left {
+  width: 62%;
+  height: 2rem;
+  float: left;
+}
+
+.data_name {
+  width: 97%;
   height: 15px;
   padding: 4px;
   margin-top: 10px;
@@ -289,13 +367,41 @@ export default {
   float: left;
 }
 
-.footer_bottom {
-  width: 93%;
+.data {
+  width: 97%;
   height: 15px;
   padding: 4px;
   // margin-top: 30px;
   margin-left: 15px;
   float: left;
 }
+
+.footer-right {
+  width: 32%;
+  height: 60px;
+  // padding: 4px;
+  margin-left: 15px;
+  float: left;
+}
+
+
+.edit {
+  height: 0.85rem;
+  width: 2.40rem;
+  margin-top: 20px;
+  float: left;
+}
+
+.edit-btn{
+  height: 0.85rem;
+  width: 2.40rem;
+  border-radius: 0.5rem;
+  font-size: 0.35rem;
+  background-color: gray; /* 背景颜色 */
+  color: white; /* 字体 */
+  border: 1px solid white; /* 边框 */
+}
+
+
 
 </style>

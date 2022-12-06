@@ -3,13 +3,11 @@
     <van-row>
       <van-col span="19">
         <div class="avatar">
-          <van-image
-            class="vant-avatar"
-            round
-            width="1rem"
-            height="1rem"
-            :src="userInfo.avatar"
+          <img 
+          style="width: 1rem; height: 1rem; border-radius: 50%;" 
+          :src="userInfo.avatar"
           />
+
         </div>
 
         <div class="username">
@@ -112,10 +110,6 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
-}
-
-.vant-avatar {
-  position: inherit;
 }
 
 .vant-level {
