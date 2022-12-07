@@ -51,6 +51,14 @@ public class QuestionReply implements Serializable {
     private Long userId;
 
     /**
+     * 被回复的用户id（如果为0则说明回复评论,反之说明回复别人的回复）
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @TableField("replied_user_id")
+    @ApiModelProperty(name = "repliedUserId",value = "被回复的用户id")
+    private Long repliedUserId;
+
+    /**
      * 这条回复所属的评论id
      */
     @JsonSerialize(using = ToStringSerializer.class)

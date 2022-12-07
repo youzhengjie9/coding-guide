@@ -44,7 +44,6 @@ export default {
     onLoad() {
 
       this.$emit('loadCurrentQuestionCommentList',responseResult =>{
-          //如果code==1001，说明数据全部加载完成，没有更多的评论了
           if(responseResult.lodingStatus == false){
               this.commentListloading = false;
           }

@@ -13,14 +13,12 @@
     <!-- 头部的中间部分 -->
     <div class="center">
       <van-col span="4">
-        <van-image
-          round
-          class="avator"
-          width="1.5rem"
-          height="1.5rem"
+        <img
+          style="width: 1.5rem; height: 1.5rem; border-radius: 50%;"
           :src="userCard.avatar"
         />
       </van-col>
+      
 
       <van-col span="20">
         <div class="userinfo">

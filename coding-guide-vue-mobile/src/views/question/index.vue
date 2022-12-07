@@ -70,7 +70,7 @@ export default {
       //该面试题的评论总数
       commentTotalCount: 0,
       commentPage: 1, //评论分页的当前页数。默认是第一页
-      commentSize: 5, //评论分页的每页大小。一次5条
+      commentSize: 7, //评论分页的每页大小。一次7条
     };
   },
   props: {},
@@ -113,7 +113,7 @@ export default {
             res.data.data.questionCommentVOList
           );
           //更新总记录数
-          this.commentTotalCount = res.data.data.questCommentCount;
+          this.commentTotalCount = res.data.data.questionCommentCount;
           // 加载状态结束
           responseResult.lodingStatus = false;
           // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了

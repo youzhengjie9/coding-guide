@@ -1,10 +1,9 @@
 <template>
   <div class="questionReplyBox">
-    
     <!-- 回复展示列表 -->
     <van-list
-      v-model="loading"
-      :finished="finished"
+      v-model="replyListloading"
+      :finished="replyListFinished"
       finished-text="没有更多的回复了..."
       @load="onLoad"
     >
@@ -23,7 +22,7 @@
 import QuestionReplyItem from "@/components/question/reply/ReplyItem.vue";
 
 export default {
-  name: "QuestionCommentList",
+  name: "QuestionReplyList",
   components: {
     QuestionReplyItem,
   },
@@ -31,27 +30,30 @@ export default {
     //回复列表的数据
     replyList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
-    //当前面试题id
-    currentQuestionId: Number,
-    //回复总记录数
-    totalCount: {
-      type: Number
-    }
   },
   data() {
     return {
-      loading: false,
-      finished: false,
-      page: 1, //默认是第一页
-      size: 7, //一次7条
-      total: 0, //总记录数
+      replyListloading: false, //控制显示评论加载状态
+      replyListFinished: false, //评论列表分页数据是否展示到底了
     };
   },
   methods: {
     //滚动分页
-    onLoad() {},
+    onLoad() {
+      //调用父组件reply/index.vue的loadCurrentCommentReplyList方法
+      let promiseResult = this.$parent.loadCurrentCommentReplyList();
+      //---获取promise对象传过来的值---
+      promiseResult.then((responseResult) => {
+        if (responseResult.lodingStatus == false) {
+          this.replyListloading = false;
+        }
+        if (responseResult.finishStatus == true) {
+          this.replyListFinished = true;
+        }
+      });
+    },
   },
 };
 </script>

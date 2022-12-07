@@ -50,12 +50,11 @@ public class QuestionCommentController {
             long questCommentCount=questionCommentService.selectCountByQuestionId(questionId);
 
             Map<Object, Object> map = Map.of("questionCommentVOList", questionCommentVOList,
-                    "questCommentCount", questCommentCount);
+                    "questionCommentCount", questCommentCount);
             return ResponseResult.ok(map);
         }catch (Exception e){
             return ResponseResult.fail(null);
         }
     }
-
 
 }
