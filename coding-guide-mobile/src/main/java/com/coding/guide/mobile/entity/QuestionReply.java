@@ -67,10 +67,10 @@ public class QuestionReply implements Serializable {
     private Long commentId;
 
     /**
-     * 回复内容（不能超过100字）
+     * 回复内容（不能为空、不能超过100字）
      */
     @TableField("content")
-    @ApiModelProperty(name = "content",value = "回复内容（不能超过100字）")
+    @ApiModelProperty(name = "content",value = "回复内容（不能为空、不能超过100字）")
     private String content;
 
     /**

@@ -5,13 +5,13 @@
     <sql id="question_reply_vo_field01">
         tqr.id,
         user_id,
-        tu1.nick_name,
+        tu1.nick_name as nick_name,
         content,
         reply_time,
         like_count,
-        tu1.avatar,
+        tu1.avatar as avatar,
         replied_user_id,
-        tu2.nick_name
+        tu2.nick_name as repliedNickName
     </sql>
 
     <select id="selectListVoByCommentIdAndLimit" resultType="com.coding.guide.mobile.vo.QuestionReplyVO">

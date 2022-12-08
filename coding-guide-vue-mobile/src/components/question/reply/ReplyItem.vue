@@ -47,7 +47,7 @@
 
       <p>
         <!-- 回复时间 -->
-        <span class="replyTime"> {{ reply.replyTime }} </span>
+        <span class="replyTime"> {{ reply.replyTime | dateformat("YYYY-MM-DD HH:mm") }} </span>
 
         <!-- “回复”按钮 -->
         <button

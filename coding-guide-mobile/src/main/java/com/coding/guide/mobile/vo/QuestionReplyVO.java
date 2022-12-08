@@ -76,13 +76,14 @@ public class QuestionReplyVO implements Serializable {
     /**
      * 被回复的用户id（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty(name = "repliedUserId",value = "被回复的用户id")
     private Long repliedUserId;
 
     /**
      * 被回复的用户昵称（如果repliedUserId为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
      */
-    @ApiModelProperty(name = "repliedUserId",value = "被回复的用户id")
+    @ApiModelProperty(name = "repliedNickName",value = "被回复的用户昵称")
     private String repliedNickName;
 
 }

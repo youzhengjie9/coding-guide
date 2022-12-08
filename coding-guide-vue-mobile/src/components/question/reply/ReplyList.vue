@@ -4,7 +4,7 @@
     <van-list
       v-model="replyListloading"
       :finished="replyListFinished"
-      finished-text="没有更多的回复了..."
+      finished-text="没有更多的回复了"
       @load="onLoad"
     >
       <!-- 一条回复（通过for循环遍历组成回复列表） -->

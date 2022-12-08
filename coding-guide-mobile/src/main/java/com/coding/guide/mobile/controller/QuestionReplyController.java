@@ -5,6 +5,7 @@ import com.coding.guide.mobile.service.QuestionReplyService;
 import com.coding.guide.mobile.vo.QuestionCommentVO;
 import com.coding.guide.mobile.vo.QuestionReplyVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class QuestionReplyController {
      * @return {@link ResponseResult}<{@link Map}<{@link Object},{@link Object}>>
      */
     @GetMapping(path = "/selectListByCommentIdAndLimit/{commentId}/{page}/{size}")
+    @ApiOperation("根据评论id分页查询面试题回复列表")
     public ResponseResult<Map<Object,Object>> selectListByCommentIdAndLimit(@PathVariable("commentId") long commentId,
                                                                              @PathVariable("page") int page,
                                                                              @PathVariable("size") int size){

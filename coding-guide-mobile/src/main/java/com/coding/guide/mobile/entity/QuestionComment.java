@@ -59,10 +59,10 @@ public class QuestionComment implements Serializable {
     private Long questionId;
 
     /**
-     * 评论内容（不能超过100字）
+     * 评论内容（不能为空、不能超过100字）
      */
     @TableField("content")
-    @ApiModelProperty(name = "content",value = "评论内容（不能超过100字）")
+    @ApiModelProperty(name = "content",value = "评论内容（不能为空、不能超过100字）")
     private String content;
 
     /**

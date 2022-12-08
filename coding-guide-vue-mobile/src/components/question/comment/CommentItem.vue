@@ -26,7 +26,7 @@
 
       <p>
         <!-- 评论时间 -->
-        <span class="commentTime"> {{ comment.commentTime }} </span>
+        <span class="commentTime"> {{ comment.commentTime | dateformat("YYYY-MM-DD HH:mm") }} </span>
 
         <!-- “回复”按钮 -->
         <button

@@ -7,9 +7,8 @@
         SELECT level, `describe`, background_color
         FROM t_integral_level
         WHERE #{integral} >= lowest_integral
-        AND del_flag=0
-        ORDER BY lowest_integral DESC
-        LIMIT 0,1
+          AND del_flag = 0
+        ORDER BY lowest_integral DESC LIMIT 0,1
     </select>
 
 </mapper>
