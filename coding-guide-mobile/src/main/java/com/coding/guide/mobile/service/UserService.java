@@ -37,4 +37,15 @@ public interface UserService extends IService<User> {
      * @return {@link SimpleUserInfoVO}
      */
     SimpleUserInfoVO getSimpleUserInfoByPublisherId(long publisherId);
+
+
+    /**
+     * 根据回复id获取用户的id和昵称
+     *
+     * @return {@link User}
+     */
+    User getUserIdAndNickNameByReplyId(long replyId);
+
+
+
 }

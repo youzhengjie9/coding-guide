@@ -7,10 +7,10 @@ export function selectListByQuestionIdAndLimit(questionId,page,size){
     })
 }
 
-export function writeQuestionComment(writeQuestionCommentDTO){
+export function writeQuestionComment(questionCommentDTO){
     return request({
         method:'post',
         url:'/question/comment/writeQuestionComment',
-        data: writeQuestionCommentDTO
+        data: questionCommentDTO
     })
 }

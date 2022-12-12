@@ -1,21 +1,17 @@
 package com.coding.guide.mobile.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.coding.guide.common.data.ResponseResult;
-import com.coding.guide.mobile.dto.WriteQuestionCommentDTO;
-import com.coding.guide.mobile.entity.QuestionComment;
+import com.coding.guide.mobile.dto.QuestionCommentDTO;
 import com.coding.guide.mobile.service.QuestionCommentService;
 import com.coding.guide.mobile.vo.QuestionCommentVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 面试题评论控制器
@@ -61,16 +57,16 @@ public class QuestionCommentController {
     }
 
     /**
-     * 写面试题评论
+     * 评论面试题
      *
-     * @param writeQuestionCommentDTO 写面试题评论dto
+     * @param questionCommentDTO 面试题评论dto
      * @return {@link ResponseResult}<{@link QuestionCommentVO}>
      */
     @PostMapping(path = "/writeQuestionComment")
-    @ApiOperation("写面试题评论")
-    public ResponseResult<QuestionCommentVO> writeQuestionComment(@RequestBody @Valid WriteQuestionCommentDTO writeQuestionCommentDTO) {
+    @ApiOperation("评论面试题")
+    public ResponseResult<QuestionCommentVO> writeQuestionComment(@RequestBody @Valid QuestionCommentDTO questionCommentDTO) {
         try {
-            QuestionCommentVO questionCommentVO = questionCommentService.writeQuestionComment(writeQuestionCommentDTO);
+            QuestionCommentVO questionCommentVO = questionCommentService.writeQuestionComment(questionCommentDTO);
             //如果questionCommentVO为null，说明评论失败
             if(Objects.isNull(questionCommentVO)){
                 return ResponseResult.fail(null);

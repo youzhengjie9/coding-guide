@@ -37,6 +37,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private UserFollowService userFollowService;
 
+    private UserMapper userMapper;
+
     private static final String DEFAULT_INTRO = "该用户暂时没有个人简介...";
 
     @Autowired
@@ -54,6 +56,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     public void setUserDetailService(UserDetailService userDetailService) {
         this.userDetailService = userDetailService;
+    }
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -202,5 +209,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         return simpleUserInfoVO;
     }
+
+    @Override
+    public User getUserIdAndNickNameByReplyId(long replyId) {
+
+
+        return userMapper.getUserIdAndNickNameByReplyId(replyId);
+    }
+
+
 }
 

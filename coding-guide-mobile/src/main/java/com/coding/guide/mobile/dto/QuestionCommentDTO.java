@@ -12,7 +12,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 写面试题评论dto
+ * 面试题评论DTO
  *
  * @author youzhengjie
  * @date 2022/12/08 17:57:39
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class WriteQuestionCommentDTO implements Serializable {
+public class QuestionCommentDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

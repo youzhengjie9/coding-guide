@@ -2,9 +2,8 @@ package com.coding.guide.mobile.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.coding.guide.common.data.ResponseResult;
 import com.coding.guide.common.utils.SnowId;
-import com.coding.guide.mobile.dto.WriteQuestionCommentDTO;
+import com.coding.guide.mobile.dto.QuestionCommentDTO;
 import com.coding.guide.mobile.entity.QuestionComment;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.mapper.QuestionCommentMapper;
@@ -56,11 +55,11 @@ public class QuestionCommentServiceImpl extends ServiceImpl<QuestionCommentMappe
     }
 
     @Override
-    public QuestionCommentVO writeQuestionComment(WriteQuestionCommentDTO writeQuestionCommentDTO) {
+    public QuestionCommentVO writeQuestionComment(QuestionCommentDTO questionCommentDTO) {
 
         Long userId = SecurityContext.getCurrentUserId();
 
-        //查询用户
+        //查询发送评论请求的用户
         User user = userService.lambdaQuery()
                 .select(
                         User::getNickName,
@@ -80,8 +79,8 @@ public class QuestionCommentServiceImpl extends ServiceImpl<QuestionCommentMappe
         QuestionComment questionComment = QuestionComment.builder()
                 .id(SnowId.nextId())
                 .userId(userId)
-                .questionId(writeQuestionCommentDTO.getQuestionId())
-                .content(writeQuestionCommentDTO.getContent())
+                .questionId(questionCommentDTO.getQuestionId())
+                .content(questionCommentDTO.getContent())
                 .commentTime(LocalDateTime.now())
                 .replyCount(0)
                 .likeCount(0)

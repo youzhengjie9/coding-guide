@@ -74,6 +74,12 @@ public class QuestionReplyVO implements Serializable {
     private Integer likeCount;
 
     /**
+     * 被回复的那条回复的id主键，用于记录这条回复到底回复了哪条回复（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
+     */
+    @ApiModelProperty(name = "repliedId",value = "被回复的那条回复的id主键")
+    private Long repliedId;
+
+    /**
      * 被回复的用户id（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
      */
     @JsonSerialize(using = ToStringSerializer.class)
@@ -85,5 +91,11 @@ public class QuestionReplyVO implements Serializable {
      */
     @ApiModelProperty(name = "repliedNickName",value = "被回复的用户昵称")
     private String repliedNickName;
+
+    /**
+     * 删除标志（0代表未删除，1代表已删除）
+     */
+    @ApiModelProperty(name = "delFlag",value = "删除标志（0代表未删除，1代表已删除）")
+    private int delFlag;
 
 }

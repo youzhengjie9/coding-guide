@@ -9,27 +9,41 @@
         content,
         reply_time,
         like_count,
-        tu1.avatar as avatar,
-        replied_user_id,
-        tu2.nick_name as repliedNickName
+        tu1.avatar    as avatar,
+        tu2.id        as repliedUserId,
+        replied_id    as repliedId,
+        tu2.nick_name as repliedNickName,
+        tqr.del_flag
     </sql>
 
-    <select id="selectListVoByCommentIdAndLimit" resultType="com.coding.guide.mobile.vo.QuestionReplyVO">
+    <select id="selectListVoByReplyIdEq0AndLimit" resultType="com.coding.guide.mobile.vo.QuestionReplyVO">
         SELECT
         <include refid="question_reply_vo_field01"/>
         FROM t_question_reply AS tqr
-                 LEFT JOIN t_user AS tu1 ON tqr.user_id = tu1.id
-                 LEFT JOIN t_user AS tu2 ON tqr.replied_user_id = tu2.id
+        LEFT JOIN t_user AS tu1 ON tqr.user_id = tu1.id
+        LEFT JOIN t_user AS tu2
+        ON (SELECT t_question_reply.user_id FROM t_question_reply WHERE id = tqr.replied_id) = tu2.id
         WHERE comment_id = #{commentId}
-          AND tqr.del_flag = 0
-        ORDER BY like_count DESC, reply_time DESC
-            LIMIT #{page},#{size}
+        AND replied_id = 0
+        ORDER BY like_count DESC, reply_time
+        LIMIT #{page},#{size}
     </select>
-
-    <select id="selectCountByCommentId" resultType="java.lang.Long">
+    <select id="selectAllListVoByReplyIdNe0" resultType="com.coding.guide.mobile.vo.QuestionReplyVO">
+        SELECT
+        <include refid="question_reply_vo_field01"/>
+        FROM t_question_reply AS tqr
+        LEFT JOIN t_user AS tu1 ON tqr.user_id = tu1.id
+        LEFT JOIN t_user AS tu2
+        ON (SELECT t_question_reply.user_id FROM t_question_reply WHERE id = tqr.replied_id) = tu2.id
+        WHERE comment_id = #{commentId}
+        AND replied_id != 0
+        ORDER BY like_count DESC, reply_time
+    </select>
+    <select id="selectCountByReplyIdEq0AndCommentId" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM t_question_reply
         WHERE comment_id = #{commentId}
+          AND replied_id = 0
           AND del_flag = 0
     </select>
 

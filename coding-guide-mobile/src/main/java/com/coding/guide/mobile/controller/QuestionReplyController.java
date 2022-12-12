@@ -1,19 +1,19 @@
 package com.coding.guide.mobile.controller;
 
 import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.QuestionReplyDTO;
 import com.coding.guide.mobile.service.QuestionReplyService;
 import com.coding.guide.mobile.vo.QuestionCommentVO;
 import com.coding.guide.mobile.vo.QuestionReplyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 面试题回复控制器
@@ -46,15 +46,41 @@ public class QuestionReplyController {
                                                                              @PathVariable("page") int page,
                                                                              @PathVariable("size") int size){
         try {
-            List<QuestionReplyVO> questionReplyVOList=
-                    questionReplyService.selectListVoByCommentIdAndLimit(commentId,page,size);
+            Map<String,Object> resultMap=
+                    questionReplyService.selectMapByCommentIdAndLimit(commentId,page,size);
 
-            long questionReplyCount=questionReplyService.selectCountByCommentId(commentId);
+            List<QuestionReplyVO> questionReplyVOList = (List<QuestionReplyVO>) resultMap.get("questionReplyVOList");
+            int firstLevelQuestionReplyListCount = (int) resultMap.get("firstLevelQuestionReplyListCount");
+
+            long firstLevelQuestionReplyTotalCount=questionReplyService.selectCountByReplyIdEq0AndCommentId(commentId);
 
             Map<Object, Object> map = Map.of("questionReplyVOList", questionReplyVOList,
-                    "questionReplyCount", questionReplyCount);
+                    "firstLevelQuestionReplyTotalCount", firstLevelQuestionReplyTotalCount,
+                    "firstLevelQuestionReplyListCount",firstLevelQuestionReplyListCount);
             return ResponseResult.ok(map);
         }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+    }
+
+    /**
+     * 回复面试题的评论
+     *
+     * @param questionReplyDTO 面试题回复DTO
+     * @return {@link ResponseResult}<{@link QuestionCommentVO}>
+     */
+    @PostMapping(path = "/writeQuestionReply")
+    @ApiOperation("回复面试题的评论")
+    public ResponseResult<QuestionReplyVO> writeQuestionReply(@RequestBody @Valid QuestionReplyDTO questionReplyDTO) {
+        try {
+            QuestionReplyVO questionReplyVO = questionReplyService.writeQuestionReply(questionReplyDTO);
+            //如果questionReplyVO为null，说明回复失败
+            if(Objects.isNull(questionReplyVO)){
+                return ResponseResult.fail(null);
+            }
+            //回复成功返回questionReplyVO
+            return ResponseResult.ok(questionReplyVO);
+        } catch (Exception e) {
             return ResponseResult.fail(null);
         }
     }

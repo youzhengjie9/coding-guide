@@ -20,23 +20,31 @@ import java.util.List;
 public interface QuestionReplyMapper extends BaseMapper<QuestionReply> {
 
     /**
-     * 根据评论id分页查询面试题回复列表VO
+     * 根据评论id分页查询replied_id=0的面试题回复列表VO（一级回复）
      *
      * @param commentId 评论id
      * @param page      页面
      * @param size      大小
      * @return {@link List}<{@link QuestionReplyVO}>
      */
-    List<QuestionReplyVO> selectListVoByCommentIdAndLimit(@Param("commentId") long commentId,
+    List<QuestionReplyVO> selectListVoByReplyIdEq0AndLimit(@Param("commentId") long commentId,
                                                           @Param("page") int page,
                                                           @Param("size") int size);
 
     /**
-     * 根据评论id查询回复总数
+     * 根据评论id查询所有replied_id!=0的面试题回复列表VO（二级/多级回复）
+     *
+     * @param commentId 评论id
+     * @return {@link List}<{@link QuestionReplyVO}>
+     */
+    List<QuestionReplyVO> selectAllListVoByReplyIdNe0(@Param("commentId") long commentId);
+
+    /**
+     * 根据评论id查询replied_id=0的面试题回复列表数（也就是查询一级回复数）
      *
      * @param commentId 评论id
      * @return long
      */
-    long selectCountByCommentId(@Param("commentId") long commentId);
+    long selectCountByReplyIdEq0AndCommentId(@Param("commentId") long commentId);
 
 }

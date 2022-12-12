@@ -1,8 +1,7 @@
 package com.coding.guide.mobile.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.coding.guide.common.data.ResponseResult;
-import com.coding.guide.mobile.dto.WriteQuestionCommentDTO;
+import com.coding.guide.mobile.dto.QuestionCommentDTO;
 import com.coding.guide.mobile.entity.QuestionComment;
 import com.coding.guide.mobile.vo.QuestionCommentVO;
 
@@ -37,11 +36,11 @@ public interface QuestionCommentService extends IService<QuestionComment> {
 
 
     /**
-     * 写面试题评论
+     * 写面试题的评论
      *
-     * @param writeQuestionCommentDTO 写面试题评论dto
+     * @param questionCommentDTO 面试题评论dto
      * @return {@link QuestionCommentVO}
      */
-    QuestionCommentVO writeQuestionComment(WriteQuestionCommentDTO writeQuestionCommentDTO);
+    QuestionCommentVO writeQuestionComment(QuestionCommentDTO questionCommentDTO);
 
 }

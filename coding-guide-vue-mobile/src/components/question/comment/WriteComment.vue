@@ -60,13 +60,13 @@ export default {
       }
 
       //封装面试题评论DTO对象
-      let writeQuestionCommentDTO = {
+      let questionCommentDTO = {
         questionId: writeCommentQuestionId,
         content: content,
       };
 
       //调用发送评论api，将请求发给后端
-      writeQuestionComment(writeQuestionCommentDTO)
+      writeQuestionComment(questionCommentDTO)
         .then((res) => {
           console.log(res);
           //判断评论成功还是失败

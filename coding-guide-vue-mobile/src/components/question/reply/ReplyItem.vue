@@ -10,8 +10,8 @@
     />
 
     <!-- 用户昵称（点击昵称也可以进入用户资料卡页面）。有两种不同的展示方式： -->
-    <!-- 第1种：如果该“回复”回复的是评论。（repliedUserId==0则是这种情况） -->
-    <span slot="title" v-if="(reply.repliedUserId==0)">
+    <!-- 第1种：如果该“回复”回复的是评论。（repliedUserId==null则是这种情况） -->
+    <span slot="title" v-if="(reply.repliedUserId==null)">
 
       <!-- 回复的发送者 -->
       <span style="color: #466b9d" @click="toUserCardInfo(reply.userId)">
@@ -19,7 +19,7 @@
       </span>
 
     </span>
-    <!-- 第2种：如果该“回复”回复的是其他人的回复。（repliedUserId!=0则是这种情况） -->
+    <!-- 第2种：如果该“回复”回复的是其他人的回复。（repliedUserId!=null则是这种情况） -->
     <span slot="title" v-else>
 
       <!-- 回复的发送者 -->
