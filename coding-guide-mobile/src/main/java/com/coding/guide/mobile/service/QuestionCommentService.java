@@ -43,4 +43,22 @@ public interface QuestionCommentService extends IService<QuestionComment> {
      */
     QuestionCommentVO writeQuestionComment(QuestionCommentDTO questionCommentDTO);
 
+    /**
+     * 获取用户点赞的所有面试题评论id集合
+     *
+     * @param userid 用户id
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> selectAllLikeQuestionCommentIdByUserId(Long userid);
+
+
+    /**
+     * 点赞面试题的评论（如果该条面试题评论没有被该用户点赞过，则点赞，反之则取消点赞）
+     *
+     * @param userid    用户id
+     * @param commentId 评论id
+     * @return boolean
+     */
+    boolean likeQuestionComment(Long userid, Long commentId);
+
 }

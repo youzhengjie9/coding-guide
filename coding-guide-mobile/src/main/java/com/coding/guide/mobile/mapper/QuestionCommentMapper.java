@@ -38,4 +38,21 @@ public interface QuestionCommentMapper extends BaseMapper<QuestionComment> {
      */
     long selectCountByQuestionId(@Param("questionId") long questionId);
 
+    /**
+     * 修改t_question_comment表对应的评论点赞数+1
+     *
+     * @param commentId 评论id
+     * @return int
+     */
+    int incrLikeCount(@Param("commentId") Long commentId);
+
+
+    /**
+     * 修改t_question_comment表对应的评论点赞数-1
+     *
+     * @param commentId 评论id
+     * @return int
+     */
+    int decrLikeCount(@Param("commentId") Long commentId);
+
 }

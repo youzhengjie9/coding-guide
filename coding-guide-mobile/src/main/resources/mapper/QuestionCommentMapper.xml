@@ -12,6 +12,18 @@
         like_count,
         tu.avatar
     </sql>
+    <update id="incrLikeCount">
+        UPDATE t_question_comment
+        SET like_count = like_count + 1
+        WHERE id = #{commentId}
+          AND del_flag = 0
+    </update>
+    <update id="decrLikeCount">
+        UPDATE t_question_comment
+        SET like_count = like_count - 1
+        WHERE id = #{commentId}
+          AND del_flag = 0
+    </update>
 
     <select id="selectListVoByQuestionIdAndLimit" resultType="com.coding.guide.mobile.vo.QuestionCommentVO">
         SELECT

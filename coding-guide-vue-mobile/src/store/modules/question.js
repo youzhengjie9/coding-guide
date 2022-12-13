@@ -2,17 +2,25 @@ const state = {
     //当前用户所有点赞的面试题id(questionid)集合
     QuestionLikeIds:[],
     //当前用户所有收藏的面试题id(questionid)集合
-    QuestionCollectIds:[]
+    QuestionCollectIds:[],
+    //当前用户所有点赞的面试题评论id(commentid)集合
+    QuestionCommentLikeIds:[],
+    //当前用户所有点赞的面试题评论的回复id(commentid)集合
+    QuestionReplyLikeIds:[],
 };
 
 const mutations = {
-    //初始化点赞列表
+    //初始化面试题点赞列表
     INIT_LIKE_LIST(state,likeList){
         state.QuestionLikeIds=likeList
     },
-    //初始化收藏列表
+    //初始化面试题收藏列表
     INIT_COLLECT_LIST(state,collectList){
         state.QuestionCollectIds=collectList
+    },
+    //初始化面试题评论点赞列表
+    INIT_QUESTION_COMMENT_LIKE_LIST(state,questionCommentLikeList){
+        state.QuestionCommentLikeIds=questionCommentLikeList
     },
     //点赞（将questionId添加到数组中）
     LIKE(state,questionId) {
@@ -37,7 +45,19 @@ const mutations = {
                 state.QuestionCollectIds.splice(i, 1);
             }
         }
-    }
+    },
+    //点赞面试题评论（将commentId添加到数组中）
+    LIKE_QUESTION_COMMENT(state,commentId) {
+        state.QuestionCommentLikeIds.push(commentId)
+    },
+    //取消点赞面试题评论（从数组中移除指定questionId元素）
+    CANCEL_LIKE_QUESTION_COMMENT(state,commentId) {
+        for (var i in state.QuestionCommentLikeIds) {
+            if (state.QuestionCommentLikeIds[i] == commentId) {
+                state.QuestionCommentLikeIds.splice(i, 1);
+            }
+        }
+    },
 };
 
 const actions = {
@@ -48,6 +68,10 @@ const actions = {
     //初始化收藏数据
     initCollectList(context,collectList){
         context.commit('INIT_COLLECT_LIST',collectList)
+    },
+    //初始化面试题评论点赞数据
+    initQuestionCommentLikeList(context,questionCommentLikeList){
+        context.commit('INIT_QUESTION_COMMENT_LIKE_LIST',questionCommentLikeList)
     },
     //点赞
     like(context, questionId) {
@@ -64,7 +88,15 @@ const actions = {
     //取消收藏
     cancelCollect(context, questionId) {
         context.commit('CANCEL_COLLECT', questionId)
-    }
+    },
+    //点赞面试题评论
+    likeQuestionComment(context, commentId) {
+        context.commit('LIKE_QUESTION_COMMENT', commentId)
+    },
+    //取消点赞面试题评论
+    cancelLikeQuestionComment(context, commentId) {
+        context.commit('CANCEL_LIKE_QUESTION_COMMENT', commentId)
+    },
 };
 
 export default {

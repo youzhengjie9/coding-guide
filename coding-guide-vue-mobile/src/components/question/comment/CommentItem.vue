@@ -43,30 +43,39 @@
     <!-- 评论点赞展示区域 -->
     <div slot="right-icon" class="commentLikeContainer">
       <!-- 已被点赞 -->
-      <!-- <i
+      <i
         class="iconfont icon-yidianzan"
+        v-if="isLike(comment.id)"
+        @click="likeQuestionComment(comment.id)"
         style="font-size: 20px; color: red"
       >
       </i>
 
-      <span style="color: red">
-        10000
-      </span> -->
+      <span style="color: red" v-if="isLike(comment.id)">
+        {{ comment.likeCount }}
+      </span>
 
       <!-- 未被点赞 -->
       <i
         class="iconfont icon-yidianzan"
         style="font-size: 20px"
-        @click="likeComment"
+        v-if="!isLike(comment.id)"
+        @click="likeQuestionComment(comment.id)"
       >
       </i>
 
-      <span> {{ comment.likeCount }} </span>
+      <span v-if="!isLike(comment.id)"> 
+        {{ comment.likeCount }} 
+      </span>
     </div>
   </van-cell>
 </template>
 
 <script>
+import {
+  likeQuestionComment
+} from '@/api/question-comment'
+import { Toast } from 'vant';
 export default {
   name: "QuestionCommentItem",
   props: {
@@ -85,8 +94,35 @@ export default {
     return {};
   },
   methods: {
-    //点赞评论
-    likeComment(commentId) {},
+    //点赞或取消点赞面试题的评论
+    likeQuestionComment(commentId) {
+      //如果Vuex中不包含该commentId，则说明要调用点赞接口
+      if (
+        !this.$store.state.Question.QuestionCommentLikeIds.includes(Number(commentId))
+      ) {
+        likeQuestionComment(commentId).then((res) => {
+          this.$store.dispatch("likeQuestionComment", Number(commentId));
+          //修改父组件前端对应的评论点赞数+1
+          this.$parent.$parent.changeQuestionCommentLikeCount(commentId,1);
+          Toast.success("点赞成功");
+        });
+      }
+      //反之，说明要调用取消点赞接口(和点赞接口是同一个)
+      else {
+        likeQuestionComment(commentId).then((res) => {
+          this.$store.dispatch("cancelLikeQuestionComment", Number(commentId));
+          //修改父组件前端对应的评论点赞数-1
+          this.$parent.$parent.changeQuestionCommentLikeCount(commentId,-1);
+          Toast.success("取消点赞成功");
+        });
+      }
+    },
+    //判断面试题评论是否被点赞，只需要判断Vuex中是否包含该commentId，包含则说明点赞过
+    isLike(commentId) {
+      return this.$store.state.Question.QuestionCommentLikeIds.includes(
+        Number(commentId)
+      );
+    },
     //进入用户资料卡页面
     toUserCardInfo(userId) {
       this.$router.push({

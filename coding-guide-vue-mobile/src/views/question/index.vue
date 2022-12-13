@@ -54,6 +54,9 @@ import {
   selectCurUserAllLikeQuestionId,
   selectCurUserAllCollectQuestionId,
 } from "../../api/question";
+import {
+  selectCurUserAllLikeQuestionCommentId
+} from '@/api/question-comment'
 import { getSimpleUserInfoByPublisherId } from "@/api/user";
 import { selectListByQuestionIdAndLimit } from "@/api/question-comment";
 
@@ -85,6 +88,7 @@ export default {
   created() {
     this.loadLikeQuestionIdList();
     this.loadCollectQuestionIdList();
+    this.loadLikeQuestionCommentIdList();
   },
   methods: {
     //点击“写评论”按钮。writeCommentQuestionId保存的是“我们发送的评论所属的面试题id”
@@ -190,6 +194,13 @@ export default {
       selectCurUserAllCollectQuestionId().then((res) => {
         //将数据放到VueX中
         this.$store.dispatch("initCollectList", res.data.data);
+      });
+    },
+    //加载当前用户所有点赞的面试题评论id集合
+    loadLikeQuestionCommentIdList() {
+      selectCurUserAllLikeQuestionCommentId().then((res) => {
+        //将数据放到VueX中
+        this.$store.dispatch("initQuestionCommentLikeList", res.data.data);
       });
     },
     //加载发布者用户信息

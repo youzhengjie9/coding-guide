@@ -14,3 +14,18 @@ export function writeQuestionComment(questionCommentDTO){
         data: questionCommentDTO
     })
 }
+
+export function selectCurUserAllLikeQuestionCommentId(){
+    return request({
+        method:"get",
+        url:'/question/comment/selectCurUserAllLikeQuestionCommentId'
+    })
+}
+
+export function likeQuestionComment(commentId){
+    return request({
+        url:'/question/comment/likeQuestionComment/'+commentId,
+        method:'post'
+    })
+}
+

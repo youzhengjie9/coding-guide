@@ -2,6 +2,7 @@ package com.coding.guide.mobile.controller;
 
 import com.coding.guide.common.data.ResponseResult;
 import com.coding.guide.mobile.dto.QuestionCommentDTO;
+import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.service.QuestionCommentService;
 import com.coding.guide.mobile.vo.QuestionCommentVO;
 import io.swagger.annotations.Api;
@@ -55,6 +56,48 @@ public class QuestionCommentController {
             return ResponseResult.fail(null);
         }
     }
+
+    /**
+     * 获取当前用户点赞的所有面试题评论id
+     *
+     * @return {@link ResponseResult}<{@link List}<{@link Long}>>
+     */
+    @GetMapping(path = "/selectCurUserAllLikeQuestionCommentId")
+    @ApiOperation("获取当前用户点赞的所有面试题评论id")
+    public ResponseResult<List<Long>> selectCurUserAllLikeQuestionCommentId(){
+        try {
+            //当前的用户id
+            Long userid = SecurityContext.getCurrentUserId();
+            //获取用户点赞的所有面试题评论id集合
+            List<Long> likeQuestionCommentIds=questionCommentService.selectAllLikeQuestionCommentIdByUserId(userid);
+            return ResponseResult.ok(likeQuestionCommentIds);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+    }
+
+    /**
+     * 点赞面试题的评论
+     * ---------------
+     * 调用此接口，如果该条面试题评论没有被该用户点赞过，则点赞，反之则取消点赞
+     * @param commentId 点赞的面试题的评论id
+     * @return {@link ResponseResult}<{@link Object}>
+     */
+    @PostMapping(path = "/likeQuestionComment/{commentId}")
+    @ApiOperation("点赞面试题的评论")
+    public ResponseResult<Object> likeQuestionComment(@PathVariable("commentId") Long commentId){
+        try {
+            //当前的用户id
+            Long userid = SecurityContext.getCurrentUserId();
+            boolean res=questionCommentService.likeQuestionComment(userid,commentId);
+            return ResponseResult.ok(res);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+
+    }
+
+
 
     /**
      * 评论面试题

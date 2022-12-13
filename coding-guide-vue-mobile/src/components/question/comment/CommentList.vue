@@ -51,8 +51,16 @@ export default {
               this.commentListFinished = true;
           }
       })
-      
     },
+    //修改面试题评论点赞数
+    changeQuestionCommentLikeCount(commentId,val){
+      for(let i = 0 ; i< this.commentList.length ; i++){
+          if(this.commentList[i].id === commentId){
+            this.commentList[i].likeCount=this.commentList[i].likeCount+val
+            break;
+          }
+      }
+    }
   },
 };
 </script>
