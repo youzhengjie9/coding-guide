@@ -47,4 +47,18 @@
           AND del_flag = 0
     </select>
 
+    <update id="incrLikeCount">
+        UPDATE t_question_reply
+        SET like_count = like_count + 1
+        WHERE id = #{replyId}
+          AND del_flag = 0
+    </update>
+
+    <update id="decrLikeCount">
+        UPDATE t_question_reply
+        SET like_count = like_count - 1
+        WHERE id = #{replyId}
+          AND del_flag = 0
+    </update>
+
 </mapper>

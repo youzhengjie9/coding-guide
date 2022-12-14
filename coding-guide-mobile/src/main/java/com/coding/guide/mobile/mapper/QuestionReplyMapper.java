@@ -47,4 +47,20 @@ public interface QuestionReplyMapper extends BaseMapper<QuestionReply> {
      */
     long selectCountByReplyIdEq0AndCommentId(@Param("commentId") long commentId);
 
+    /**
+     * 修改t_question_reply表对应的回复点赞数+1
+     *
+     * @param replyId 回复id
+     * @return int
+     */
+    int incrLikeCount(@Param("replyId") Long replyId);
+
+
+    /**
+     * 修改t_question_reply表对应的回复点赞数-1
+     *
+     * @param replyId 回复id
+     * @return int
+     */
+    int decrLikeCount(@Param("replyId") Long replyId);
 }

@@ -45,4 +45,22 @@ public interface QuestionReplyService extends IService<QuestionReply> {
     QuestionReplyVO writeQuestionReply(QuestionReplyDTO questionReplyDTO);
 
 
+    /**
+     * 根据userId获取用户点赞的所有面试题回复id集合
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> selectAllLikeQuestionReplyIdByUserId(Long userId);
+
+
+    /**
+     * 点赞面试题的回复（如果该条面试题回复没有被该用户点赞过，则点赞，反之则取消点赞）
+     *
+     * @param userId  用户id
+     * @param replyId 回复id
+     * @return boolean
+     */
+    boolean likeQuestionReply(Long userId, Long replyId);
+
 }

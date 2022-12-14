@@ -1,21 +1,25 @@
 package com.coding.guide.mobile.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.dto.QuestionReplyDTO;
+import com.coding.guide.mobile.entity.QuestionCommentLike;
 import com.coding.guide.mobile.entity.QuestionReply;
+import com.coding.guide.mobile.entity.QuestionReplyLike;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.mapper.QuestionReplyMapper;
 import com.coding.guide.mobile.security.SecurityContext;
+import com.coding.guide.mobile.service.QuestionReplyLikeService;
 import com.coding.guide.mobile.service.QuestionReplyService;
 import com.coding.guide.mobile.service.UserService;
 import com.coding.guide.mobile.vo.QuestionReplyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,11 +33,15 @@ import java.util.stream.Collectors;
  * @date 2022/12/04 17:54:33
  */
 @Service
+@Transactional
 public class QuestionReplyServiceImpl extends ServiceImpl<QuestionReplyMapper, QuestionReply> implements QuestionReplyService {
 
     private QuestionReplyMapper questionReplyMapper;
 
     private UserService userService;
+
+    private QuestionReplyLikeService questionReplyLikeService;
+
 
     @Autowired
     public void setQuestionReplyMapper(QuestionReplyMapper questionReplyMapper) {
@@ -45,7 +53,18 @@ public class QuestionReplyServiceImpl extends ServiceImpl<QuestionReplyMapper, Q
         this.userService = userService;
     }
 
-    //递归生成多级回复列表
+    @Autowired
+    public void setQuestionReplyLikeService(QuestionReplyLikeService questionReplyLikeService) {
+        this.questionReplyLikeService = questionReplyLikeService;
+    }
+
+    /**
+     * 递归生成多级回复列表
+     *
+     * @param rp0                          rp0
+     * @param secondLevelQuestionReplyList 二级面试题回复列表
+     * @param finallyQuestionReplyList     最终返回的面试题回复列表
+     */
     private void generateReplyList(QuestionReplyVO rp0, List<QuestionReplyVO> secondLevelQuestionReplyList, List<QuestionReplyVO> finallyQuestionReplyList){
         //只有del_flag=0才能被加进集合中
         if(rp0.getDelFlag() == 0){
@@ -138,5 +157,62 @@ public class QuestionReplyServiceImpl extends ServiceImpl<QuestionReplyMapper, Q
         }
         //如果写入数据库失败，则返回null，回复失败
         return null;
+    }
+
+    @Override
+    public List<Long> selectAllLikeQuestionReplyIdByUserId(Long userId) {
+
+        return questionReplyLikeService.lambdaQuery()
+                .select(QuestionReplyLike::getReplyId)
+                .eq(QuestionReplyLike::getUserId, userId)
+                .list()
+                .parallelStream()
+                .map(QuestionReplyLike::getReplyId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean likeQuestionReply(Long userId, Long replyId) {
+
+        try {
+            //判断用户是否点赞过这条评论
+            Long count = questionReplyLikeService.lambdaQuery()
+                    .eq(QuestionReplyLike::getUserId, userId)
+                    .eq(QuestionReplyLike::getReplyId, replyId)
+                    .count();
+
+            //如果这条面试题回复没有被该用户点赞过，则点赞
+            if (count == 0) {
+                //修改t_question_reply表对应的回复点赞数+1
+                questionReplyMapper.incrLikeCount(replyId);
+                //添加一条点赞记录到t_question_reply_like
+                QuestionReplyLike questionReplyLike = QuestionReplyLike.builder()
+                        .id(SnowId.nextId())
+                        .userId(userId)
+                        .replyId(replyId)
+                        .likeTime(LocalDateTime.now())
+                        .build();
+
+                questionReplyLikeService.save(questionReplyLike);
+            }
+            //如果这条面试题回复被该用户点赞过，则取消点赞
+            else {
+                //修改t_question_reply表对应的回复点赞数-1
+                questionReplyMapper.decrLikeCount(replyId);
+                //删除t_question_reply_like表中对应的点赞记录
+                LambdaQueryWrapper<QuestionReplyLike> queryWrapper = new LambdaQueryWrapper<>();
+                queryWrapper.eq(QuestionReplyLike::getUserId,userId)
+                                .eq(QuestionReplyLike::getReplyId,replyId);
+                questionReplyLikeService.remove(queryWrapper);
+
+            }
+            return true;
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
+
+
+
     }
 }
