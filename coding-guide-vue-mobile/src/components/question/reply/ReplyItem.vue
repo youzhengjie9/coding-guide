@@ -63,31 +63,44 @@
     <!-- 回复点赞展示区域 -->
     <div slot="right-icon" class="replyLikeContainer">
       <!-- 已被点赞 -->
-      <!-- <i
+      <i
         class="iconfont icon-yidianzan"
+        v-if="isLike(reply.id)"
+        @click="likeQuestionReply(reply.id)"
         style="font-size: 20px; color: red"
       >
       </i>
 
-      <span style="color: red">
-        10000
-      </span> -->
+      <span 
+      style="color: red"
+      v-if="isLike(reply.id)"
+      >
+        {{reply.likeCount}} 
+      </span>
 
       <!-- 未被点赞 -->
       <i
         class="iconfont icon-yidianzan"
+        v-if="!isLike(reply.id)"
+        @click="likeQuestionReply(reply.id)"
         style="font-size: 20px"
-        @click="likeReply"
       >
       </i>
 
-      <span> {{reply.likeCount}} </span>
+      <span v-if="!isLike(reply.id)"> 
+        {{reply.likeCount}} 
+      </span>
+
     </div>
 
   </van-cell>
 </template>
 
 <script>
+import{
+  likeQuestionReply
+} from '@/api/question-reply'
+import { Toast } from 'vant';
 export default {
   name: "QuestionReplyItem",
   props: {
@@ -102,7 +115,34 @@ export default {
   },
   methods: {
     //点赞回复
-    likeReply(replyId) {},
+    likeQuestionReply(replyId) {
+      //如果Vuex中不包含该replyId，则说明要调用点赞接口
+      if (
+        !this.$store.state.Question.QuestionReplyLikeIds.includes(Number(replyId))
+      ) {
+        likeQuestionReply(replyId).then((res) => {
+          this.$store.dispatch("likeQuestionReply", Number(replyId));
+          //修改父组件前端对应的回复点赞数+1
+          this.$parent.$parent.changeQuestionReplyLikeCount(replyId,1);
+          Toast.success("点赞成功");
+        });
+      }
+      //反之，说明要调用取消点赞接口(和点赞接口是同一个)
+      else {
+        likeQuestionReply(replyId).then((res) => {
+          this.$store.dispatch("cancelLikeQuestionReply", Number(replyId));
+          //修改父组件前端对应的回复点赞数-1
+          this.$parent.$parent.changeQuestionReplyLikeCount(replyId,-1);
+          Toast.success("取消点赞成功");
+        });
+      }
+    },
+    //判断面试题回复是否被点赞，只需要判断Vuex中是否包含该replyId，包含则说明点赞过
+    isLike(replyId) {
+      return this.$store.state.Question.QuestionReplyLikeIds.includes(
+        Number(replyId)
+      );
+    },
     //进入用户资料卡页面
     toUserCardInfo(userId){
       

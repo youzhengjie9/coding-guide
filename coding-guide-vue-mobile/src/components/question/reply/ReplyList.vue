@@ -54,6 +54,15 @@ export default {
         }
       });
     },
+    //修改面试题回复点赞数
+    changeQuestionReplyLikeCount(replyId,val){
+      for(let i = 0 ; i< this.replyList.length ; i++){
+          if(this.replyList[i].id === replyId){
+            this.replyList[i].likeCount=this.replyList[i].likeCount+val
+            break;
+          }
+      }
+    }
   },
 };
 </script>

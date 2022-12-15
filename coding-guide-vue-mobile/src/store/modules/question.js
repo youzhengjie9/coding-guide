@@ -5,7 +5,7 @@ const state = {
     QuestionCollectIds:[],
     //当前用户所有点赞的面试题评论id(commentid)集合
     QuestionCommentLikeIds:[],
-    //当前用户所有点赞的面试题评论的回复id(commentid)集合
+    //当前用户所有点赞的面试题评论的回复id(replyId)集合
     QuestionReplyLikeIds:[],
 };
 
@@ -21,6 +21,10 @@ const mutations = {
     //初始化面试题评论点赞列表
     INIT_QUESTION_COMMENT_LIKE_LIST(state,questionCommentLikeList){
         state.QuestionCommentLikeIds=questionCommentLikeList
+    },
+    //初始化面试题回复点赞列表
+    INIT_QUESTION_REPLY_LIKE_LIST(state,questionReplyLikeList){
+        state.QuestionReplyLikeIds=questionReplyLikeList
     },
     //点赞（将questionId添加到数组中）
     LIKE(state,questionId) {
@@ -58,6 +62,18 @@ const mutations = {
             }
         }
     },
+    //点赞面试题回复（将replyId添加到数组中）
+    LIKE_QUESTION_REPLY(state,replyId) {
+        state.QuestionReplyLikeIds.push(replyId)
+    },
+    //取消点赞面试题回复（从数组中移除指定replyId元素）
+    CANCEL_LIKE_QUESTION_REPLY(state,replyId) {
+        for (var i in state.QuestionReplyLikeIds) {
+            if (state.QuestionReplyLikeIds[i] == replyId) {
+                state.QuestionReplyLikeIds.splice(i, 1);
+            }
+        }
+    },
 };
 
 const actions = {
@@ -72,6 +88,10 @@ const actions = {
     //初始化面试题评论点赞数据
     initQuestionCommentLikeList(context,questionCommentLikeList){
         context.commit('INIT_QUESTION_COMMENT_LIKE_LIST',questionCommentLikeList)
+    },
+    //初始化面试题回复点赞数据
+    initQuestionReplyLikeList(context,questionReplyLikeList){
+        context.commit('INIT_QUESTION_REPLY_LIKE_LIST',questionReplyLikeList)
     },
     //点赞
     like(context, questionId) {
@@ -96,6 +116,14 @@ const actions = {
     //取消点赞面试题评论
     cancelLikeQuestionComment(context, commentId) {
         context.commit('CANCEL_LIKE_QUESTION_COMMENT', commentId)
+    },
+    //点赞面试题回复
+    likeQuestionReply(context, replyId) {
+        context.commit('LIKE_QUESTION_REPLY', replyId)
+    },
+    //取消点赞面试题回复
+    cancelLikeQuestionReply(context, replyId) {
+        context.commit('CANCEL_LIKE_QUESTION_REPLY', replyId)
     },
 };
 
