@@ -20,3 +20,11 @@ export function likeQuestionReply(replyId){
         method:'post'
     })
 }
+
+export function writeQuestionReply(questionReplyDTO){
+    return request({
+        method:'post',
+        url:'/question/reply/writeQuestionReply',
+        data: questionReplyDTO
+    })
+}

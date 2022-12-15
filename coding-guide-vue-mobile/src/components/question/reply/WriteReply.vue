@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { writeQuestionReply } from "@/api/question-reply";
+import { Toast } from "vant";
 export default {
   name: "WirteReply",
   data() {
@@ -30,77 +32,81 @@ export default {
       content: "",
     };
   },
-  props:{
+  props: {
     //回复列表中被点击 “回复” 按钮的reply（回复）对象
     repliedObject: {
       type: Object,
-      default: null
+      default: null,
     },
-    //在回复列表中点击的“写回复”按钮或者回复列表中的“回复”按钮时,记录我们发送的回复所属的面试题id
-    writeReplyQuestionId:{
+    //被回复的那条回复的id主键，用于记录这条回复到底回复了哪条回复（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
+    repliedId: {
       type: Number,
       required: true,
-    }
+    },
+    //这条回复所属的评论id
+    commentId: {
+      type: Number,
+      required: true,
+    },
   },
-  computed:{
+  computed: {
     //输入框的placeholder
-    inputPlaceholder () {
+    inputPlaceholder() {
       let repliedObject = this.repliedObject;
-      return repliedObject ? `回复 @${repliedObject.nickName} : ` : ''
-    }
+      return repliedObject ? `回复 @${repliedObject.nickName} : ` : "";
+    },
   },
-  methods:{
+  methods: {
     //点击“发送”按钮（发送回复）
-    sendReply(){
+    sendReply() {
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
-        message: '发送中...'
-      })
-      try {
+        message: "发送中...",
+      });
         //获取回复框中输入的内容
-        let content = this.content
-        //获取我们发送的回复所属的面试题id（也就是说获取这条回复属于哪个面试题）
-        let writeReplyQuestionId=this.writeReplyQuestionId
+        let content = this.content;
+        //获取被回复的那条回复的id主键，用于记录这条回复到底回复了哪条回复（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
+        let repliedId = this.repliedId;
+        //获取这条回复所属的评论id
+        let commentId = this.commentId;
         //校验逻辑：如果回复内容为空，则回复失败
-        if(!content){
-          this.$toast.fail('回复内容不允许为空。发送失败')
+        if (!content) {
+          this.$toast.fail("回复内容不允许为空。发送失败");
           return;
         }
 
         //发送回复
-        let json={
-          questionId: writeReplyQuestionId,
-          replyContent: content
-        }
+        let questionReplyDTO = {
+          repliedId: repliedId,
+          commentId: commentId,
+          content: content,
+        };
 
         //调用发送回复api，将请求发给后端
+        writeQuestionReply(questionReplyDTO).then((res) => {
+          //判断回复成功还是失败
+          //如果回复成功了
+          if (res.data.code == 200) {
+            //接收后端返回一个新生成的回复对象
+            let newReplyObject = res.data.data;
 
-        //后端返回一个新生成的回复对象
-        let newReplyObject={
-          id: 3700000000000003,
-          userId: 5700000000000003,
-          nickName: "昵称5700000000000003-测试回复",
-          content: content,
-          replyTime: "2022-10-8 12:33:21",
-          likeCount:0,
-          avatar:
-            "https://pic1.zhimg.com/80/v2-3330141ad8f6029c499016deae2f8eac_720w.webp",
-        }
+            //发送回复成功之后,将新回复对象传给父组件，由父组件将新回复追加到原来的回复列表中
+            this.$parent.$parent.sendReplySuccess(newReplyObject);
 
-        //发送回复成功之后,使用emit将新评论对象传给父组件，由父组件将新回复追加到原来的回复列表中
-        this.$emit('sendReplySuccess', newReplyObject)
+            Toast.success("回复成功");
 
-        this.$toast.success('发送成功')
+            //将回复框的内容清空
+            this.content = "";
+          } else if (res.data.code == 500) {
+            Toast.fail("回复失败");
+          }
+        }).catch((err) => {
+          Toast.fail("系统异常,回复失败");
+        });
 
-        //将回复框的内容清空
-        this.content=''
-
-      } catch (error) {
-        this.$toast.fail('系统异常，发送失败')
-      }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -117,5 +123,4 @@ export default {
   font-size: 15px;
   text-align: center;
 }
-
 </style>

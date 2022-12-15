@@ -6,7 +6,7 @@
     <select id="getUserIdAndNickNameByReplyId" resultType="com.coding.guide.mobile.entity.User">
         SELECT id, nick_name
         FROM t_user
-        WHERE id = (SELECT user_id FROM t_question_reply WHERE replied_id = #{replyId})
+        WHERE id = (SELECT user_id FROM t_question_reply WHERE id = #{replyId})
     </select>
 
 

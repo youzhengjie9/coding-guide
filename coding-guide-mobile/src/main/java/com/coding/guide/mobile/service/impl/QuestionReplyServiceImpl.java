@@ -144,15 +144,18 @@ public class QuestionReplyServiceImpl extends ServiceImpl<QuestionReplyMapper, Q
         //将评论的回复数据写入数据库
         boolean writeSuccess = this.save(questionReply);
         if(writeSuccess){
-            //将questionComment属性拷贝到questionCommentVO
+            //将questionReply属性拷贝到questionReplyVO
             QuestionReplyVO questionReplyVO = BeanUtil.copyProperties(questionReply, QuestionReplyVO.class);
-            //通过被回复id，查询被回复用户的一些属性
-            User repliedUser = userService.getUserIdAndNickNameByReplyId(questionReplyDTO.getRepliedId());
             //补充一些属性
             questionReplyVO.setNickName(user.getNickName())
-                    .setAvatar(user.getAvatar())
-                    .setRepliedUserId(repliedUser.getId())
-                    .setRepliedNickName(repliedUser.getNickName());
+                    .setAvatar(user.getAvatar());
+            //通过被回复id，查询被回复用户的一些属性
+            if(questionReplyDTO.getRepliedId() != 0){
+                User repliedUser = userService.getUserIdAndNickNameByReplyId(questionReplyDTO.getRepliedId());
+                questionReplyVO.setRepliedUserId(repliedUser.getId())
+                        .setRepliedNickName(repliedUser.getNickName());
+            }
+
             return questionReplyVO;
         }
         //如果写入数据库失败，则返回null，回复失败

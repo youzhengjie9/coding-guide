@@ -55,7 +55,7 @@ public class QuestionReply implements Serializable {
      */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField("replied_id")
-    @ApiModelProperty(name = "repliedId",value = "被回复的那条回复的id主键")
+    @ApiModelProperty(name = "repliedId",value = "被回复的那条回复的id主键（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）")
     private Long repliedId;
 
     /**

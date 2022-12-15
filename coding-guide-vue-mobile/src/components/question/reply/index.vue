@@ -45,7 +45,8 @@
       <!-- “写回复”组件 -->
       <write-reply
         :repliedObject="repliedObject"
-        :writeReplyQuestionId="questionId"
+        :repliedId="Number(repliedId)"
+        :commentId="Number(commentId)"
         @sendReplySuccess="sendReplySuccess"
       />
     </van-popup>
@@ -87,10 +88,12 @@ export default {
       firstLevelQuestionReplyListCount: 0, //该评论的一级回复已经查询出来的数量
       replyPage: 1, //回复分页的当前页数。默认是第一页
       replySize: 3, //回复分页的每页大小。一次3条
+      repliedId: 0, //被回复的那条回复的id主键，用于记录这条回复到底回复了哪条回复（如果为0则说明回复评论,那么这个属性就没有任何作用,反之说明回复别人的回复,这个属性才有作用）
+      commentId: 0, //这条回复所属的评论id
     };
   },
   methods: {
-    //发送回复成功的回调方法
+    //发送回复成功回调方法
     sendReplySuccess(newReplyObject) {
       //将新回复插入到回复列表数组（replyList）中，分为几种情况：
       //1：如果replyList为空（数组长度为0），则直接push到数组中即可（最简单的一种情况）
@@ -99,45 +102,45 @@ export default {
       }
       //2：如果replyList不为空：
       else {
-        //2.1如果我们当前回复的是回复别人的回复:
-
-
-        
-        //2.2如果我们当前回复的是回复别人的评论:
-        //2.2.1：如果replyList中的所有repliedUserId==null的回复的点赞都大于0，则将新回复插入到倒数第一个位置
-        //2.2.2：如果replyList中的所有repliedUserId==null的回复的点赞都等于0，则将新回复插入到第一个位置
-        //2.2.3：如果replyList中的repliedUserId==null的回复有一部分大于0、有一部分等于0：（并且这个回复列表是按照点赞数倒序排序和回复时间倒序排序）,则找到点赞数等于0的回复，在这条回复的前一个位置插入新回复
-
-        //判断是否插入成功标志位
+        //标记是否插入成功
         let insertSuccess = false;
 
-        //处理2.2和2.3的情况
-        for (let i = 0; i < this.replyList.length; i++) {
-          if (this.replyList[i].likeCount === 0) {
-            //将newReplyObject插入到指定位置中
-            this.replyList.splice(i, 0, newReplyObject);
-            //将insertSuccess设置为true，说明插入成功
-            insertSuccess = true;
-            break;
-          }
+        //2.1: 如果repliedId为0,则直接将回复插入replyList最后面
+        if(this.repliedId == 0){
+          this.replyList.push(newReplyObject);
+          insertSuccess = true;
         }
+        //2.2：如果repliedId不等于0,则在replyList中找到被回复的那条回复的id主键（repliedId）
+        //,在其后面添加我们的新回复（newReplyObject），然后把insertSuccess设置为true
+        else{
+          for(let i = 0 ; i< this.replyList.length ; i++){
+            if(this.replyList[i].id === this.repliedId){
+              this.replyList.splice(i+1, 0, newReplyObject);
+              insertSuccess = true;
+              break;
+            }
+          }
 
-        //处理2.1的情况，防止所有回复的点赞都大于0导致没有插入回复，所以这里要多做一步判断
-        if (!insertSuccess) {
+        }
+        //2.3：不管repliedId是否为0,如果insertSuccess为false,则直接将回复插入replyList最后面
+        if(!insertSuccess){
           this.replyList.push(newReplyObject);
         }
+        // 该条评论的回复总数 +1 .使用emit通过父组件修改我们点击“回复”按钮的那条评论的回复数
+        this.$emit("changeCurrentReplyCommentReplyCount", 1);
+
+        // 关闭 “回复/写回复” popup弹出层
+        this.showWriteReplyPopup = false;
       }
-
-      // 该条评论的回复总数 +1 .使用emit通过父组件修改我们点击“回复”按钮的那条评论的回复数
-      this.$emit("changeCurrentReplyCommentReplyCount", 1);
-      // 关闭 “回复/写回复” popup弹出层
-      this.showWriteReplyPopup = false;
     },
-
-    //点击回复列表的“写回复”按钮会打开发布评论和回复的popup弹出层
+    //点击回复列表的“写回复”按钮会打开发布回复的popup弹出层
     clickWriteReplyBtn() {
       //保存在评论列表中被点击“回复”的reply对象（注意：是评论列表中的“回复”按钮）
       this.repliedObject = this.currentReplyComment;
+      //由于是回复评论，所以这里设置为0
+      this.repliedId = 0;
+      //当前回复的评论id
+      this.commentId = this.currentReplyComment.id;
       //打开“写回复”popup弹出层
       this.showWriteReplyPopup = true;
     },
@@ -145,6 +148,10 @@ export default {
     clickReplyBtn(reply) {
       //保存在回复列表中被点击“回复”的reply对象（注意：是回复列表中的“回复”按钮）
       this.repliedObject = reply;
+      //由于是回复别人的回复
+      this.repliedId = this.repliedObject.id;
+      //当前回复的评论id
+      this.commentId = this.currentReplyComment.id;
       //打开“写回复”popup弹出层
       this.showWriteReplyPopup = true;
     },
@@ -171,10 +178,12 @@ export default {
             res.data.data.questionReplyVOList
           );
           //更新一级回复总记录数
-          this.replyTotalCount = res.data.data.firstLevelQuestionReplyTotalCount;
+          this.replyTotalCount =
+            res.data.data.firstLevelQuestionReplyTotalCount;
           //更新已经查询出来的一级回复记录数之和
-          this.firstLevelQuestionReplyListCount
-              =this.firstLevelQuestionReplyListCount+res.data.data.firstLevelQuestionReplyListCount
+          this.firstLevelQuestionReplyListCount =
+            this.firstLevelQuestionReplyListCount +
+            res.data.data.firstLevelQuestionReplyListCount;
           // 加载状态结束
           responseResult.lodingStatus = false;
           // 数据全部加载完成，说明已经没有记录可以刷新了，就显示到底了

@@ -121,6 +121,7 @@ public class QuestionReplyController {
             //回复成功返回questionReplyVO
             return ResponseResult.ok(questionReplyVO);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseResult.fail(null);
         }
     }

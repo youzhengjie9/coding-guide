@@ -68,7 +68,6 @@ export default {
       //调用发送评论api，将请求发给后端
       writeQuestionComment(questionCommentDTO)
         .then((res) => {
-          console.log(res);
           //判断评论成功还是失败
           //如果评论成功了
           if (res.data.code == 200) {
