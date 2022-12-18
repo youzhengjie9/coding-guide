@@ -64,6 +64,7 @@ import { getSimpleUserInfoByPublisherId } from "@/api/user";
 import { selectListByQuestionIdAndLimit } from "@/api/question-comment";
 
 export default {
+  name:'QuestionDetail',
   data() {
     return {
       question: {}, //面试题对象
@@ -244,6 +245,18 @@ export default {
   mounted() {
     this.loadQuestionContent();
   },
+  // 导航离开该组件自动调用
+  beforeRouteLeave (to, from, next) {
+    const { name: currentComponentName } = this.$options
+    if (to.name === 'UserCard') {
+      //如果跳转到名为UserCard的路由,则缓存当前组件（跳转前的组件）
+      this.$store.dispatch('addCacheComponentName', currentComponentName)
+    } else {
+      // 如果该路由跳转是去其他组件，则移除当前组件缓存
+      this.$store.dispatch('removeCacheComponentName', currentComponentName)
+    }
+    next()
+  }
 };
 </script>
 

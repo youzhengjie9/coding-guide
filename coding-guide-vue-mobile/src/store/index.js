@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import TabBar from './modules/tabbar'
 import User from './modules/user'
 import Question from './modules/question'
+import CacheComponents from './modules/cache-components'
 
 //使用vuex插件
 Vue.use(Vuex);
@@ -16,7 +17,8 @@ export default new Vuex.Store({
         //注册模块
         TabBar,
         User,
-        Question
+        Question,
+        CacheComponents,
     }
 
 })

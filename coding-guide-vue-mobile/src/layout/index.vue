@@ -1,9 +1,12 @@
 <template>
   <div class="container">
     <!-- <transition :name="move"> -->
-    <!-- <keep-alive> -->
-    <router-view />
-    <!-- </keep-alive> -->
+      <!-- 由于layout组件是用来展示子路由的（router-view）
+           所以要在这个router-view加上keep-alive标签,否则会出现缓存不了子路由的组件的bug
+      -->
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <!-- </transition> -->
 
     <!-- 底部TabBar -->

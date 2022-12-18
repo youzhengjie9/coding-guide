@@ -45,6 +45,7 @@
 import SearchResultList from "@/components/search/SearchResultList.vue";
 import BackToTop from "@/components/common/BackToTop.vue";
 export default {
+  name:'SearchResult',
   data() {
     return {
       list: [],

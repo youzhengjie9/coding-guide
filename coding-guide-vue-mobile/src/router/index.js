@@ -26,20 +26,20 @@ const router = new VueRouter({
       {
         path:'/',
         redirect:'/index', //访问“/”路径时自动重定向到“/dashboard路径”
-        // name:'dashboard',
-        //Layout我们后台系统的整体布局组件
         component: Layout,
         //子路由，将在layout/index.vue下面的<router-view/>标签展示
         children:[
           {
             path:'/index',
+            name:'index',
             component: () => import('../views/index/index.vue'),
             meta: {
-              index: 0
+              index: 0,
             }
           },
           {
             path:'/message',
+            name:'Message',
             component: () => import('../views/message/index.vue'),
             meta: {
               index: 1
@@ -47,6 +47,7 @@ const router = new VueRouter({
           },
           {
             path:'/about',
+            name:'About',
             component: () => import('../views/about/index.vue'),
             meta: {
               index: 2
@@ -54,6 +55,7 @@ const router = new VueRouter({
           },
           {
             path:'/my',
+            name:'my',
             component: () => import('../views/my/index.vue'),
             meta: {
               index: 3
@@ -71,18 +73,22 @@ const router = new VueRouter({
       },
       {
         path:'/question/detail',
+        name:'QuestionDetail',
         component: () => import('../views/question/index.vue')
       },
       {
         path:'/search',
+        name:'Search',
         component: () => import('../views/search/index.vue')
       },
       {
         path:'/search/result',
+        name:'SearchResult',
         component: () => import('../views/search/SearchResult.vue')
       },
       {
         path:'/user/card',
+        name:'UserCard',
         component: () => import('../views/user-card/index.vue')
       },
       {
