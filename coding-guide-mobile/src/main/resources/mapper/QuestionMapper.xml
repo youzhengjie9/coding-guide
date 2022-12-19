@@ -215,6 +215,20 @@
         FROM t_question
         WHERE user_id = #{userid}
     </select>
+    <select id="selectUserQuestionBrowseRecordByLimit" resultType="com.coding.guide.mobile.entity.Question">
+        SELECT
+        <include refid="field02"/>
+        FROM t_question_browse_record AS tqbr
+                 LEFT JOIN t_question tq on tqbr.question_id = tq.id
+        WHERE tqbr.user_id = #{currentUserId}
+        ORDER BY tqbr.browse_time DESC
+        LIMIT #{page},#{size}
+    </select>
+    <select id="selectUserQuestionBrowseRecordCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM t_question_browse_record AS tqbr
+        WHERE tqbr.user_id = #{currentUserId}
+    </select>
 
 
 </mapper>

@@ -832,3 +832,14 @@ VALUES (1001, 1, 0, '倔强青铜', 'rgb(121 139 175)', 0),
 
 
 
+/* 面试题浏览记录表 */
+DROP TABLE IF EXISTS `t_question_browse_record`;
+
+CREATE TABLE `t_question_browse_record`(
+                                           `id` bigint(20) NOT NULL COMMENT '主键',
+                                           `user_id` bigint(20) NULL COMMENT '用户id',
+                                           `question_id` bigint(20) NULL COMMENT '浏览的面试题的id',
+                                           `browse_time` datetime DEFAULT NULL COMMENT '浏览时间',
+                                           PRIMARY KEY (`id`),
+                                           INDEX `idx_uid` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='面试题浏览记录表';

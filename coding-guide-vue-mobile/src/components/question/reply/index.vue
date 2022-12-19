@@ -9,7 +9,7 @@
     </van-nav-bar>
 
     <!-- 当前评论 -->
-    <question-comment-item
+    <question-reply-comment-item
       :comment="currentReplyComment"
       :canReply="false"
       @click="toUserCardInfo(reply.repliedUserId)"
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import QuestionCommentItem from "@/components/question/comment/CommentItem.vue";
+import QuestionReplyCommentItem from "@/components/question/reply/CommentItem.vue";
 import QuestionReplyList from "@/components/question/reply/ReplyList.vue";
 import WriteReply from "@/components/question/reply/WriteReply.vue";
 
@@ -76,7 +76,7 @@ export default {
   },
   components: {
     QuestionReplyList,
-    QuestionCommentItem,
+    QuestionReplyCommentItem,
     WriteReply,
   },
   data() {

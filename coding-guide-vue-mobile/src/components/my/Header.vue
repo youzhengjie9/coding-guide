@@ -30,7 +30,7 @@
         >
         </van-divider>
         <van-cell title="我的草稿" />
-        <van-cell title="浏览记录" />
+        <van-cell title="浏览记录" @click="toBrowseRecord" />
         <van-cell title="钱包" />
         <van-cell title="会员" />
         <van-cell title="退出登录" @click="logout" />
@@ -190,6 +190,12 @@ export default {
     //点击分享
     toShare() {
       Toast("分享个人资料功能暂未实现！");
+    },
+    //点击浏览记录
+    toBrowseRecord(){
+      this.$router.push({
+        path:'/browse/record'
+      });
     },
     //退出
     logout(){

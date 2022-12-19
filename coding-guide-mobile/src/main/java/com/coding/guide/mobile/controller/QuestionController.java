@@ -457,5 +457,39 @@ public class QuestionController {
 
     }
 
+    /**
+     * 分页查询用户的面试题浏览记录
+     *
+     * @param page 页面
+     * @param size 大小
+     * @return {@link ResponseResult}<{@link Map}<{@link Object},{@link Object}>>
+     */
+    @GetMapping(path = "/selectCurUserQuestionBrowseRecordByLimit/{page}/{size}")
+    @ApiOperation("分页查询用户的面试题浏览记录")
+    public ResponseResult<Map<Object,Object>> selectCurUserQuestionBrowseRecordByLimit(@PathVariable("page") int page,
+                                                                                       @PathVariable("size") int size){
+        ResponseResult<Map<Object,Object>> responseResult = new ResponseResult<>();
+        page=(page-1)*size;
+
+        //获取当前用户id
+        Long currentUserId = SecurityContext.getCurrentUserId();
+        List<Question> questionList=questionService.selectUserQuestionBrowseRecordByLimit(currentUserId,page,size);
+        //将List<Question>转成List<QuestionVO>
+        List<QuestionVO> questionVOList = this.converQuestionVOList(questionList);
+
+        Long totalCount=questionService.selectUserQuestionBrowseRecordCount(currentUserId);
+
+        Map<Object, Object> map = MapUtil.builder()
+                .put("questionVOList", questionVOList)
+                .put("totalCount", totalCount)
+                .build();
+
+        responseResult.setCode(ResponseType.SUCCESS.getCode())
+                .setMsg(ResponseType.SUCCESS.getMessage())
+                .setData(map);
+        return responseResult;
+
+    }
+
 
 }

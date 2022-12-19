@@ -7,9 +7,12 @@ import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.CaffeineConstant;
 import com.coding.guide.mobile.constant.RedisConstant;
 import com.coding.guide.mobile.entity.Question;
+import com.coding.guide.mobile.entity.QuestionBrowseRecord;
 import com.coding.guide.mobile.entity.QuestionCollect;
 import com.coding.guide.mobile.entity.QuestionLike;
 import com.coding.guide.mobile.mapper.QuestionMapper;
+import com.coding.guide.mobile.security.SecurityContext;
+import com.coding.guide.mobile.service.QuestionBrowseRecordService;
 import com.coding.guide.mobile.service.QuestionCollectService;
 import com.coding.guide.mobile.service.QuestionLikeService;
 import com.coding.guide.mobile.service.QuestionService;
@@ -43,6 +46,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
     private QuestionCollectService questionCollectService;
 
+    private QuestionBrowseRecordService questionBrowseRecordService;
+
     private RedisTemplate redisTemplate;
 
     /**
@@ -61,6 +66,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public void setQuestionCollectService(QuestionCollectService questionCollectService) {
         this.questionCollectService = questionCollectService;
     }
+
+    @Autowired
+    public void setQuestionBrowseRecordService(QuestionBrowseRecordService questionBrowseRecordService) {
+        this.questionBrowseRecordService = questionBrowseRecordService;
+    }
+
     @Autowired
     public void setRedisTemplate(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -99,7 +110,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                 return (Question) redisTemplate.opsForValue().get(KEY);
             }
         });
-        //8：返回结果
+        //8：记录用户浏览面试题记录
+        questionBrowseRecordService.addQuestionBrowseRecord(id);
+        //9：返回结果
         return q;
     }
 
@@ -366,6 +379,18 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         Long collectedCount = questionMapper.selectCollectedCountByUserId(userid);
         //2：转换结果
         return ConverUtil.converCount(collectedCount);
+    }
+
+    @Override
+    public List<Question> selectUserQuestionBrowseRecordByLimit(Long currentUserId, int page, int size) {
+
+        return questionMapper.selectUserQuestionBrowseRecordByLimit(currentUserId, page, size);
+    }
+
+    @Override
+    public Long selectUserQuestionBrowseRecordCount(Long currentUserId) {
+
+        return questionMapper.selectUserQuestionBrowseRecordCount(currentUserId);
     }
 
 }

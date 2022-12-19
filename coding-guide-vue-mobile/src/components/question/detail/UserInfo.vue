@@ -4,7 +4,8 @@
       <van-col span="19">
         <div class="avatar">
           <img 
-          style="width: 1rem; height: 1rem; border-radius: 50%;" 
+          style="width: 1rem; height: 1rem; border-radius: 50%;"
+          @click="toUserCardInfo(userInfo.publisherId)"
           :src="userInfo.avatar"
           />
 
@@ -91,6 +92,15 @@ export default {
           Toast.success("取消关注成功");
         });
       }
+    },
+    //进入用户资料卡页面
+    toUserCardInfo(userId) {
+      this.$router.push({
+        path: "/user/card",
+        query: {
+          id: userId,
+        },
+      });
     },
   },
 };

@@ -113,4 +113,9 @@ export function selectCurUserLikeQuestionByLimit(page,size){
     })
 }
 
-
+export function selectCurUserQuestionBrowseRecordByLimit(page,size){
+    return request({
+        url:'/question/selectCurUserQuestionBrowseRecordByLimit/'+page+'/'+size,
+        method:'get'
+    })
+}

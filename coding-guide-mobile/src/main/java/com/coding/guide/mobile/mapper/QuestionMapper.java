@@ -223,4 +223,23 @@ public interface QuestionMapper extends BaseMapper<Question> {
      */
     Long selectCollectedCountByUserId(@Param("userid") Long userid);
 
+    /**
+     * 分页查询用户的面试题浏览记录
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserQuestionBrowseRecordByLimit(@Param("currentUserId") Long currentUserId,
+                                                         @Param("page") int page,
+                                                         @Param("size") int size);
+
+    /**
+     * 查询用户的面试题浏览记录数量
+     *
+     * @param currentUserId 当前用户id
+     * @return {@link Long}
+     */
+    Long selectUserQuestionBrowseRecordCount(@Param("currentUserId") Long currentUserId);
 }

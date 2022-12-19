@@ -211,4 +211,23 @@ public interface QuestionService extends IService<Question> {
      */
     String selectCollectedCountByUserId(Long userid);
 
+    /**
+     * 分页查询用户的面试题浏览记录
+     *
+     * @param currentUserId 当前用户id
+     * @param page          页面
+     * @param size          大小
+     * @return {@link List}<{@link Question}>
+     */
+    List<Question> selectUserQuestionBrowseRecordByLimit(Long currentUserId, int page, int size);
+
+    /**
+     * 查询用户的面试题浏览记录数量
+     *
+     * @param currentUserId 当前用户id
+     * @return {@link Long}
+     */
+    Long selectUserQuestionBrowseRecordCount(Long currentUserId);
+
+
 }
