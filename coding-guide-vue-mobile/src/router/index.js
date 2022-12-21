@@ -97,6 +97,11 @@ const router = new VueRouter({
         component: () => import('../views/browse-record/index.vue')
       },
       {
+        path:'/write/question',
+        name:'WriteQuestion',
+        component: () => import('../views/write-question/index.vue')
+      },
+      {
         //配置404未找到页面路由
         path:'*',
         component: () => import('../views/error-page/404.vue')

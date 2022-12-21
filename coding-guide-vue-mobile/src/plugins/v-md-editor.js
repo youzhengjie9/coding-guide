@@ -1,6 +1,10 @@
 import Vue from 'vue';
+//配置v-md-editor的预览组件（用于展示）
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
+//配置v-md-editor的编辑器组件（用于编写内容）
+import VMdEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
 //github主题
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
@@ -18,11 +22,15 @@ import hljs from 'highlight.js';
 // import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 
 
-//切换成github主题
+//配置v-md-editor的预览组件的主题为github主题
 VMdPreview.use(githubTheme, {
   Hljs: hljs,
-  
 });
+//配置v-md-editor的编辑器组件的主题为github主题
+VMdEditor.use(githubTheme, {
+  Hljs: hljs,
+});
+
 
 /*
 配置插件方式：VMdPreview.use(xxx插件)即可
@@ -40,5 +48,7 @@ VMdPreview.use(githubTheme, {
 // VMdPreview.use(createEmojiPlugin())
 
 
-
+//正式启动v-md-editor的预览组件插件
 Vue.use(VMdPreview);
+//正式启动v-md-editor的编辑器组件插件
+Vue.use(VMdEditor);

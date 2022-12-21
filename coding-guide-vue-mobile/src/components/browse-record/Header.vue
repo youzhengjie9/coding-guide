@@ -2,10 +2,8 @@
   
   <div class="header">
 
-        <van-nav-bar title="题目详情" left-arrow @click-left="back">
-            <template #right>
-                <van-icon name="share-o" size="18" @click="toShare" />
-            </template>
+        <van-nav-bar title="浏览记录" left-text="返回" left-arrow @click-left="back">
+            
         </van-nav-bar>
   </div>
 
@@ -14,15 +12,11 @@
 <script>
 import { Toast } from 'vant';
 export default {
-    name:'QuestionDetailHeader',
+    name:'BrowseRecordHeader',
     methods: {
         //返回上一级
         back() {
             this.$router.go(-1);
-            // //为了解决跳转后页面样式混乱bug，所以跳转后要进行刷新页面
-            // setTimeout(function () {
-            //     window.location.reload();
-            // }, 100);
         },
         //去分享
         toShare(){
@@ -35,7 +29,7 @@ export default {
 <style lass="scss" scoped>
 
 .header{
-    position: fixed;
+    position: inherit;
     top: 0;
     width: 100%;
 }

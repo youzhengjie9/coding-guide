@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6399660",
+      "name": "换一换",
+      "font_class": "weibiaoti--",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "5744742",
+      "name": "plus",
+      "font_class": "xinzeng",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "19463386",
+      "name": "增加 添加 加减",
+      "font_class": "zengjiatianjiajiajian",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
       "icon_id": "9358618",
       "name": "chat-o",
       "font_class": "chat-o",
