@@ -7,10 +7,9 @@ import com.coding.guide.mobile.vo.TagVO;
 import com.coding.guide.common.data.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,6 +58,37 @@ public class TagController {
 
         return ResponseResult.ok(tagVOList);
 
+    }
+
+
+    /**
+     * 根据关键字分页模糊搜索标签名称列表
+     *
+     * @param keyword 关键字
+     * @param page    页面
+     * @param size    大小
+     * @return {@link ResponseResult}<{@link List}<{@link String}>>
+     */
+    @ApiOperation("根据关键字模糊搜索标签名称列表")
+    @GetMapping(path = "/searchTagNameByKeywordAndLimit")
+    public ResponseResult<List<String>> searchTagNameByKeywordAndLimit(@RequestParam("page") int page,
+                                                                       @RequestParam("size") int size,
+                                                                       @RequestParam("keyword") String keyword){
+        try {
+            //如果keyword是空的
+            if(StringUtils.isBlank(keyword)){
+                return ResponseResult.ok(null);
+            }
+            //如果keyword不为空
+            else {
+                page=(page-1)*size;
+                List<String> tagNameList = tagService.searchTagNameByKeywordAndLimit(page, size, keyword);
+                return ResponseResult.ok(tagNameList);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseResult.fail(null);
+        }
     }
 
 }
