@@ -831,7 +831,6 @@ VALUES (1001, 1, 0, '倔强青铜', 'rgb(121 139 175)', 0),
 /* 用户积分日志表 */
 
 
-
 /* 面试题浏览记录表 */
 DROP TABLE IF EXISTS `t_question_browse_record`;
 
@@ -843,3 +842,22 @@ CREATE TABLE `t_question_browse_record`(
                                            PRIMARY KEY (`id`),
                                            INDEX `idx_uid` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='面试题浏览记录表';
+
+
+
+/* 面试题草稿表 */
+DROP TABLE IF EXISTS `t_question_draft`;
+CREATE TABLE `t_question_draft`(
+                                   `id` bigint(20) NOT NULL COMMENT '主键',
+                                   `user_id` bigint(20) NULL COMMENT '发布面试题草稿的用户id',
+                                   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '面试题标题',
+                                   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '面试题内容',
+                                   `allow_comment` tinyint(1) DEFAULT 1 COMMENT '是否允许评论（0代表不允许评论，1代表允许评论）',
+                                   `is_public` tinyint(1) DEFAULT 1 COMMENT '题目是否公开（0代表私密，1代表公开）',
+                                   `difficulty` tinyint(5) NOT NULL COMMENT '题目难度（分为1=简单、2=中等、3=较难、4=困难）',
+                                   `tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '该面试题标签名称字符串，用‘,’分隔',
+                                   `save_time` datetime DEFAULT NULL COMMENT '保存草稿时间',
+                                   `update_time` datetime DEFAULT NULL COMMENT '最后一次修改草稿时间',
+                                   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志（0代表未删除，1代表已删除）',
+                                   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='面试题草稿表';

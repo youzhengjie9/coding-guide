@@ -46,7 +46,7 @@
       </van-cell>
 
       <!-- 单元格 -->
-      <van-cell required>
+      <van-cell>
         <div class="cellTitle" style="width: 80px">题目标签</div>
         <div class="cellContent">
           <input

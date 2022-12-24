@@ -26,7 +26,9 @@ public final class RedisConstant {
      */
     public static final String QUESTION_DETAIL_KEY_PREFIX="mobile:question:detail:";
 
-
-
-
+    /**
+     * 保存面试题草稿的锁的key前缀
+     * 后面加上accessToken
+     */
+    public static final String SAVE_QUESTION_DRAFT_LOCK_KEY_PREFIX="mobile:question:draft:lock:";
 }

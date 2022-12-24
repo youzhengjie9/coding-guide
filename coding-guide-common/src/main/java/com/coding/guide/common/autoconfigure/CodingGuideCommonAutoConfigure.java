@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class})
-@Import({UtilsConfiguration.class,RedisTemplateConfiguration.class})
+@Import({UtilsConfiguration.class,RedisTemplateConfiguration.class, RedissonConfiguration.class})
 @Slf4j(topic = "coding-guide-common-autoconfigure")
 public class CodingGuideCommonAutoConfigure {
 

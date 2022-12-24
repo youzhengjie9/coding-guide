@@ -32,6 +32,7 @@ import WriteQuestionSettingHeader from "@/components/write-question/setting/Head
 import writeQuestionSettingContent from "@/components/write-question/setting/Content.vue";
 import writeQuestionSettingFooter from "@/components/write-question/setting/Footer.vue";
 import { Toast } from "vant";
+import { saveDraft } from "@/api/question-draft";
 export default {
   name: "WriteQuestion",
   components: {
@@ -79,27 +80,48 @@ export default {
     },
     //点击保存草稿按钮
     saveDraft() {
-      //后端需要的其他数据
-      let questionTitle = this.questionTitle;
-      let questionContent = this.questionContent;
-      //从write-question-setting-content组件中获取我们设置的内容保存起来
-      let isPublic = this.$children[3].isPublic;
-      let allowComment = this.$children[3].allowComment;
-      let difficulty = this.$children[3].difficulty;
-      let tags = this.$children[3].selectedTagNameList;
-      //封装请求后端的数据
-      let draft = {
-        questionTitle: questionTitle,
-        questionContent: questionContent,
-        isPublic: isPublic,
-        allowComment: allowComment,
-        difficulty: difficulty,
-        tags: tags,
-      };
+        //后端需要的其他数据
+        let questionTitle = this.questionTitle;
+        let questionContent = this.questionContent;
+        //从write-question-setting-content组件中获取我们设置的内容保存起来
+        let isPublic = this.$children[3].isPublic;
+        let allowComment = this.$children[3].allowComment;
+        let difficulty = this.$children[3].difficulty;
+        let tags = this.$children[3].selectedTagNameList.toString();
+        //简单检验参数
+        if (difficulty == "") {
+          Toast.fail("未选择题目难度,保存草稿失败");
+        } else {
+          //封装请求后端的数据
+          let questionDraftDTO = {
+            questionTitle: questionTitle,
+            questionContent: questionContent,
+            isPublic: isPublic,
+            allowComment: allowComment,
+            difficulty: difficulty,
+            tags: tags,
+          };
 
-      console.log(draft);
+          saveDraft(questionDraftDTO)
+            .then((res) => {
+              //保存成功
+              if (res.data.code == 200) {
+                //清空组件中的数据
+                this.questionTitle = "";
+                this.questionContent = "";
+                //跳转到首页
+                this.$router.replace({
+                  path: "/index",
+                });
+              } else {
+                Toast.fail("保存草稿失败");
+              }
+            })
+            .catch((err) => {
+              Toast.fail("系统异常,保存草稿失败");
+            });
+        }
 
-      Toast("保存草稿");
     },
     //点击发布内容按钮(发布面试题)
     publishQuestion() {
@@ -110,7 +132,7 @@ export default {
       let isPublic = this.$children[3].isPublic;
       let allowComment = this.$children[3].allowComment;
       let difficulty = this.$children[3].difficulty;
-      let tags = this.$children[3].selectedTagNameList;
+      let tags = this.$children[3].selectedTagNameList.toString();
       //封装请求后端的数据
       let question = {
         questionTitle: questionTitle,

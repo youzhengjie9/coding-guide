@@ -36,7 +36,12 @@
 
 
     <dependencies>
-
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.19.0</version>
+        </dependency>
         <!-- 高性能JVM本地缓存caffeine -->
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
