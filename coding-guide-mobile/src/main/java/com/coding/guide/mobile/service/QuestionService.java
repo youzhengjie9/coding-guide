@@ -1,6 +1,8 @@
 package com.coding.guide.mobile.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.QuestionDTO;
 import com.coding.guide.mobile.entity.Question;
 
 import java.util.List;
@@ -229,5 +231,14 @@ public interface QuestionService extends IService<Question> {
      */
     Long selectUserQuestionBrowseRecordCount(Long currentUserId);
 
+
+    /**
+     * 发布面试题
+     *
+     * @param questionDTO 面试题DTO
+     * @param accessToken 访问令牌。保证接口幂等性（防止用户连续点击发布内容导致数据库插入多条记录）
+     * @return boolean
+     */
+    ResponseResult<String> publishQuestion(QuestionDTO questionDTO, String accessToken);
 
 }

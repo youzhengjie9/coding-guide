@@ -31,4 +31,11 @@ public final class RedisConstant {
      * 后面加上accessToken
      */
     public static final String SAVE_QUESTION_DRAFT_LOCK_KEY_PREFIX="mobile:question:draft:lock:";
+
+    /**
+     * 保存面试题的锁的key前缀
+     * 后面加上accessToken
+     */
+    public static final String SAVE_QUESTION_LOCK_KEY_PREFIX="mobile:question:lock:";
+
 }

@@ -150,10 +150,10 @@ public class Question implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 排序,值越大优先级越高，越排在上面
+     * 排序,值越大优先级越高，越排在上面（默认值为1）
      */
     @TableField("sort")
-    @ApiModelProperty(name = "sort",value = "排序,值越大优先级越高，越排在上面")
+    @ApiModelProperty(name = "sort",value = "排序,值越大优先级越高，越排在上面（默认值为1）")
     private int sort;
 
     /**

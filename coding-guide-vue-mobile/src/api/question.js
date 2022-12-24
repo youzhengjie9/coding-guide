@@ -119,3 +119,11 @@ export function selectCurUserQuestionBrowseRecordByLimit(page,size){
         method:'get'
     })
 }
+
+export function publishQuestion(questionDTO){
+    return request({
+        method:'post',
+        url:'/question/publishQuestion',
+        data:questionDTO
+    })
+}

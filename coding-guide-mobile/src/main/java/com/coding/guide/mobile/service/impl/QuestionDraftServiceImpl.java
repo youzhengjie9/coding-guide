@@ -1,9 +1,11 @@
 package com.coding.guide.mobile.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.common.enums.ResponseType;
 import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.RedisConstant;
-import com.coding.guide.mobile.dto.QuestionDraftDTO;
+import com.coding.guide.mobile.dto.QuestionDTO;
 import com.coding.guide.mobile.entity.QuestionDraft;
 import com.coding.guide.mobile.mapper.QuestionDraftMapper;
 import com.coding.guide.mobile.security.SecurityContext;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,9 +46,10 @@ public class QuestionDraftServiceImpl extends ServiceImpl<QuestionDraftMapper, Q
     }
 
     @Override
-    public boolean saveDraft(QuestionDraftDTO questionDraftDTO, String accessToken) {
+    public ResponseResult<String> saveDraft(QuestionDTO questionDTO , String accessToken) {
 
         try {
+            ResponseResult<String> responseResult = new ResponseResult<>();
             //锁的key
             final String SAVE_DRAFT_LOCK_KEY = RedisConstant.SAVE_QUESTION_DRAFT_LOCK_KEY_PREFIX + accessToken;
             //获取redisson的锁
@@ -59,10 +63,10 @@ public class QuestionDraftServiceImpl extends ServiceImpl<QuestionDraftMapper, Q
             if (getLock) {
                 Long id = SnowId.nextId();
                 Long userId = SecurityContext.getCurrentUserId();
-                String title = questionDraftDTO.getQuestionTitle();
-                String content = questionDraftDTO.getQuestionContent();
-                int allowComment = !questionDraftDTO.getAllowComment() ? 0 : 1;
-                int difficulty = switch (questionDraftDTO.getDifficulty()) {
+                String title = questionDTO.getQuestionTitle();
+                String content = questionDTO.getQuestionContent();
+                int allowComment = !questionDTO.getAllowComment() ? 0 : 1;
+                int difficulty = switch (questionDTO.getDifficulty()) {
                     case "简单":
                         yield 1;
                     case "中等":
@@ -74,8 +78,8 @@ public class QuestionDraftServiceImpl extends ServiceImpl<QuestionDraftMapper, Q
                     default:
                         throw new RuntimeException("difficulty参数异常");
                 };
-                int isPublic = Integer.parseInt(questionDraftDTO.getIsPublic());
-                String tags = questionDraftDTO.getTags();
+                int isPublic = Integer.parseInt(questionDTO.getIsPublic());
+                String tags = questionDTO.getTags();
                 QuestionDraft questionDraft = QuestionDraft.builder()
                         .id(id)
                         .userId(userId)
@@ -85,10 +89,24 @@ public class QuestionDraftServiceImpl extends ServiceImpl<QuestionDraftMapper, Q
                         .isPublic(isPublic)
                         .difficulty(difficulty)
                         .tags(tags)
+                        .saveTime(LocalDateTime.now())
+                        .updateTime(LocalDateTime.now())
+                        .delFlag(0)
                         .build();
-                return this.save(questionDraft);
+                boolean saveSuccess = this.save(questionDraft);
+                if(saveSuccess){
+                    responseResult.setCode(ResponseType.SUCCESS.getCode())
+                            .setMsg("保存草稿成功");
+                }else {
+                    responseResult.setCode(ResponseType.ERROR.getCode())
+                            .setMsg("保存草稿失败");
+                }
+                return responseResult;
             }
-            return false;
+            //获取锁失败,防止重复提交表单处理
+            responseResult.setCode(ResponseType.ERROR.getCode())
+                    .setMsg("请不要短时间内重复保存草稿");
+            return responseResult;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();

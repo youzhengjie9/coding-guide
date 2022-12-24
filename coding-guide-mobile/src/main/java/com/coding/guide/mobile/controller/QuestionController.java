@@ -4,18 +4,18 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.QuestionDTO;
 import com.coding.guide.mobile.entity.Question;
 import com.coding.guide.common.enums.ResponseType;
 import com.coding.guide.mobile.security.SecurityContext;
-import com.coding.guide.mobile.security.SecurityUser;
 import com.coding.guide.mobile.vo.QuestionVO;
 import com.coding.guide.mobile.service.QuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -488,6 +488,25 @@ public class QuestionController {
                 .setMsg(ResponseType.SUCCESS.getMessage())
                 .setData(map);
         return responseResult;
+
+    }
+
+    /**
+     * 发布面试题
+     *
+     * @param questionDTO 面试题DTO
+     * @param accessToken 访问令牌。保证接口幂等性（防止用户连续点击发布内容导致数据库插入多条记录）
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    @PostMapping(path = "/publishQuestion")
+    public ResponseResult<String> publishQuestion(@RequestBody @Valid QuestionDTO questionDTO,
+                                                  @RequestHeader(name = "accessToken") String accessToken){
+        try {
+            return questionService.publishQuestion(questionDTO,accessToken);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseResult.fail("发布内容失败");
+        }
 
     }
 

@@ -1,11 +1,5 @@
 package com.coding.guide.mobile.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,20 +11,19 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
- * 面试题草稿DTO
+ * 面试题DTO
  *
  * @author youzhengjie
- * @date 2022/12/23 16:16:40
+ * @date 2022/12/24 20:06:04
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class QuestionDraftDTO implements Serializable {
+public class QuestionDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

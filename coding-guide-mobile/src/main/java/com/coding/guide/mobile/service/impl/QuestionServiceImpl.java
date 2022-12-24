@@ -2,14 +2,14 @@ package com.coding.guide.mobile.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.common.enums.ResponseType;
 import com.coding.guide.common.utils.ConverUtil;
 import com.coding.guide.common.utils.SnowId;
 import com.coding.guide.mobile.constant.CaffeineConstant;
 import com.coding.guide.mobile.constant.RedisConstant;
-import com.coding.guide.mobile.entity.Question;
-import com.coding.guide.mobile.entity.QuestionBrowseRecord;
-import com.coding.guide.mobile.entity.QuestionCollect;
-import com.coding.guide.mobile.entity.QuestionLike;
+import com.coding.guide.mobile.dto.QuestionDTO;
+import com.coding.guide.mobile.entity.*;
 import com.coding.guide.mobile.mapper.QuestionMapper;
 import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.service.QuestionBrowseRecordService;
@@ -18,6 +18,8 @@ import com.coding.guide.mobile.service.QuestionLikeService;
 import com.coding.guide.mobile.service.QuestionService;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,6 +56,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
      * 拿到面试题的caffeine缓存对象（使用@Qualifier指定注入的bean）
      */
     private Cache<String,Question> questionCache;
+
+    /**
+     * redisson客户端
+     */
+    private RedissonClient redissonClient;
+
     @Autowired
     public void setQuestionMapper(QuestionMapper questionMapper) {
         this.questionMapper = questionMapper;
@@ -81,6 +89,11 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Qualifier("questionCache")
     public void setQuestionCache(Cache<String, Question> questionCache) {
         this.questionCache = questionCache;
+    }
+
+    @Autowired
+    public void setRedissonClient(RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
     }
 
     @Override
@@ -391,6 +404,82 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public Long selectUserQuestionBrowseRecordCount(Long currentUserId) {
 
         return questionMapper.selectUserQuestionBrowseRecordCount(currentUserId);
+    }
+
+    @Override
+    public ResponseResult<String> publishQuestion(QuestionDTO questionDTO, String accessToken) {
+
+        try {
+            ResponseResult<String> responseResult = new ResponseResult<>();
+            //锁的key
+            final String SAVE_DRAFT_LOCK_KEY = RedisConstant.SAVE_QUESTION_LOCK_KEY_PREFIX + accessToken;
+            //获取redisson的锁
+            RLock lock = redissonClient.getLock(SAVE_DRAFT_LOCK_KEY);
+            //使用redisson实现防止表单重复提交（幂等性），保证5秒內不能重复提交表单。
+            //waittime=0（一定要设置成0），说明会立刻判断能不能获取到这把锁（不做任何等待，直接返回获取的结果），如果不能直接返回false，反之则返回true
+            //如果waittime不设置成0,在高并发下就会等待锁,一旦得到了锁则会出现表单重复提交问题。
+            //leaseTime=5，说明如果能够获取到这把锁，则把这个锁的过期时间设置为5秒。
+            boolean getLock = lock.tryLock(0, 5, TimeUnit.SECONDS);
+            //获取锁成功，说明可以进行发布内容的操作了
+            if (getLock) {
+                Long id = SnowId.nextId();
+                Long userId = SecurityContext.getCurrentUserId();
+                String title = questionDTO.getQuestionTitle();
+                String content = questionDTO.getQuestionContent();
+                int allowComment = !questionDTO.getAllowComment() ? 0 : 1;
+                int difficulty = switch (questionDTO.getDifficulty()) {
+                    case "简单":
+                        yield 1;
+                    case "中等":
+                        yield 2;
+                    case "较难":
+                        yield 3;
+                    case "困难":
+                        yield 4;
+                    default:
+                        throw new RuntimeException("difficulty参数异常");
+                };
+                int isPublic = Integer.parseInt(questionDTO.getIsPublic());
+                String tags = questionDTO.getTags();
+                Question question = Question.builder()
+                        .id(id)
+                        .userId(userId)
+                        .title(title)
+                        .content(content)
+                        .allowComment(allowComment)
+                        .recommend(0)
+                        .isPublic(isPublic)
+                        .readCount(0)
+                        .likeCount(0)
+                        .collectCount(0)
+                        .commentCount(0)
+                        .meetCount(0)
+                        .difficulty(difficulty)
+                        .tags(tags)
+                        .publishTime(LocalDateTime.now())
+                        .updateTime(LocalDateTime.now())
+                        .sort(1)
+                        .delFlag(0)
+                        .build();
+                boolean saveSuccess = this.save(question);
+                if(saveSuccess){
+                    responseResult.setCode(ResponseType.SUCCESS.getCode())
+                            .setMsg("发布内容成功");
+                }else {
+                    responseResult.setCode(ResponseType.ERROR.getCode())
+                            .setMsg("发布内容失败");
+                }
+                return responseResult;
+            }
+            //获取锁失败,防止重复提交表单处理
+            responseResult.setCode(ResponseType.ERROR.getCode())
+                    .setMsg("请不要短时间内重复发布内容");
+            return responseResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+
     }
 
 }
