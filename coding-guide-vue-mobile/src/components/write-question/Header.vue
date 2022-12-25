@@ -25,14 +25,14 @@ export default {
         back() {
             this.$router.go(-1);
         },
-        //预览
-        preview(){
-            Toast('预览')
-        },
         //下一步，直接把step设置为2即可
         next(){
             this.$parent.changeStep(2);
-        }
+        },
+        //预览，直接把step设置为3即可
+        preview(){
+            this.$parent.changeStep(3);
+        },
     },
 }
 </script>

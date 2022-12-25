@@ -47,5 +47,12 @@ public interface UserService extends IService<User> {
     User getUserIdAndNickNameByReplyId(long replyId);
 
 
+    /**
+     * 获取当前用户的简单的用户信息（包括用户昵称、头像、积分等级）
+     *
+     * @return {@link SimpleUserInfoVO}
+     */
+    SimpleUserInfoVO getCurUserSimpleUserInfo();
+
 
 }

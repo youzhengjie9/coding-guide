@@ -8,9 +8,9 @@
       <write-question-content />
     </div>
 
-    <!-- 反之,当step!=1则展示面试题设置div -->
+    <!-- 当step==2则展示面试题设置div -->
     <!-- 面试题设置div（也就是当点击写面试题div中的“下一步”按钮所展示的div组件） -->
-    <div v-show="step != 1">
+    <div v-show="step == 2">
       <!-- 头部 -->
       <write-question-setting-header />
       <!-- 设置内容 -->
@@ -22,6 +22,28 @@
         @publishQuestion="publishQuestion"
       />
     </div>
+
+    <!-- 当step==3时则展示预览页面 -->
+    <div v-show="step == 3">
+
+      <!-- 面试题顶部组件 -->
+      <write-question-preview-header />
+
+      <!-- 标题组件 -->
+      <write-question-preview-title :questionTitle="questionTitle"/>
+
+      <!-- 用户（发布者）信息组件 --> 
+      <write-question-preview-user-info :userInfo="userInfo" />
+
+      <!-- 面试题内容组件 -->
+      <write-question-preview-content :questionContent="questionContent"/>
+
+      <!-- 底部标签栏 -->
+      <write-question-preview-footer-tab-bar />
+
+    </div>
+
+
   </div>
 </template>
 
@@ -29,36 +51,42 @@
 import WriteQuestionHeader from "@/components/write-question/Header.vue";
 import WriteQuestionContent from "@/components/write-question/Content.vue";
 import WriteQuestionSettingHeader from "@/components/write-question/setting/Header.vue";
-import writeQuestionSettingContent from "@/components/write-question/setting/Content.vue";
-import writeQuestionSettingFooter from "@/components/write-question/setting/Footer.vue";
+import WriteQuestionSettingContent from "@/components/write-question/setting/Content.vue";
+import WriteQuestionSettingFooter from "@/components/write-question/setting/Footer.vue";
+import WriteQuestionPreviewHeader from "@/components/write-question/preview/Header.vue";
+import WriteQuestionPreviewTitle from "@/components/write-question/preview/Title.vue";
+import WriteQuestionPreviewUserInfo from "@/components/write-question/preview/UserInfo.vue";
+import WriteQuestionPreviewContent from "@/components/write-question/preview/Content.vue";
+import WriteQuestionPreviewFooterTabBar from "@/components/write-question/preview/FooterTabBar.vue";
 import { Toast } from "vant";
 import { saveDraft } from "@/api/question-draft";
 import { publishQuestion } from "@/api/question";
+import {
+  getCurUserSimpleUserInfo
+} from '@/api/user'
 export default {
   name: "WriteQuestion",
   components: {
     WriteQuestionHeader,
     WriteQuestionContent,
     WriteQuestionSettingHeader,
-    writeQuestionSettingContent,
-    writeQuestionSettingFooter,
+    WriteQuestionSettingContent,
+    WriteQuestionSettingFooter,
+    WriteQuestionPreviewHeader,
+    WriteQuestionPreviewTitle,
+    WriteQuestionPreviewUserInfo,
+    WriteQuestionPreviewContent,
+    WriteQuestionPreviewFooterTabBar
   },
   data() {
     return {
-      //当前操作是第几步，默认是1(写面试题为第1步,面试题设置为第2步)
+      //默认是1(写面试题页面为1,面试题设置页面为2,预览页面为3)
       step: 1,
       //面试题标题
       questionTitle: "",
       //Markdown编辑器输入的内容
       questionContent: "",
-      //   //文章是否公开（0代表私密、1代表公开）
-      //   isPublic: "1",
-      //   //是否允许评论
-      //   allowComment: true,
-      //   //被选择出来的题目难度（分为简单、中等、较难、困难）
-      //   difficulty: "",
-      //   //被选择出来的标签名称集合(和selectedTagNameList是一样的，只是名字不一样，因为方便后端接收)
-      //   tags: [],
+      userInfo: {}, //用户（发布者）信息
     };
   },
   methods: {
@@ -167,7 +195,16 @@ export default {
           });
       }
     },
+    //加载当前用户的信息
+    loadCurUserInfo() {
+      getCurUserSimpleUserInfo().then((res) => {
+        this.userInfo = res.data.data;
+      });
+    },
   },
+  mounted(){
+    this.loadCurUserInfo();
+  }
 };
 </script>
 

@@ -217,6 +217,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.getUserIdAndNickNameByReplyId(replyId);
     }
 
+    @Override
+    public SimpleUserInfoVO getCurUserSimpleUserInfo() {
+
+        //获取当前登录的用户id。
+        var currentUserId = SecurityContext.getCurrentUserId();
+        //根据当前用户的id查询用户的nickName和avatar和integral
+        var user = this.lambdaQuery()
+                .select(
+                        User::getNickName,
+                        User::getAvatar,
+                        User::getIntegral
+                )
+                .eq(User::getId, currentUserId)
+                .eq(User::getStatus, 0)
+                .one();
+        //第一次bean拷贝
+        var simpleUserInfoVO = BeanUtil.copyProperties(user, SimpleUserInfoVO.class);
+        //根据currentUserId查询其学校
+        UserDetail userDetail = userDetailService.lambdaQuery()
+                .select(UserDetail::getSchool)
+                .eq(UserDetail::getUserId, currentUserId)
+                .one();
+        //获取用户当前的积分
+        var integral = user.getIntegral();
+        var integralLevel = integralLevelService.getIntegralLevelByIntegral(integral);
+        String levelFormat = "Lv" + integralLevel.getLevel() + "-" + integralLevel.getDescribe();
+        simpleUserInfoVO.setBackgroundColor(integralLevel.getBackgroundColor())
+                .setLevelFormat(levelFormat)
+                .setPublisherId(currentUserId)
+                .setSchool((Objects.nonNull(userDetail)) ? userDetail.getSchool() : "" );
+
+        return simpleUserInfoVO;
+
+    }
+
 
 }
 

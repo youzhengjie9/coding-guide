@@ -162,7 +162,7 @@
 import { Toast } from "vant";
 import { searchTagNameByKeywordAndLimit } from "@/api/tag";
 export default {
-  name: "writeQuestionSettingContent",
+  name: "WriteQuestionSettingContent",
   data() {
     return {
       //文章是否公开（0代表私密、1代表公开）

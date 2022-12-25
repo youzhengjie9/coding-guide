@@ -33,3 +33,10 @@ export function getSimpleUserInfoByPublisherId(publisherId){
         }
     })
 }
+
+export function getCurUserSimpleUserInfo(){
+    return request({
+        method:'get',
+        url:'/user/getCurUserSimpleUserInfo',
+    })
+}

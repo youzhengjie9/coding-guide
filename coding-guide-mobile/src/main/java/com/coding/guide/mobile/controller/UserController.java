@@ -97,7 +97,19 @@ public class UserController {
         return ResponseResult.ok(simpleUserInfoVO);
     }
 
+    /**
+     * 获取当前用户的简单的用户信息（包括用户昵称、头像、积分等级）
+     *
+     * @return {@link ResponseResult}<{@link SimpleUserInfoVO}>
+     */
+    @GetMapping(path = "/getCurUserSimpleUserInfo")
+    @ApiModelProperty("获取当前用户的简单的用户信息")
+    public ResponseResult<SimpleUserInfoVO> getCurUserSimpleUserInfo(){
 
+        SimpleUserInfoVO simpleUserInfoVO=userService.getCurUserSimpleUserInfo();
+
+        return ResponseResult.ok(simpleUserInfoVO);
+    }
 
 
 }
