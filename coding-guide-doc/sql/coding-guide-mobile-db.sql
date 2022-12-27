@@ -743,11 +743,11 @@ CREATE TABLE `t_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
 # 明文密码都为123456
-INSERT INTO `t_user` VALUES (5700000000000001, 'youzhengjie1', '蔡徐坤', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',6352,23532.12, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000002, 'youzhengjie2', '周杰伦', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-7a72eb660888bfeaabccc81b2b77e43e_720w.webp',1735,3100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000001, 'youzhengjie1', '蔡徐坤', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 1, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',6352,23532.12, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000002, 'youzhengjie2', '周杰伦', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 2, 'https://pic3.zhimg.com/80/v2-7a72eb660888bfeaabccc81b2b77e43e_720w.webp',1735,3100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
 INSERT INTO `t_user` VALUES (5700000000000003, 'youzhengjie3', '马化腾', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic1.zhimg.com/80/v2-3330141ad8f6029c499016deae2f8eac_720w.webp',2360,5200.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000004, 'youzhengjie4', '马云', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-d19367c9372cedcfbe010ccf493862ae_720w.webp',10510,7300.00, '2022-09-26', '2022-09-26 23:46:05', 0);
-INSERT INTO `t_user` VALUES (5700000000000005, 'youzhengjie5', '王健林', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',360,8100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000004, 'youzhengjie4', '马云', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 1, 'https://pic3.zhimg.com/80/v2-d19367c9372cedcfbe010ccf493862ae_720w.webp',10510,7300.00, '2022-09-26', '2022-09-26 23:46:05', 0);
+INSERT INTO `t_user` VALUES (5700000000000005, 'youzhengjie5', '王健林', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 2, 'https://pic3.zhimg.com/80/v2-a47c3e88413625022fa19f8661d4bece_720w.webp',360,8100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
 INSERT INTO `t_user` VALUES (5700000000000006, 'youzhengjie6', '刘强东', '$2a$10$HebtQPbLFf3YrO6B1n8Sb.AWHAz8SZtAc48IFGm8iSXjZsym3GPii', 0, 0, 'https://pic4.zhimg.com/80/v2-d43c201ae3f059caac7371785bc2b23f_720w.webp',0,18100.00, '2022-09-26', '2022-09-26 23:46:05', 0);
 
 
@@ -772,12 +772,12 @@ CREATE TABLE `t_user_detail`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户细节表';
 
-INSERT INTO `t_user_detail` VALUES (6100000000000001,5700000000000001, '1550324080@qq.com', '18420163207', '美国', '华盛顿', '西雅图','东莞理工学院城市学院','2001-07-30','','2022-09-26 23:46:05',0);
-INSERT INTO `t_user_detail` VALUES (6100000000000002,5700000000000002, '1550324080@qq.com', '18420163207', '英国', '英格兰', '伦敦','斯坦福大学','2007-12-26','没什么好说的2...','2022-09-26 23:46:05',0);
-INSERT INTO `t_user_detail` VALUES (6100000000000003,5700000000000003, '1550324080@qq.com', '18420163207', '中国', '广东省', '广州市','牛津大学','2003-05-30','','2022-09-26 23:46:05',0);
-INSERT INTO `t_user_detail` VALUES (6100000000000004,5700000000000004, '1550324080@qq.com', '18420163207', '中国', '北京市', '朝阳区','剑桥大学','2005-8-15','没什么好说的4...','2022-09-26 23:46:05',0);
-INSERT INTO `t_user_detail` VALUES (6100000000000005,5700000000000005, '1550324080@qq.com', '18420163207', '中国', '广东省', '河源市','麻省理工学院','2012-11-30','没什么好说的5...','2022-09-26 23:46:05',0);
-INSERT INTO `t_user_detail` VALUES (6100000000000006,5700000000000006, '1550324080@qq.com', '18420163207', '美国', '', '','','1982-10-30','没什么好说的6...','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000001,5700000000000001, '1550324080@qq.com', '18420163207', '美国', '华盛顿', '西雅图','东莞理工学院城市学院','2001-07-30','大家好这是我的简介01','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000002,5700000000000002, '1550324080@qq.com', '18420163207', '英国', '英格兰', '伦敦','斯坦福大学','2007-12-26','大家好这是我的简介02','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000003,5700000000000003, '1550324080@qq.com', '18420163207', '中国', '广东省', '广州市','牛津大学','2003-05-30','大家好这是我的简介03','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000004,5700000000000004, '1550324080@qq.com', '18420163207', '中国', '北京市', '朝阳区','剑桥大学','2005-8-15','大家好这是我的简介04','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000005,5700000000000005, '1550324080@qq.com', '18420163207', '中国', '广东省', '河源市','麻省理工学院','2012-11-30','大家好这是我的简介05','2022-09-26 23:46:05',0);
+INSERT INTO `t_user_detail` VALUES (6100000000000006,5700000000000006, '1550324080@qq.com', '18420163207', '美国', '', '','','1982-10-30','大家好这是我的简介06','2022-09-26 23:46:05',0);
 
 /* 用户关注表 */
 DROP TABLE IF EXISTS `t_user_follow`;

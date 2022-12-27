@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
+import com.coding.guide.mobile.vo.UserDataVO;
 
 /**
  * 用户服务
@@ -53,6 +54,14 @@ public interface UserService extends IService<User> {
      * @return {@link SimpleUserInfoVO}
      */
     SimpleUserInfoVO getCurUserSimpleUserInfo();
+
+
+    /**
+     * 获取当前用户的资料（用于编辑资料数据的展示）
+     *
+     * @return {@link UserDataVO}
+     */
+    UserDataVO getCurUserData();
 
 
 }

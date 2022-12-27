@@ -25,6 +25,7 @@
         <van-tag
           plain
           type="primary"
+          v-show="tagShow(item.tagList)"
           v-for="tagName in item.tagList"
           :key="tagName"
           class="tagItem"
@@ -173,6 +174,13 @@ export default {
     list: Array,
   },
   methods: {
+    tagShow(tagList){
+      //如果tagList第一个元素是空字符串，说明没有任何标签，所以返回false不展示
+      if(tagList[0] == ''){
+        return false;
+      }
+      return true;
+    },
     //跳转到指定面试题详情
     toQuestionDetail(questionId) {
       //跳转路由

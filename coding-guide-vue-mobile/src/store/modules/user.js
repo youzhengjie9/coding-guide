@@ -172,7 +172,12 @@ const actions = {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
         })
+    },
+    //修改用户头像
+    setAvatar(context,newAvatar){
+        context.commit('SET_AVATAR',newAvatar)
     }
+
 }
 
 

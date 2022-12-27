@@ -9,6 +9,7 @@ import com.coding.guide.mobile.service.UserService;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.TokenVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
+import com.coding.guide.mobile.vo.UserDataVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -109,6 +110,23 @@ public class UserController {
         SimpleUserInfoVO simpleUserInfoVO=userService.getCurUserSimpleUserInfo();
 
         return ResponseResult.ok(simpleUserInfoVO);
+    }
+
+    /**
+     * 获取当前用户的资料（用于编辑资料数据的展示）
+     *
+     * @return {@link ResponseResult}<{@link UserDataVO}>
+     */
+    @GetMapping(path = "/getCurUserData")
+    public ResponseResult<UserDataVO> getCurUserData(){
+
+        try {
+            UserDataVO userDataVO=userService.getCurUserData();
+            return ResponseResult.ok(userDataVO);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+
     }
 
 

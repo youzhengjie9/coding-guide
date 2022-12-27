@@ -155,7 +155,7 @@
 
       <!-- 编辑资料 -->
       <div class="edit">
-        <button class="edit-btn" @click="toEdit">编辑资料</button>
+        <button class="edit-btn" @click="toEditData">编辑资料</button>
       </div>
 
     </div>
@@ -230,8 +230,10 @@ export default {
       })
     },
     //点击编辑资料按钮
-    toEdit(){
-      Toast("编辑资料功能暂未实现！");
+    toEditData(){
+      this.$router.push({
+        path:'/my/edit/data'
+      })
     }
   },
 };
@@ -240,7 +242,7 @@ export default {
 <style lang="scss" scoped>
 .myHeaderBox {
   width: 100%;
-  height: 257px;
+  height: 241px;
   background: url("../../assets/my/my01.png") no-repeat;
   background-size: 100% 100%;
 }

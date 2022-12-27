@@ -102,6 +102,11 @@ const router = new VueRouter({
         component: () => import('../views/write-question/index.vue')
       },
       {
+        path:'/my/edit/data',
+        name:'EditData',
+        component: () => import('../views/my/edit-data/index.vue')
+      },
+      {
         //配置404未找到页面路由
         path:'*',
         component: () => import('../views/error-page/404.vue')

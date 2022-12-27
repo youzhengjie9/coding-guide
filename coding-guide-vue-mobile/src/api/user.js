@@ -40,3 +40,9 @@ export function getCurUserSimpleUserInfo(){
         url:'/user/getCurUserSimpleUserInfo',
     })
 }
+export function getCurUserData(){
+    return request({
+        method:'get',
+        url:'/user/getCurUserData',
+    })
+}

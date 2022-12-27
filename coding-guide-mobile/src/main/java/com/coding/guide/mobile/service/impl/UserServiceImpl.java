@@ -11,6 +11,7 @@ import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.service.*;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
+import com.coding.guide.mobile.vo.UserDataVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,6 +250,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .setSchool((Objects.nonNull(userDetail)) ? userDetail.getSchool() : "" );
 
         return simpleUserInfoVO;
+
+    }
+
+    @Override
+    public UserDataVO getCurUserData() {
+
+        Long currentUserId = SecurityContext.getCurrentUserId();
+
+        User user = this.lambdaQuery().select(
+                User::getNickName,
+                User::getAvatar,
+                User::getSex
+        ).eq(User::getId, currentUserId).one();
+
+        UserDetail userDetail = userDetailService.lambdaQuery().select(
+                UserDetail::getIntro,
+                UserDetail::getBirthday,
+                UserDetail::getCounty,
+                UserDetail::getProvince,
+                UserDetail::getCity,
+                UserDetail::getSchool,
+                UserDetail::getEmail,
+                UserDetail::getPhone
+        ).eq(UserDetail::getUserId, currentUserId).one();
+
+
+        UserDataVO userDataVO = BeanUtil.copyProperties(user, UserDataVO.class);
+
+        BeanUtil.copyProperties(userDetail,userDataVO);
+
+        String county = userDetail.getCounty();
+        String province = userDetail.getProvince();
+        String city = userDetail.getCity();
+
+        String address = ConverUtil.converAddress(county, province, city);
+        userDataVO.setAddress(address);
+
+        return userDataVO;
 
     }
 

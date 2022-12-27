@@ -12,7 +12,11 @@
       </div>
 
       <!-- 标签列表 -->
-      <div v-for="tagName in tagList" :key="tagName" class="ordinaryTagItem">
+      <div
+      v-show="tagShow(tagList)"
+      v-for="tagName in tagList" 
+      :key="tagName" 
+      class="ordinaryTagItem">
         {{ tagName }}
       </div>
     </div>
@@ -41,6 +45,15 @@ export default {
       }
     },
   },
+  methods:{
+    tagShow(tagList){
+      //如果tagList第一个元素是空字符串，说明没有任何标签，所以返回false不展示
+      if(tagList[0] == ''){
+        return false;
+      }
+      return true;
+    },
+  }
 };
 </script>
 

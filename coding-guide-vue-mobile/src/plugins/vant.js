@@ -36,7 +36,8 @@ import {
   RadioGroup,
   Radio,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
+  Uploader 
 } from 'vant'
 //按需使用vant组件
 Vue.use(Button);
@@ -71,3 +72,4 @@ Vue.use(Switch);
 Vue.use(Picker);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
+Vue.use(Uploader); 
