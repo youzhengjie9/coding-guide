@@ -1,6 +1,7 @@
 package com.coding.guide.mobile.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
 import com.coding.guide.mobile.vo.UserCardInfoVO;
@@ -62,6 +63,15 @@ public interface UserService extends IService<User> {
      * @return {@link UserDataVO}
      */
     UserDataVO getCurUserData();
+
+
+    /**
+     * 更新用户资料
+     *
+     * @param userId      用户id
+     * @param userDataDTO 用户资料dto
+     */
+    void updateUserData(Long userId, UserDataDTO userDataDTO);
 
 
 }

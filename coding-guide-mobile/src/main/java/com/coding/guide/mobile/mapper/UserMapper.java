@@ -1,6 +1,7 @@
 package com.coding.guide.mobile.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,6 +23,14 @@ public interface UserMapper extends BaseMapper<User> {
      * @return {@link User}
      */
     User getUserIdAndNickNameByReplyId(@Param("replyId") long replyId);
+
+
+    /**
+     * 更新用户资料
+     *
+     * @param user user对象
+     */
+    void updateUserData(@Param("user") User user);
 
 
 }

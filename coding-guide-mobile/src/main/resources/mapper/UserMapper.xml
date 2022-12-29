@@ -2,12 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.coding.guide.mobile.mapper.UserMapper">
 
-
     <select id="getUserIdAndNickNameByReplyId" resultType="com.coding.guide.mobile.entity.User">
         SELECT id, nick_name
         FROM t_user
         WHERE id = (SELECT user_id FROM t_question_reply WHERE id = #{replyId})
     </select>
+
+    <update id="updateUserData">
+        UPDATE t_user
+        <trim prefix="SET" suffixOverrides=",">
+                update_time = #{user.updateTime} ,
+            <if test="user.nickName != null and user.nickName != ''">
+                nick_name = #{user.nickName} ,
+            </if>
+            <if test="user.sex != null">
+                sex = #{user.sex} ,
+            </if>
+            <if test="user.avatar != null and user.avatar != ''">
+                avatar = #{user.avatar} ,
+            </if>
+        </trim>
+        WHERE id = #{user.id}
+        AND del_flag = 0
+    </update>
+
 
 
 </mapper>

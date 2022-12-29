@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.coding.guide.mobile.mapper.UserDetailMapper">
+
+
+    <update id="updateUserDetailData">
+        UPDATE t_user_detail
+        <trim prefix="SET" suffixOverrides=",">
+            update_time = #{userDetail.updateTime} ,
+            <if test="userDetail.intro != null and userDetail.intro != ''">
+                intro = #{userDetail.intro} ,
+            </if>
+            <if test="userDetail.birthday != null">
+                birthday = #{userDetail.birthday} ,
+            </if>
+            <if test="userDetail.county != null and userDetail.county != ''">
+                county = #{userDetail.county} ,
+            </if>
+            <if test="userDetail.province != null and userDetail.province != ''">
+                province = #{userDetail.province} ,
+            </if>
+            <if test="userDetail.city != null and userDetail.city != ''">
+                city = #{userDetail.city} ,
+            </if>
+            <if test="userDetail.school != null and userDetail.school != ''">
+                school = #{userDetail.school} ,
+            </if>
+            <if test="userDetail.phone != null and userDetail.phone != ''">
+                phone = #{userDetail.phone} ,
+            </if>
+            <if test="userDetail.email != null and userDetail.email != ''">
+                email = #{userDetail.email} ,
+            </if>
+        </trim>
+        WHERE user_id = #{userDetail.userId}
+        AND del_flag = 0
+    </update>
+</mapper>

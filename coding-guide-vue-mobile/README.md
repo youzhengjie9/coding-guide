@@ -85,6 +85,13 @@ npm install echarts --save
 npm i @kangc/v-md-editor -S
 ```
 
+### 安装vant插件,包含我国所有省市区数据
+
+```
+npm i @vant/area-data
+```
+
+
 
 
 ## 遇到的部分问题

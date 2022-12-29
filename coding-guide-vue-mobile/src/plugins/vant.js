@@ -5,7 +5,9 @@ import '@vant/touch-emulator';
 import 'vant/lib/index.css'
 //按需引入vant组件
 import {
+  Area,
   Button,
+  Calendar,
   Tabbar,
   TabbarItem,
   Field,
@@ -37,9 +39,10 @@ import {
   Radio,
   Checkbox,
   CheckboxGroup,
-  Uploader 
+  Uploader
 } from 'vant'
 //按需使用vant组件
+Vue.use(Area);
 Vue.use(Button);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
@@ -73,3 +76,4 @@ Vue.use(Picker);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Uploader); 
+Vue.use(Calendar);

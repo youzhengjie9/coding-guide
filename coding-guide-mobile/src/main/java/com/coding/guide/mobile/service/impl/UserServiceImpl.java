@@ -3,9 +3,10 @@ package com.coding.guide.mobile.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.coding.guide.common.utils.ConverUtil;
-import com.coding.guide.mobile.entity.IntegralLevel;
+import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.entity.UserDetail;
+import com.coding.guide.mobile.mapper.UserDetailMapper;
 import com.coding.guide.mobile.mapper.UserMapper;
 import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.service.*;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -28,6 +30,7 @@ import java.util.Objects;
  */
 @Service
 @Slf4j
+@Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private QuestionService questionService;
@@ -39,6 +42,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserFollowService userFollowService;
 
     private UserMapper userMapper;
+
+    private UserDetailMapper userDetailMapper;
 
     private static final String DEFAULT_INTRO = "该用户暂时没有个人简介...";
 
@@ -62,6 +67,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setUserDetailMapper(UserDetailMapper userDetailMapper) {
+        this.userDetailMapper = userDetailMapper;
     }
 
     @Override
@@ -291,6 +301,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+
+    @Override
+    public void updateUserData(Long userId, UserDataDTO userDataDTO) {
+
+        try {
+            //bean拷贝
+            User user = BeanUtil.copyProperties(userDataDTO, User.class);
+            UserDetail userDetail = BeanUtil.copyProperties(userDataDTO, UserDetail.class);
+            //特殊处理avatar、avatarFileName、sex？、birthday？、address
+
+
+            System.out.println(user);
+            System.out.println(userDetail);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+
+    }
 
 }
 

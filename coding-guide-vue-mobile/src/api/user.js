@@ -46,3 +46,11 @@ export function getCurUserData(){
         url:'/user/getCurUserData',
     })
 }
+
+export function updateCurUserData(userDataDTO){
+    return request({
+        method:'put',
+        url:'/user/updateCurUserData',
+        data:userDataDTO
+    })
+}

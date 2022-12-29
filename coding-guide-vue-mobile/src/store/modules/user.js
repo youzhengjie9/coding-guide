@@ -176,6 +176,10 @@ const actions = {
     //修改用户头像
     setAvatar(context,newAvatar){
         context.commit('SET_AVATAR',newAvatar)
+    },
+    //修改用户昵称
+    setNickName(context,newNickName){
+        context.commit('SET_NICKNAME',newNickName)
     }
 
 }

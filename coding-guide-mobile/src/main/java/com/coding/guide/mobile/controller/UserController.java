@@ -2,6 +2,7 @@ package com.coding.guide.mobile.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.security.SecurityContext;
 import com.coding.guide.mobile.security.SecurityUser;
@@ -15,10 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户控制器
@@ -119,10 +117,29 @@ public class UserController {
      */
     @GetMapping(path = "/getCurUserData")
     public ResponseResult<UserDataVO> getCurUserData(){
-
         try {
             UserDataVO userDataVO=userService.getCurUserData();
             return ResponseResult.ok(userDataVO);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+    }
+
+    /**
+     * 修改当前用户的资料
+     *
+     * @param userDataDTO 用户数据dto
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    @PutMapping(path = "/updateCurUserData")
+    public ResponseResult<String> updateCurUserData(@RequestBody UserDataDTO userDataDTO){
+
+        try {
+            //获取当前用户id
+            Long userId = SecurityContext.getCurrentUserId();
+            //如果修改的是头像
+            userService.updateUserData(userId,userDataDTO);
+            return ResponseResult.ok(null);
         }catch (Exception e){
             return ResponseResult.fail(null);
         }

@@ -1,4 +1,4 @@
-package com.coding.guide.mobile.vo;
+package com.coding.guide.mobile.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -6,29 +6,31 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
- * 用户资料VO（用于展示到编辑资料页面）
+ * 用户资料dto（用于编辑资料页面修改数据传输的类）
  *
  * @author youzhengjie
- * @date 2022/12/27 00:16:10
+ * @date 2022/12/27 19:53:36
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class UserDataVO implements Serializable {
+public class UserDataDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(name = "avatar",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
-    private String avatar;
+    @ApiModelProperty(name = "avatarBase64",value = "头像的base64编码（由前端传递）")
+    private String avatarBase64;
+
+    @ApiModelProperty(name = "avatarFileName",value = "头像的文件名")
+    private String avatarFileName;
 
     @ApiModelProperty(name = "nickName",value = "昵称",example = "我的昵称")
     private String nickName;
@@ -40,7 +42,7 @@ public class UserDataVO implements Serializable {
     private String intro;
 
     @ApiModelProperty(name = "birthday",value = "生日")
-    private LocalDate birthday;
+    private String birthday;
 
     @ApiModelProperty(name = "address",value = "地区（格式为：国家-省-市）")
     private String address;
