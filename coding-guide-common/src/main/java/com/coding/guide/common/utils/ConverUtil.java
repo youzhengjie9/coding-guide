@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,6 +16,10 @@ import java.util.Objects;
  */
 @Slf4j
 public final class ConverUtil {
+
+    public static final String PROVINCE_KEY ="province";
+    public static final String CITY_KEY ="city";
+    public static final String AREA_KEY ="area";
 
     /**
      * 转换数量
@@ -51,22 +56,22 @@ public final class ConverUtil {
     }
 
     /**
-     * 转换地址（例如格式：美国-华盛顿-西雅图）
+     * 转换地址（例如格式：广东省-河源市-源城区）
      *
-     * @param country 国家
-     * @param provice 省份
+     * @param province 省份
      * @param city    城市
+     * @param area    区、县、镇
      * @return {@link String}
      */
-    public static String converAddress(String country,String provice,String city){
+    public static String converAddress(String province,String city,String area){
 
         StringBuilder addressBuilder = new StringBuilder();
-        if(!StringUtils.isBlank(country)){
-            addressBuilder.append(country).append("-");
-            if(!StringUtils.isBlank(provice)){
-                addressBuilder.append(provice).append("-");
-                if(!StringUtils.isBlank(city)){
-                    addressBuilder.append(city).append("-");
+        if(!StringUtils.isBlank(province)){
+            addressBuilder.append(province).append("-");
+            if(!StringUtils.isBlank(city)){
+                addressBuilder.append(city).append("-");
+                if(!StringUtils.isBlank(area)){
+                    addressBuilder.append(area).append("-");
                 }
             }
         }
@@ -80,33 +85,63 @@ public final class ConverUtil {
         return "";
     }
 
-//    public static void main(String[] args) {
+    /**
+     * 将address解析地址成一个Map
+     * <p>
+     *
+     *
+     * @param address 地址格式为：省-市-区
+     * @return {@link Map}<{@link String},{@link String}>
+     */
+    public static Map<String,String> parseAddress(String address){
+
+        try {
+            String[] addressArray = address.split("-");
+            String province = addressArray[0];
+            String city = addressArray[1];
+            String area = addressArray[2];
+            return Map.of(PROVINCE_KEY,province,CITY_KEY,city,AREA_KEY,area);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("parseAddress error");
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+//        //converCount测试示例：
+//        String conver1 = ConverUtil.converCount(1234L);
+//        String conver2 = ConverUtil.converCount(233300L);
+//        String conver3 = ConverUtil.converCount(351234000L);
 //
-////        //converCount测试示例：
-////        String conver1 = ConverUtil.converCount(1234L);
-////        String conver2 = ConverUtil.converCount(233300L);
-////        String conver3 = ConverUtil.converCount(351234000L);
-////
-////        //1234
-////        log.info(conver1);
-////        //23.3万
-////        log.info(conver2);
-////        //3.5亿
-////        log.info(conver3);
-//
-//        //converAddress测试示例：
-//        String country="美国";
-//        String provice="华盛顿";
-//        String city="西雅图";
-////        String country="";
-////        String provice="";
-////        String city="";
-//
-//        String address = ConverUtil.converAddress(country, provice, city);
-//
-//        log.info(address);
-//
-//
-//    }
+//        //1234
+//        log.info(conver1);
+//        //23.3万
+//        log.info(conver2);
+//        //3.5亿
+//        log.info(conver3);
+
+        //converAddress测试示例：
+        String provice="广东省";
+        String city="河源市";
+        String area = "源城区";
+//        String provice="";
+//        String city="";
+//        String area = "";
+
+        String address = ConverUtil.converAddress(provice, city , area);
+
+        Map<String, String> parseAddressMap = ConverUtil.parseAddress(address);
+        String province2 = parseAddressMap.get(ConverUtil.PROVINCE_KEY);
+        String city2 = parseAddressMap.get(ConverUtil.CITY_KEY);
+        String area2 = parseAddressMap.get(ConverUtil.AREA_KEY);
+
+        log.info(address);
+        log.info(province2);
+        log.info(city2);
+        log.info(area2);
+
+    }
 
 }

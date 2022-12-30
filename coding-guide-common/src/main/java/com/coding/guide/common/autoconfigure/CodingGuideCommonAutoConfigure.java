@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  * @date 2022/11/17 11:50:02
  */
 @Configuration
-@EnableConfigurationProperties({JwtProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, QiniuOssProperties.class})
 @Import({UtilsConfiguration.class,RedisTemplateConfiguration.class, RedissonConfiguration.class})
 @Slf4j(topic = "coding-guide-common-autoconfigure")
 public class CodingGuideCommonAutoConfigure {

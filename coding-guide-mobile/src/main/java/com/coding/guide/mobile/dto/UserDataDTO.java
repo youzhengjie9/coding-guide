@@ -6,9 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 用户资料dto（用于编辑资料页面修改数据传输的类）
@@ -28,9 +28,6 @@ public class UserDataDTO implements Serializable {
 
     @ApiModelProperty(name = "avatarBase64",value = "头像的base64编码（由前端传递）")
     private String avatarBase64;
-
-    @ApiModelProperty(name = "avatarFileName",value = "头像的文件名")
-    private String avatarFileName;
 
     @ApiModelProperty(name = "nickName",value = "昵称",example = "我的昵称")
     private String nickName;
@@ -52,8 +49,5 @@ public class UserDataDTO implements Serializable {
 
     @ApiModelProperty(name = "phone",value = "用户手机号",example = "18420161234")
     private String phone;
-
-    @ApiModelProperty(name = "email",value = "用户邮箱",example = "1550324080@qq.com")
-    private String email;
 
 }

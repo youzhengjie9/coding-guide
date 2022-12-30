@@ -2,6 +2,7 @@ package com.coding.guide.mobile.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.BindEmailDTO;
 import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.security.SecurityContext;
@@ -17,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * 用户控制器
@@ -137,14 +140,46 @@ public class UserController {
         try {
             //获取当前用户id
             Long userId = SecurityContext.getCurrentUserId();
-            //如果修改的是头像
-            userService.updateUserData(userId,userDataDTO);
-            return ResponseResult.ok(null);
+            return userService.updateUserData(userId,userDataDTO);
         }catch (Exception e){
             return ResponseResult.fail(null);
         }
 
     }
 
+    /**
+     * 发送绑定qq邮箱验证码
+     *
+     * @param email qq邮箱
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    @GetMapping(path = "/sendBindEmailCode")
+    public ResponseResult<String> sendBindEmailCode(@RequestParam("email") String email){
+
+        try {
+            return userService.sendBindEmailCode(email);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseResult.fail(null);
+        }
+
+    }
+
+    /**
+     * 绑定邮箱
+     * @param bindEmailDTO 绑定邮箱dto
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    @PutMapping(path = "/bindEmail")
+    public ResponseResult<String> bindEmail(@RequestBody @Valid BindEmailDTO bindEmailDTO){
+        try {
+            //获取当前用户id
+            Long userId = SecurityContext.getCurrentUserId();
+            return userService.bindEmail(userId,bindEmailDTO);
+        }catch (Exception e){
+            return ResponseResult.fail(null);
+        }
+
+    }
 
 }

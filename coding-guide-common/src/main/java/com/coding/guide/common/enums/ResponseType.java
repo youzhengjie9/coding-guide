@@ -62,7 +62,17 @@ public enum ResponseType {
     PHONE_CODE_ERROR(1104,"手机验证码不正确"),
     PHONE_ERROR(1105,"手机号格式不正确"),
     CONFIRM_PASSWORD_ERROR(1106,"两次输入的密码不一致"),
-    USERNAME_EXISTED(1107,"该用户名已被占用,请使用不同的用户名")
+    USERNAME_EXISTED(1107,"该用户名已被占用,请使用不同的用户名"),
+
+    /**
+     * 绑定邮箱验证码正确
+     */
+    BIND_EMAIL_CODE_SUCCESS(1201,"验证码正确"),
+    /**
+     * 绑定邮箱验证码错误
+     */
+    BIND_EMAIL_CODE_ERROR(1202,"验证码错误"),
+
     ;
 
 

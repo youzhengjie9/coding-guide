@@ -72,13 +72,6 @@ public class UserDetail implements Serializable {
     private String phone;
 
     /**
-     * 所在国家
-     */
-    @TableField("county")
-    @ApiModelProperty(name = "county",value = "所在国家")
-    @ExcelProperty("所在国家")
-    private String county;
-    /**
      * 所在省
      */
     @TableField("province")
@@ -92,6 +85,15 @@ public class UserDetail implements Serializable {
     @ApiModelProperty(name = "city",value = "所在市")
     @ExcelProperty("所在市")
     private String city;
+
+    /**
+     * 所在区、县、镇
+     */
+    @TableField("area")
+    @ApiModelProperty(name = "area",value = "所在区、县、镇")
+    @ExcelProperty("所在区、县、镇")
+    private String area;
+
     /**
      * 学校
      */

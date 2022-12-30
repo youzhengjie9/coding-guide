@@ -54,3 +54,20 @@ export function updateCurUserData(userDataDTO){
         data:userDataDTO
     })
 }
+export function sendBindEmailCode(email){
+    return request({
+        method:'get',
+        url:'/user/sendBindEmailCode',
+        params:{
+            email:email
+        }
+    })
+}
+
+export function bindEmail(bindEmailDTO){
+    return request({
+        method:'put',
+        url:'/user/bindEmail',
+        data:bindEmailDTO
+    })
+}

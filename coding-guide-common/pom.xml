@@ -36,6 +36,25 @@
 
 
     <dependencies>
+        <!--
+        实现自定义的properties（@ConfigurationProperties注解下的内容）可以在application.yml出现提示。
+        导入了这个依赖，当我们运行项目后就会在target目录下面自动生成/META-INF/spring-configuration-metadata.json文件
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--        七牛云oss sdk-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.7.0, 7.10.99]</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
         <!-- redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
@@ -224,6 +243,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+
 
 
     </dependencies>

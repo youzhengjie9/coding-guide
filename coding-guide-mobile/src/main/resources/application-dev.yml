@@ -96,6 +96,12 @@ spring:
         max-active: 8
         #使用redis默认值即可：-1
         max-wait: -1
+  #邮箱配置
+  mail:
+    username: 1550324080@qq.com
+    host: smtp.qq.com
+    default-encoding: UTF-8
+    password: ioeixwxphyfefdib
 
 mybatis-plus:
   configuration:
@@ -117,3 +123,15 @@ jwt:
     refresh-token-key: refreshToken-key
     # 21600000毫秒（=6小时）过期
     refresh-token-expired: 21600000
+
+
+#七牛云oss配置
+qiniu:
+  # 密钥管理的AK
+  accessKey: xPu-62ptMpg-kolm4nPVcvWgUnK1EZgu27ffKpBE
+  #密钥管理的SK
+  secretKey: gDxkqTu7i7BBgbsvoQ7h4bmE5m16aRyHXyQ1Zc6D
+  #指定我们文件上传的存储空间名称
+  bucket: coding-guide-oss
+  # 七牛云图片服务器域名（有效期30天，过期可以重新创建新的存储空间）
+  ossUrl: http://rnnwxfjr1.hn-bkt.clouddn.com/

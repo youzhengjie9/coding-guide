@@ -42,7 +42,7 @@ public class UserDataVO implements Serializable {
     @ApiModelProperty(name = "birthday",value = "生日")
     private LocalDate birthday;
 
-    @ApiModelProperty(name = "address",value = "地区（格式为：国家-省-市）")
+    @ApiModelProperty(name = "address",value = "地区（格式为：省-市-区）")
     private String address;
 
     @ApiModelProperty(name = "school",value = "学校")

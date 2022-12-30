@@ -1,6 +1,8 @@
 package com.coding.guide.mobile.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.coding.guide.common.data.ResponseResult;
+import com.coding.guide.mobile.dto.BindEmailDTO;
 import com.coding.guide.mobile.dto.UserDataDTO;
 import com.coding.guide.mobile.entity.User;
 import com.coding.guide.mobile.vo.SimpleUserInfoVO;
@@ -70,8 +72,26 @@ public interface UserService extends IService<User> {
      *
      * @param userId      用户id
      * @param userDataDTO 用户资料dto
+     * @return {@link ResponseResult}<{@link String}>
      */
-    void updateUserData(Long userId, UserDataDTO userDataDTO);
+    ResponseResult<String> updateUserData(Long userId, UserDataDTO userDataDTO);
 
+
+    /**
+     * 发送绑定qq邮箱验证码
+     *
+     * @param email qq邮箱
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    ResponseResult<String> sendBindEmailCode(String email);
+
+    /**
+     * 绑定邮箱
+     *
+     * @param userId       用户id
+     * @param bindEmailDTO 绑定邮箱dto
+     * @return {@link ResponseResult}<{@link String}>
+     */
+    ResponseResult<String> bindEmail(Long userId, BindEmailDTO bindEmailDTO);
 
 }

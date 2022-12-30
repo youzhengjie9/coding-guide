@@ -36,7 +36,7 @@ public class UserCardInfoVO implements Serializable {
     @ApiModelProperty(name = "avatar",value = "头像地址",example = "https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
     private String avatar;
 
-    @ApiModelProperty(name = "address",value = "地址（格式为：国家-省-市）")
+    @ApiModelProperty(name = "address",value = "地址（格式为：省-市-区）")
     private String address;
 
     @ApiModelProperty(name = "age",value = "年龄")

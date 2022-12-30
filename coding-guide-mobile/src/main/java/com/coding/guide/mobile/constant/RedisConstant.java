@@ -38,4 +38,10 @@ public final class RedisConstant {
      */
     public static final String SAVE_QUESTION_LOCK_KEY_PREFIX="mobile:question:lock:";
 
+
+    /**
+     * 绑定qq邮箱的验证码key前缀
+     */
+    public static final String BIND_EMAIL_CODE_KEY_PREFIX="mobile:bind:email:";
+
 }

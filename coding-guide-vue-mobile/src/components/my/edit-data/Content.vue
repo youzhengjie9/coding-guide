@@ -157,7 +157,7 @@ export default {
       this.address = this.userDataVO.address;
       this.birthday = this.userDataVO.birthday;
       this.sex = this.userDataVO.sex;
-    }, 65);
+    }, 170);
   },
   methods: {
     changeSex(sex) {
@@ -254,32 +254,31 @@ export default {
       let avatarFile = document.getElementsByName("avatarFile")[0],
         file = avatarFile.files[0],
         reader = new FileReader();
-      reader.readAsDataURL(file);
-      let ts = this;
-      //加载reader，下面的reader.result(avatarBase64)一定要放到onload方法里面，不然会获取不到
-      reader.onload = function (e) {
-        //上传的图片的base64编码
-        let avatarBase64 = reader.result;
-        let avatarFileName = file.name;
-        //组装请求后端的数据
-        let userDataDTO = {
-          avatarBase64: avatarBase64,
-          avatarFileName: avatarFileName,
+      //解决：当用户取消上传头像时导致报错的bug
+      if (typeof file !== "undefined") {
+        reader.readAsDataURL(file);
+        let ts = this;
+        //加载reader，下面的reader.result(avatarBase64)一定要放到onload方法里面，不然会获取不到
+        reader.onload = function (e) {
+          //上传的图片的base64编码
+          let avatarBase64 = reader.result;
+          //组装请求后端的数据
+          let userDataDTO = {
+            avatarBase64: avatarBase64
+          };
+          updateCurUserData(userDataDTO)
+            .then((res) => {
+              Toast.success("修改成功");
+              //修改父组件属性
+              ts.$parent.userDataVO.avatar= res.data.data;
+              //修改vuex
+              ts.$store.dispatch("setAvatar", res.data.data);
+            })
+            .catch((err) => {
+              Toast.fail("修改失败");
+            });
         };
-        updateCurUserData(userDataDTO)
-          .then((res) => {
-            Toast.success("修改成功");
-            //修改父组件属性
-            // this.$parent.userDataVO.avatar= res.data.data;
-            //关闭popup
-            this.showBirthdayPopup = false;
-            //修改vuex
-            ts.$store.dispatch("setAvatar", res.data.data);
-          })
-          .catch((err) => {
-            Toast.fail("修改失败");
-          });
-      };
+      }
     },
   },
 };

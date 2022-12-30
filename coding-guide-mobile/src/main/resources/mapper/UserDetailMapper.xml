@@ -13,14 +13,14 @@
             <if test="userDetail.birthday != null">
                 birthday = #{userDetail.birthday} ,
             </if>
-            <if test="userDetail.county != null and userDetail.county != ''">
-                county = #{userDetail.county} ,
-            </if>
             <if test="userDetail.province != null and userDetail.province != ''">
                 province = #{userDetail.province} ,
             </if>
             <if test="userDetail.city != null and userDetail.city != ''">
                 city = #{userDetail.city} ,
+            </if>
+            <if test="userDetail.area != null and userDetail.area != ''">
+                area = #{userDetail.area} ,
             </if>
             <if test="userDetail.school != null and userDetail.school != ''">
                 school = #{userDetail.school} ,
