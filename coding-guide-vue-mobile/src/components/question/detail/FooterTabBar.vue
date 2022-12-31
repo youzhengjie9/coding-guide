@@ -2,11 +2,24 @@
   <div class="footerTabBar">
     <van-row>
       <van-col span="10">
+        <!-- 禁止评论按钮 -->
+        <van-button
+          class="write-btn"
+          type="primary"
+          round
+          plain
+          v-if="question.allowComment == 0"
+          @click="forbidComment"
+          style="margin-left: 5px;width: 160px;"
+        >写评论</van-button>
+
+        <!-- 允许评论按钮 -->
         <van-button
           class="write-btn"
           type="primary"
           round
           plain 
+          v-if="question.allowComment == 1"
           @click="$emit('clickWriteComment',question.id)"
           style="margin-left: 5px;width: 160px;"
         >写评论</van-button>
@@ -77,6 +90,9 @@ export default {
     
   },
   methods: {
+    forbidComment(){
+      Toast.fail('该面试题不允许评论！')
+    },
     moveCommentList(){
       this.$emit('moveCommentList')
     },

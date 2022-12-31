@@ -15,6 +15,7 @@
 
     <!-- 分隔栏  -->
     <p
+    v-if="question.allowComment == 1"
       style="
         color: #323233;
         font-size: 0.37333rem;
@@ -28,6 +29,7 @@
 
     <!-- 全部评论展示列表。 -->
     <question-comment-list
+      v-if="question.allowComment == 1"
       ref="commentListParent"
       @clickReplyBtn="clickReplyBtn"
       :commentList="commentList"
@@ -37,6 +39,7 @@
     <!-- 当点击评论的“回复”按钮，展示所点击的那条评论对应的所有回复数据 -->
     <!-- 这个van-popup不去设置关闭弹出层按钮，而是让question-comment-reply组件中自己去实现 -->
     <van-popup
+      v-if="question.allowComment == 1"
       v-model="showReplyListPopup"
       position="bottom"
       get-container="body"

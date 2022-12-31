@@ -11,6 +11,7 @@
                collect_count,
                meet_count,
                difficulty,
+               allow_comment,
                tags,
                publish_time
     </sql>
@@ -162,6 +163,7 @@
                like_count,
                collect_count,
                meet_count,
+               allow_comment,
                difficulty,
                tags,
                publish_time

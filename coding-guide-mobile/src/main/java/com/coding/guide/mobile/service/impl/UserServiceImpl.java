@@ -446,7 +446,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public ResponseResult<String> sendBindEmailCode(String email) {
         Long userId = SecurityContext.getCurrentUserId();
         final String key =RedisConstant.BIND_EMAIL_CODE_KEY_PREFIX+userId+":"+email;
-//        //创建线程池
+        //创建线程池
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 6,
                 1L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), Executors.defaultThreadFactory(),
                         new ThreadPoolExecutor.AbortPolicy());
