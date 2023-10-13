@@ -39,7 +39,8 @@ public class LoginController {
      */
     @ApiOperation("移动端登录接口")
     @PostMapping("/")
-    public ResponseResult<TokenVO> login(@RequestBody @Valid UserLoginDTO userLoginDto, HttpServletRequest request) throws Throwable {
+    public ResponseResult<TokenVO> login(@RequestBody @Valid UserLoginDTO userLoginDto,
+                                         HttpServletRequest request) throws Throwable {
 
         return loginService.login(userLoginDto,request);
     }
